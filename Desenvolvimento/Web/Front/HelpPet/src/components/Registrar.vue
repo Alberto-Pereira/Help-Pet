@@ -37,40 +37,4 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  .margin-top-50{
-    margin-top: 50px;
-  }
-
-  .margin-top-30{
-    margin-top: 30px;
-  }
-
-  .padding-10{
-    padding: 10px;
-  }
-
-  .font-verde {
-    color: #4b9460;
-  }
-
-  .font-amarela{
-    color: #f0cc60;
-  }
-
-  .font-cinza-claro {
-    color: #c1c1c1;
-  }
-
-  .fundo-roxo {
-    background: #9b51e0;
-  }
-
-  .bold{
-    font-weight: 500;
-  }
-
-  .cor-fundo-app {
-    background: #e5e5e5;
-  }
-
 </style>

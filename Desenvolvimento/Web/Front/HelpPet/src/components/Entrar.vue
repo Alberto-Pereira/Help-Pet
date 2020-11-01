@@ -1,6 +1,6 @@
 <template>
   <div class="entrar w3-center w3-col">
-    <span class="w3-text-green w3-margin-top w3-col s6 m6 l6"><h1>Entrar</h1></span>
+    <!--<span class="w3-text-green w3-margin-top w3-col s6 m6 l6"><h1>Entrar</h1></span>-->
     <img class="w3-col s6 m6 l6" src="../assets/imagens/logo.png">
 
     <form class="w3-container">
