@@ -11,7 +11,7 @@
         </div>
     </div>
     
-    <div class="w3-center" style="margin-top: 50px;">
+    <div class="w3-center" style="margin-top: 70px;">
          <!-- Interruptor arredondado (toggle) -->
         <label class="switch">
             <input type="checkbox">
