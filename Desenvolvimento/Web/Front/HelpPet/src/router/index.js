@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Entrar from '@/components/Entrar'
 import Registrar from '@/components/Registrar'
 import Perfil from '@/components/Perfil'
+import Sucesso from '@/components/Sucesso'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/Perfil',
       name: 'Perfil',
       component: Perfil
+    },
+    {
+      path: '/Sucesso',
+      name: 'Sucesso',
+      component: Sucesso
     }
   ]
 })

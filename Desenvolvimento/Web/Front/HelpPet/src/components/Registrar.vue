@@ -1,9 +1,9 @@
 <template>
 
-  <div class="geral w3-container cor-fundo-app" style="height: 100vh">
+  <div class="geral w3-container cor-fundo-app extender-div-tela-toda">
 
     <div class="w3-row w3-margin-bottom">
-      <h1 class="w3-col s10 w3-center font-verde bold">Inscrever-se</h1>
+      <h1 class="w3-col s10 w3-center font-verde bold-500">Inscrever-se</h1>
       <h6 class="w3-col s2 padding-10 font-amarela">Entrar</h6>
     </div>
 
