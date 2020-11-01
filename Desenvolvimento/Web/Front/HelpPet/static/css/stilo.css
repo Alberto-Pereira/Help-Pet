@@ -55,11 +55,20 @@
     background: #e5e5e5;
   }
 
+  .perfil{
+    width: 150px;
+    height: 150px;  
+  }
   .circulo {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
+    margin-right: 60%!important;
+    margin-left: -40%;
     border-radius: 50%;
-    }
+    margin-top: 50px!important;
+    position: fixed;
+    z-index: 100;
+  }
   .cor-fundo-app-azul{
     background: #2d9cdb;
   }
