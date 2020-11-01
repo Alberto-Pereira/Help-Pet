@@ -1,6 +1,5 @@
 <template>
   <div class="entrar w3-center w3-col">
-    <img src="../assets/imagens/logo.png">
   </div>
 </template>
 
