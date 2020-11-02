@@ -6,6 +6,7 @@ import Perfil from '@/components/Perfil'
 import Sucesso from '@/components/Sucesso'
 import DadosPessoais from '@/components/DadosPessoais'
 import DetalhesPet from '@/components/DetalhesPet'
+import DadosPet from '@/components/DadosPet'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/DetalhesPet',
       name: 'DetalhesPet',
       component: DetalhesPet
+    },
+    {
+      path: '/DadosPet',
+      name: 'DadosPet',
+      component: DadosPet
     }
   ]
 })
