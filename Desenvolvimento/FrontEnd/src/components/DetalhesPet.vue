@@ -13,11 +13,11 @@
 
     <input
     v-if="mostrar_filtro" 
-    class="w3-border w3-round-xxlarge w3-margin-bottom w3-left-align w3-col m8 s8 l8" 
+    class="w3-border w3-round-xxlarge w3-margin-bottom w3-left-align w3-col m8 s8 l8 w3-animate-zoom" 
     type="text" 
     placeholder="Pesquisar"
     >
-    <i  v-if="mostrar_filtro" class="fas fa-check w3-col s3 m3 l3 w3-left-align"></i>
+    <i  v-if="mostrar_filtro" class="fas fa-check w3-col s3 m3 l3 w3-left-align w3-animate-zoom"></i>
 
     <div id="visualizar">
       <div class="w3-container w3-col">
