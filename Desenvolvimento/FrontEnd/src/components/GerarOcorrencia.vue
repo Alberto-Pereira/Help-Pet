@@ -3,9 +3,17 @@
   <div class="geral w3-container extender-div-tela-toda">
 
     <div class="w3-row w3-margin-top">
-      <h6 class="w3-col s2 padding-10 font-amarela"><i class="fas fa-arrow-left"></i></h6>
+      <h6 class="w3-col s2 padding-10 font-amarela">
+        <router-link to="/perfil">
+          <i class="fas fa-arrow-left"></i>
+        </router-link>
+      </h6>
       <h3 class="w3-col s8 w3-center font-verde bold-500">Gerar ocorrência</h3>
-      <h6 class="w3-col s2 padding-10 font-amarela"><i class="fas fa-filter"></i></h6>
+      <h6 class="w3-col s2 padding-10 font-amarela">
+        <router-link to="">
+          <i class="fas fa-filter"></i>
+        </router-link>
+      </h6>
     </div>
 
     <div class="padding-10">
