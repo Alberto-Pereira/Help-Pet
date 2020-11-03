@@ -12,18 +12,25 @@
     <div id="visualizar">
       <div class="w3-container w3-col">
           <img class="detalhe-foto-pet w3-center w3-border w3-col w3-center" v-bind:src="imagem_pet">
-          <i v-if="pode_editar" @click="editando = !editando" class="fas fa-edit"></i>
-          <span :style="getStatus()" v-if="!editando" class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align">
+          <i v-if="pode_editar" @click="editando = !editando" class="fas fa-edit"></i> Editar
+          <span 
+          :style="getStatus()" 
+          v-if="!editando" 
+          class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"
+          >
               <i class="fas fa-exclamation-circle"></i> : 
-              <label v-if="status == 'n'">Normal</label>
-              <label v-if="status == 'a'">Para adoção</label>
-              <label style="color:red;" v-if="status == 'd'">Desaparecido</label>
-              <label v-if="status == 'l'">Localizado</label>
+              <label style="color:green;" v-if="status == 'n'">Normal</label>
+              <label style="color:yellow;" v-if="status == 'a'">Para adoção</label>
+              <label style="color:red;" v-if="status == 'p'">Desaparecido</label>
+              <label style="color:blue;" v-if="status == 'l'">Localizado</label>
           </span>
       </div>
    
 
-      <div class="w3-margin-top padding-10 w3-col w3-border w3-container w3-mobile w3-round labels" v-if="!editando">
+      <div 
+      class="w3-margin-top padding-10 w3-col w3-border w3-container w3-mobile w3-round labels w3-animate-zoom w3-small"
+      v-if="!editando"
+      >
         <span class="w3-span w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-user"></i> : {{nome_proprietario}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-paw"></i> : {{nome_pet}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-palette"></i> : {{cor}}</span>
@@ -36,36 +43,77 @@
       </div>
     </div>
 
-    <div id="editar w3-border w3-container w3-border-black w3-col" v-if="editando">
+    <div 
+    id="editar" 
+    class="w3-border w3-container w3-round w3-col w3-animate-zoom w3-margin-top w3-small" 
+    v-if="editando"
+    >
       <div class="margin-top-30 w3-margin-bottom w3-left-align w3-col">
         <span class="margin-left-8 bold-500 font-cinza-meio-claro">Status? </span>
 
-        <span class="w3-text-green bold-500 w3-half">
-          <input class="w3-radio" type="radio" name="normal" value="n" checked id="checknormal">
-          <label for="checksim">Normal</label>
+        <span class="w3-text-green bold-500 w3-half" @click="status = 'n'">
+          <i v-if="status == 'n'" class="far fa-check-circle"></i>
+          <i v-else class="far fa-circle"></i>
+          <label>Normal</label>
         </span>
 
-        <span class="w3-text-yellow bold-500 w3-half">
-          <input class="w3-radio" type="radio" name="paraadocao" value="a" id="checkadocao">
-          <label for="checknao">Para adoção</label>
+        <span class="w3-text-yellow bold-500 w3-half" @click="status = 'a'">
+          <i v-if="status == 'a'" class="far fa-check-circle"></i>
+          <i v-else class="far fa-circle"></i>
+          <label>Para adoção</label>
         </span>
 
-        <span class="w3-text-red bold-500 w3-half">
-          <input class="w3-radio" type="radio" name="perdido" value="p" id="checkperdido">
-          <label for="checknao">Perdido</label>
+        <span class="w3-text-red bold-500 w3-half" @click="status = 'p'">
+          <i v-if="status == 'p'" class="far fa-check-circle"></i>
+          <i v-else class="far fa-circle"></i>
+          <label>Perdido</label>
         </span>
 
-        <span class="w3-text-blue bold-500 w3-half">
-          <input class="w3-radio" type="radio" name="encontrado" value="l" id="checkencontrado">
-          <label for="checknao">Encontrado</label>
+        <span class="w3-text-blue bold-500 w3-half" @click="status = 'l'">
+          <i v-if="status == 'l'" class="far fa-check-circle"></i>
+          <i v-else class="far fa-circle"></i>
+          <label>Encontrado</label>
         </span>
 
-        <input class="w3-input w3-margin-top w3-text-black bold-500 " type="text" placeholder="Nome do pet:">
-        <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Raça:">
-        <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Cor:">
-        <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Sexo:">
-        <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Número da coleira (gera automatico):">
-        <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Descrição:">
+        <input 
+        class="w3-input w3-margin-top w3-text-black bold-500" 
+        v-model="nome_pet" type="text" 
+        placeholder="Nome do pet:"
+        >
+
+        <input 
+        class="w3-input w3-margin-top w3-text-black bold-500"
+         v-model="raca" type="text" 
+         placeholder="Raça:"
+        >
+
+        <input 
+        class="w3-input w3-margin-top w3-text-black bold-500" 
+        v-model="cor" 
+        type="text" 
+        placeholder="Cor:"
+        >
+
+        <input 
+        class="w3-input w3-margin-top w3-text-black bold-500" 
+        v-model="sexo" 
+        type="text" 
+        placeholder="Sexo:"
+        >
+
+        <input 
+        class="w3-input w3-margin-top w3-text-black bold-500" 
+        v-model="codigo_coleira" 
+        type="text" 
+        placeholder="Número da coleira (gera automatico):"
+        >
+
+        <input 
+        class="w3-input w3-margin-top w3-text-black bold-500"
+        v-model="descricao" 
+        type="text" 
+        placeholder="Descrição:"
+        >
       </div>
     </div>
     
