@@ -7,6 +7,7 @@ import Sucesso from '@/components/Sucesso'
 import DadosPessoais from '@/components/DadosPessoais'
 import DetalhesPet from '@/components/DetalhesPet'
 import DadosPet from '@/components/DadosPet'
+import GerarOcorrencia from '@/components/GerarOcorrencia'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/DadosPet',
       name: 'DadosPet',
       component: DadosPet
+    },
+    {
+      path: '/GerarOcorrencia',
+      name: 'GerarOcorrencia',
+      component: GerarOcorrencia
     }
   ]
 })
