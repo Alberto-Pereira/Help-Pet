@@ -8,6 +8,7 @@ import DadosPessoais from '@/components/DadosPessoais'
 import DetalhesPet from '@/components/DetalhesPet'
 import DadosPet from '@/components/DadosPet'
 import GerarOcorrencia from '@/components/GerarOcorrencia'
+import ApresentacaoEntrada from '@/components/ApresentacaoEntrada'
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ export default new Router({
       path: '/GerarOcorrencia',
       name: 'GerarOcorrencia',
       component: GerarOcorrencia
+    },
+    {
+      path: '/ApresentacaoEntrada',
+      name: 'ApresentacaoEntrada',
+      component: ApresentacaoEntrada
     }
   ]
 })
