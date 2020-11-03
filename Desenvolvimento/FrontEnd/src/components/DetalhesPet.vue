@@ -43,7 +43,9 @@
       v-if="!editando"
       >
         <span class="w3-span w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-user"></i> : {{nome_proprietario}}</span>
-        <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-paw"></i> : {{nome_pet}}</span>
+        <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align">
+          <i class="fas fa-paw"></i> : {{nome_pet}}
+        </span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-palette"></i> : {{cor}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-horse-head"></i> : {{raca}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-qrcode"></i> : {{codigo_coleira}}</span>
@@ -128,13 +130,37 @@
       </div>
     </div>
     
-    <div class="margin-top-50">
+    <div class="margin-top-50 w3-hide-small">
       <button @click="capturarImage('DetalhesPet')" class="w3-col w3-btn w3-round-xxlarge w3-center fundo-azul-claro w3-text-white w3-margin-top">
             Buscar foto para perfil
       </button>
 
       <button class="w3-col w3-btn w3-round-xxlarge w3-center fundo-roxo w3-text-white w3-margin-top">Gravar dados</button>
     </div>
+
+    <nav class="container w3-display-bottomright w3-hide-large w3-hide-medium"> 
+      <a 
+      href="#" 
+      @click="capturarImage('DetalhesPet')"
+      class="buttons w3-blue" 
+      style="font-size:20px; margin-top: 10px!important;" 
+      tooltip="Inserir foto">
+        <i class="fas fa-camera"></i>
+      </a>
+      
+      <a 
+      href="#" style="font-size:20px; margin-top: 10px!important;" 
+      class="buttons w3-purple" tooltip="Gravar dados">
+        <i class="fas fa-database"></i>
+      </a>
+
+      <a 
+      class="buttons w3-orange" 
+      style="font-size:30px;" 
+      tooltip="Opções" href="#">
+      <i class="fas fa-paw"></i></a>
+    </nav>
+    
     <capturar-image ref="capturar" @pegaImagem="recebeImage"/>
 
   </div>
@@ -143,10 +169,10 @@
 
 <script>
     import CapturarImage from '@/components/CapturarImage'
-    
     export default {
         components: {
-            CapturarImage
+            CapturarImage,
+            
         },
         name: "DetalhesPet",
          data() {
@@ -165,7 +191,8 @@
                 latitude: undefined,
                 pode_editar: true,
                 editando: false,
-                mostrar_filtro: false
+                mostrar_filtro: false,
+                
             };
         },
         mounted(){

@@ -12,7 +12,7 @@
                         :quality="1.00"
                         :preview="true"
                         :className="['fileinput', { 'fileinput--loaded': hasImage }]"
-                        capture="true"
+                        capture="user"
                         :debug="1"
                         doNotResize="gif"
                         :autoRotate="true"
