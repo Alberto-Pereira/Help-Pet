@@ -31,7 +31,7 @@
           <label class="w3-border w3-round-xxlarge w3-col w3-container">{{descricao}}</label> 
         </span> 
     </div>
-
+  
     <div class="margin-top-50">
       <button @click="capturarImage('DetalhesPet')" class="w3-col w3-btn w3-round-xxlarge w3-center fundo-azul-claro w3-text-white w3-margin-top">
             Buscar foto para perfil
