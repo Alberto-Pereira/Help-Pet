@@ -35,7 +35,7 @@ Está aplicação tem o intuito de ajudar os pais de Pet a encontrarem seus anim
 - Documents:
   - Todos os documentos produzidos estaram nesta pasta, como por exemplo o documento de plano de qualidade, configuração entre outros.
 
-## ✍️ Authors <a name = "authors"></a>
+## ✍️ Autores <a name = "authors"></a>
 
 - [@Pedronex](https://github.com/Pedronex)
 - [@WjCK](https://github.com/WjCK)

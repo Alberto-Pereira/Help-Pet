@@ -18,7 +18,7 @@ module.exports = {
         'senha': password,
         'tipo_usuario': typeUser,
       });
-      res.json({ name, lastName, email, password, typeUser });
+      res.status(201).json({ name, lastName, email, password, typeUser });
     } else {
       res.json("Email ja cadastrado");
     }
@@ -28,12 +28,18 @@ module.exports = {
     const { id } = req.params;
 
     // Deleta o usuario por identificador
-    const user = await connection("usuario").where("id_usuario", id).delete('cascade');
-
+    const user = await connection("usuario").where("id_usuario", id);
+    console.log(user);
+    if(user.length == 0){
+      await connection('usuario').where('id_usuario', user[0].id_usuario).delete();
+      return res.status(204).send();
+    }else{
+      return res.status(400).send();
+    }
     // Resetar a contagem do auto_increment
     await connection.raw("ALTER TABLE usuario AUTO_INCREMENT = 0;")
     // Confirmação da deleção
-    return res.status(204).send();
+    
   },
   async show(req, res) {
     const { id } = req.params;
