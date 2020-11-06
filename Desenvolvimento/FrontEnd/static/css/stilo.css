@@ -2,6 +2,12 @@
   .margin-top-50{
     margin-top: 50px;
   }
+  .centralizado{
+    display: block!important;
+    margin-left: auto!important;
+    margin-right: auto!important;
+    width: 50%!important;
+  }
 
   .margin-top-80{
     margin-top: 80px;
