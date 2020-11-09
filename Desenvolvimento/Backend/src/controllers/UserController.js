@@ -1,4 +1,6 @@
 const connection = require("../database/connection");
+const crypto = require("crypto");
+
 module.exports = {
   async index(req, res) {
     const users = await connection("usuario").select("*");
@@ -6,17 +8,20 @@ module.exports = {
   },
   async store(req, res) {
     const { name, lastName, email, password, typeUser } = req.body;
-
+    // Coletar email
     const emails = await connection("usuario").where("email", email);
+    // criptografando a senha
+    const cryptPass = crypto.createHash("sha1").update(password).digest("hex");
 
-    console.log(emails);
-    if (emails.length == 0) {
+    // Validação do cadastro
+    if (emails.length == 0 && email.length != 0) {
+      // inserindo no banco
       await connection("usuario").insert({
-        'nome_usuario': name,
-        'sobrenome_usuario': lastName,
-        'email': email,
-        'senha': password,
-        'tipo_usuario': typeUser,
+        nome_usuario: name,
+        sobrenome_usuario: lastName,
+        email,
+        senha: cryptPass,
+        tipo_usuario: typeUser,
       });
       res.status(201).json({ name, lastName, email, password, typeUser });
     } else {
@@ -29,45 +34,58 @@ module.exports = {
 
     // Deleta o usuario por identificador
     const user = await connection("usuario").where("id_usuario", id);
-    console.log(user);
-    if(user.length == 0){
-      await connection('usuario').where('id_usuario', user[0].id_usuario).delete();
-      return res.status(204).send();
-    }else{
-      return res.status(400).send();
+    // Valida se tem usuario
+    if (user.length != 0) {
+      user[0].tipo_usuario = "D";
+      // Resetar a contagem do auto_increment
+      await connection.raw("ALTER TABLE usuario AUTO_INCREMENT = 0;");
+      // Atualizar o usuario
+      await connection("usuario").where("id_usuario", id).update(user[0]);
+      return res.status(204).send("Usuario desativado");
+    } else {
+      return res.status(400).send("Usuario não encontrado");
     }
-    // Resetar a contagem do auto_increment
-    await connection.raw("ALTER TABLE usuario AUTO_INCREMENT = 0;")
-    // Confirmação da deleção
-    
   },
   async show(req, res) {
     const { id } = req.params;
 
-    const user = await connection('usuario')
-      .select('*')
-      .from('perfil_usuario')
-      .where('id_usuario', id);
-
-    res.json(user);
+    const user = await connection("usuario")
+      .select("*")
+      .from("perfil_usuario")
+      .where("id_usuario", id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).send("Não foi possivel encontrar o usuario");
+    }
   },
   async update(req, res) {
     const { id } = req.params;
     const { name, lastName, email, password, typeUser } = req.body;
 
     const user = {
-      'nome_usuario': name,
-      'sobrenome_usuario': lastName,
+      nome_usuario: name,
+      sobrenome_usuario: lastName,
       email,
-      'senha': password,
-      'tipo_usuario': typeUser,
-    }
+      senha: crypto.createHash("sha1").update(password).digest("hex"),
+      tipo_usuario: typeUser,
+    };
 
-    const updated = await connection('usuario').where('id_usuario', id).update(user)
-    if (updated == 0) {
-      res.status(406).send('Usuario não existe')
+    const emails = await connection("usuario")
+      .where("email", email)
+      .whereNot("id_usuario", id);
+
+    if (emails.length == 0) {
+      const updated = await connection("usuario")
+        .where("id_usuario", id)
+        .update(user);
+      if (updated == 0) {
+        res.status(406).send("Usuario não existe");
+      } else {
+        res.json([{ success: "usuario atualizado" }, { user }]);
+      }
     } else {
-      res.json(updated);
+      res.status(400).json("Email ja em uso");
     }
-  }
+  },
 };
