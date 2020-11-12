@@ -8,7 +8,7 @@
       <router-link to="/DadosPessoais">
         <button class="w3-col w3-btn w3-round-xxlarge w3-center fundo-roxo w3-text-white margin-top-80 w3-margin-bottom">Completar dados pessoais</button>
       </router-link>
-      <router-link to="">
+      <router-link to="/DetalhesPet">
         <h6 class="w3-center font-verde bold-500">Cadastrar meu pet</h6>
       </router-link>
     </div>

@@ -4,7 +4,7 @@
 
     <div class="w3-row w3-margin-bottom">
       <h1 class="w3-col s10 w3-center font-verde bold-500">Inscrever-se</h1>
-      <router-link to="/Entrar">
+      <router-link to="/">
         <h6 class="w3-col s2 padding-10 font-amarela">Entrar</h6>
       </router-link>
     </div>
