@@ -1,19 +1,19 @@
 <template>
     <div v-if="ativado" class="w3-modal" style="display: block">
-        <div class="w3-modal-content">
+        <div class="w3-modal-content w3-border w3-round-xlarge">
             <div class="w3-container">
                 <span 
                     @click="ativado = false"
                     class="w3-button w3-display-topright">&times;
                 </span>
-                <div class="my-8">
+                <div class="my-8 w3-margin-top">
                     <image-uploader
                         class="w3-col"
                         :quality="1.00"
                         :preview="true"
                         :className="['fileinput', { 'fileinput--loaded': hasImage }]"
-                        capture="environment"
-                        :debug="10"
+                        capture="user"
+                        :debug="1"
                         doNotResize="gif"
                         :autoRotate="true"
                         outputFormat="string"
@@ -22,7 +22,7 @@
                         
                     </image-uploader>
                 </div>
-                <div class="w3-col" @click="ativado = false"><strong class="w3-green w3-btn">OK</strong></div>
+                <div class="w3-col w3-margin-top" @click="ativado = false"><strong class="w3-green w3-btn w3-border w3-round-xlarge">OK</strong></div>
             </div>
         </div>
     </div>

@@ -4,7 +4,9 @@
 
     <div class="w3-row w3-margin-bottom">
       <h1 class="w3-col s10 w3-center font-verde bold-500">Inscrever-se</h1>
-      <h6 class="w3-col s2 padding-10 font-amarela">Entrar</h6>
+      <router-link to="/">
+        <h6 class="w3-col s2 padding-10 font-amarela">Entrar</h6>
+      </router-link>
     </div>
 
     <form class="w3-container w3-margin-top font-cinza-claro">
