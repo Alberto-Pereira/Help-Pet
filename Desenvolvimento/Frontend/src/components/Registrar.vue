@@ -1,18 +1,21 @@
 <template>
 
-  <div class="geral w3-container cor-fundo-app extender-div-tela-toda">
+  <div class="geral w3-container cor-fundo-app extender-div-tela-toda" style="padding:0px;">
+    <div class="w3-blue w3-col" >
+      <h2 class="w3-col w3-center bold-500">Inscrever-se</h2>
+    </div>
 
     <div class="w3-row w3-margin-bottom">
-      <h1 class="w3-col s10 w3-center font-verde bold-500">Inscrever-se</h1>
       <router-link to="/">
-        <h6 class="w3-col s2 padding-10 font-amarela">Entrar</h6>
+        <h6 class="w3-col padding-10 w3-text-purple">Entrar</h6>
       </router-link>
     </div>
 
     <form class="w3-container w3-margin-top font-cinza-claro">
       <input class="w3-input w3-margin-top w3-round" type="text" placeholder="Nome">
       <input class="w3-input w3-margin-top w3-round" type="text" placeholder="Email">
-      <input class="w3-input w3-margin-top w3-round" type="password" placeholder="Password">
+      <input class="w3-input w3-margin-top w3-round" type="password" placeholder="Senha">
+      <input class="w3-input w3-margin-top w3-round" type="password" placeholder="Confirmar senha">
       <input class="margin-top-30" type="checkbox">
       <label>Concordar com os termos de uso.</label>
     </form>

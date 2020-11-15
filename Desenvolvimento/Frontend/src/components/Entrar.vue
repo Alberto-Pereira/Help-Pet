@@ -5,10 +5,13 @@
     <img class="centralizado" src="../assets/imagens/logo.png">
 
     <form class="w3-container">
-      <input class="w3-input w3-margin-bottom" type="text" v-model="email" placeholder="Email">
-      <input class="w3-input w3-margin-bottom w3-margin-top" type="text" v-model="senha" placeholder="Senha">
+      <input class="w3-input w3-margin-bottom" type="email" v-model="email" placeholder="Email">
+      <input class="w3-input w3-margin-bottom w3-margin-top" type="password" v-model="senha" placeholder="Senha">
       <button @click="logar()" class="w3-btn w3-blue w3-round-xxlarge w3-margin-top  w3-margin-bottom w3-col">Entrar</button>
       <span @click="recuperarSenha()" class="w3-text-green w3-margin-top">Perdeu sua senha?</span>
+      &nbsp;
+      &nbsp;
+      <router-link to="/Registrar" class="w3-text-green w3-margin-top">Criar conta?</router-link>
     </form>
     
     <mensagem ref="enviaMensagem"/>
@@ -17,6 +20,7 @@
 
 <script>
 import Mensagem from '@/components/Mensagem'
+import axios from 'axios' 
 export default {
   components:{
     Mensagem
@@ -25,12 +29,23 @@ export default {
   data () {
     return {
       senha:'',
-      email:''
+      email:'',
+      url: window.location.origin,
+    }
+  },
+  mounted(){
+    let parametros_locais = localStorage.getItem('parametros-usuario');
+    if(this.parametros_locais){
+      this.email = parametros_locais.email;
+      this.senha = parametros_locais.senha;
+      this.login();
     }
   },
   
   methods:{
-    logar(){
+    async logar(){
+      
+      /* validação de email*/
       let usuario = this.email.substring(0, this.email.indexOf("@"));
       let dominio = this.email.substring(this.email.indexOf("@")+ 1, this.email.length);
       if ((usuario.length >=1) &&
@@ -43,11 +58,35 @@ export default {
           (dominio.indexOf(".") >=1)&&
           (dominio.lastIndexOf(".") < dominio.length - 1))
         {
-          this.$refs.enviaMensagem.exclamar("sucesso", "E-mail válido");
+          try {
+            axios.post(this.url+'/loginUser', {
+            email: this.email,
+            password: this.senha
+          })
+          .then(function (response) {
+            console.log(response);
+            let parametros_usuario = response.data;
+            parametros_usuario.email = email;
+            parametros_usuario.senha = senha;
+            parametros_usuario.logado = true;
+            localStorage.setItem('parametros-usuario', parametros_usuario);
+            this.$router.replace("Perfil");
+          })
+          .catch(function (error) {
+            console.log(error);
+            this.$refs.enviaMensagem.exclamar("erro", "Login inválido!");
+          });
+            
+          } catch (error) {
+            this.$refs.enviaMensagem.exclamar("erro", "Houve falha na requisição!");
+          }
         }
         else{
-          this.$refs.enviaMensagem.exclamar("erro", "E-mail inválido");
+          await this.$refs.enviaMensagem.exclamar("erro", "E-mail inválido");
+          this.email = this.email;
         }
+       
+        
 
     },
     recuperarSenha(){
@@ -60,7 +99,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 img{
-  max-width: 25vw;
-  height: 35vw;
+  max-width: 150px;
+  height: 150;
 }
 </style>

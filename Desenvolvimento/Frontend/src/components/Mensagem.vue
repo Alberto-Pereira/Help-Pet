@@ -1,11 +1,5 @@
 <template>
-    <div v-if="ativado" class="w3-modal w3-animate-zoom" style="display: block; background-color:transparent;">
-        <div class="w3-modal-content w3-border w3-round-xlarge " :class="getEstilo()">
-            <div class="w3-container">
-                <i :class="getIcone()"></i> <strong>{{mensagem}}</strong>
-            </div>
-        </div>
-    </div>
+    <div id="snackbar">{{mensagem}}</div>
     
 </template>
 
@@ -20,11 +14,12 @@
             };
         },
         methods: {
-            exclamar(tipo, mensagem){
+            async exclamar(tipo, mensagem){
                 this.tipo = tipo;
                 this.mensagem = mensagem;
-                this.ativado = true
-                setTimeout(this.ativado = true, 90000000000);
+               var x = document.getElementById("snackbar");
+                x.className = "show";
+                await setTimeout(function(){ x.className = x.className.replace("show", ""); }, 6000);
                 
             },
             getEstilo(){
@@ -48,24 +43,51 @@
                 if(this.tipo == "sucesso"){
                     return "far fa-thumbs-up";
                 }
-            }
-            
+            } 
         }
     }
 </script>
 
 <style scoped>
-.detalhe-foto-pet{
-  max-width: 90%;
-  border-radius: 25px;
-  width: 200px;
-  height: 200px;
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: purple;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
 }
-#fileInput {
-  display: none;
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
-.my-8 {
-  margin-top: 0rem;
-  margin-bottom: 0rem;
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
 }
 </style>
