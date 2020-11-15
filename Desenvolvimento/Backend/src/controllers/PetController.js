@@ -35,7 +35,7 @@ module.exports = {
           !isNaN(location[0]) &&
           !isNaN(location[1])
         ) {
-          await connection("pet").insert({
+          const response = await connection("pet").insert({
             imagem_pet: img_pet,
             id_usuario_pet_fk: idUser,
             nome_pet: namePet,
@@ -48,6 +48,7 @@ module.exports = {
             status_pet: status,
             raca_pet: breed,
           });
+          res.status(200).json({ idPet: response });
         } else {
           res.status(400).json({ error: "requisição escrita errado" });
         }
