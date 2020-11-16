@@ -20,7 +20,10 @@
 
 <script>
 import Mensagem from '@/components/Mensagem'
+import api from '@/components/api.js';
 import axios from 'axios' 
+
+
 export default {
   components:{
     Mensagem
@@ -31,9 +34,12 @@ export default {
       senha:'',
       email:'',
       url: window.location.origin,
+      api:api,
+      parametros_usuario:{}
     }
   },
   mounted(){
+   
     let parametros_locais = localStorage.getItem('parametros-usuario');
     if(this.parametros_locais){
       this.email = parametros_locais.email;
@@ -44,7 +50,7 @@ export default {
   
   methods:{
     async logar(){
-      
+    
       /* validação de email*/
       let usuario = this.email.substring(0, this.email.indexOf("@"));
       let dominio = this.email.substring(this.email.indexOf("@")+ 1, this.email.length);
@@ -58,32 +64,46 @@ export default {
           (dominio.indexOf(".") >=1)&&
           (dominio.lastIndexOf(".") < dominio.length - 1))
         {
-          try {
-            axios.post(this.url+'/loginUser', {
+               console.log(this.api)
+          let email = this.email;
+          let password = this.senha;
+          let parametros = {
             email: this.email,
             password: this.senha
+          }
+          
+          let resposta = await api.get("/users");
+          console.log(JSON.stringify(resposta.data))
+        /*
+          try {
+            this.api.get('/loginUser/?'+JSON.stringify({
+            email: this.email,
+            password: this.senha
+          }))
+          .then(response=> {
+            //console.log(response);
+            //this.parametros_usuario = response;
+            //parametros_usuario.email = email;
+            //parametros_usuario.senha = senha;
+            //parametros_usuario.logado = true;
+            //localStorage.setItem('parametros-usuario', parametros_usuario);
+            //this.$router.replace("Perfil");
           })
-          .then(function (response) {
-            console.log(response);
-            let parametros_usuario = response.data;
-            parametros_usuario.email = email;
-            parametros_usuario.senha = senha;
-            parametros_usuario.logado = true;
-            localStorage.setItem('parametros-usuario', parametros_usuario);
-            this.$router.replace("Perfil");
-          })
-          .catch(function (error) {
-            console.log(error);
-            this.$refs.enviaMensagem.exclamar("erro", "Login inválido!");
+          .catch(error=>{
+            //console.log(error);
+            console.log("entrei falhei")
+            //return this.$refs.enviaMensagem.exclamar("erro", "Login inválido!");
           });
             
           } catch (error) {
-            this.$refs.enviaMensagem.exclamar("erro", "Houve falha na requisição!");
-          }
+            console.log("falhei na requisição")
+            return
+            //return this.$refs.enviaMensagem.exclamar("erro", "Houve falha na requisição!");
+          }*/
         }
         else{
-          await this.$refs.enviaMensagem.exclamar("erro", "E-mail inválido");
-          this.email = this.email;
+          //this.$refs.enviaMensagem.exclamar("erro", "E-mail inválido");
+          //this.email = this.email;
         }
        
         

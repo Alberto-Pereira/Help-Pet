@@ -89,7 +89,7 @@ export default {
   },
   data () {
     return {
-      url: window.location.origin,
+      url: 'http://localhost:3333',
       nome_usuario:"sade",
       meus_pets:[],
       mais:0,

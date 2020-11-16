@@ -7,8 +7,8 @@ module.exports = {
     connection: {
       host : '127.0.0.1',
       user: 'root',
-      password: '123456',
-      database: 'helppet test'
+      password: '',
+      database: 'helppet'
     },
     pool: {
       min: 2,
@@ -23,10 +23,10 @@ module.exports = {
   production: {
     client: 'mysql',
     connection: {
-      host : '',
-      user: 'username',
-      password: 'password',
-      database: 'my_db'
+      host : '127.0.0.1',
+      user: 'root',
+      password: '',
+      database: 'helppet'
     },
     pool: {
       min: 2,
