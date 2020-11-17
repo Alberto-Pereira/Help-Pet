@@ -23,7 +23,7 @@ routes.post("/detailUser/:id", DetailUserController.store);
 // Mostrar dados pessoais
 routes.get("/detailUser/:id", DetailUserController.show);
 // Login do usuario
-routes.get("/loginUser", SessionController.show);
+routes.post("/loginUser", SessionController.show);
 
 // PETS
 // Cadastrar pets
