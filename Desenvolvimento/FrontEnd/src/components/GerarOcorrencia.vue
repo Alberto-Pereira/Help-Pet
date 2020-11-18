@@ -48,7 +48,7 @@
 
 <script>
 
-  import ImageUploader from 'vue-image-upload-resize'
+    import ImageUploader from 'vue-image-upload-resize'
     export default {
         name: "GerarOcorrencia",
         components: {
