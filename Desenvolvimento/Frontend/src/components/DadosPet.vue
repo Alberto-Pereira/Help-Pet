@@ -5,7 +5,10 @@
       <h2 class="w3-col w3-center bold-500">Dados do Pet</h2>
     </div>
 
-    <div class="margin-top-30 padding-10">
+    <div class="margin-top-80 padding-10">
+      <div class="w3-center margin-bottom-15">
+        <img class="border-img" :src="image" alt="" width="80" height="80">
+      </div>
       <span class="margin-left-8 bold-500 font-cinza-meio-claro">Para adoção? </span>
       <span class="w3-text-green bold-500">
         <label for="checksim">Sim</label>
@@ -29,16 +32,26 @@
       class="buttons w3-orange" tooltip="Voltar para perfil">
         <i class="fas fa-arrow-left"></i>
       </router-link>
-      
-      <a
-      href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-purple" tooltip="Inserir foto">
+
+      <label for="fileInput" slot="upload-label" class="buttons w3-purple" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" tooltip="Inserir foto">
         <i class="fas fa-camera"></i>
-      </a>
+      </label>
+      <image-uploader style="display: none"
+                      class="w3-col"
+                      :quality="1.00"
+                      :preview="false"
+                      :className="['fileinput', { 'fileinput--loaded': hasImage }]"
+                      capture="user"
+                      :debug="1"
+                      doNotResize="gif"
+                      :autoRotate="true"
+                      outputFormat="string"
+                      @input="setImage"
+      ></image-uploader>
 
       <a 
       href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-green" tooltip="Gravar dados">
+      class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados">
         <i class="fas fa-database"></i>
       </a>
 
@@ -55,8 +68,33 @@
 </template>
 
 <script>
+    import ImageUploader from 'vue-image-upload-resize'
     export default {
-        name: "DadosPet"
+        name: "DadosPet",
+        components: {
+          ImageUploader,
+        },
+        data : ()=> {
+          return {
+            hasImage : false,
+            image : require('../assets/imagens/cachorrinho.png')
+          }
+        },
+        mounted () {
+
+        },
+        methods: {
+          prencherTela : function (){
+            //TODO implementar
+          },
+          setImage: function (file) {
+            this.hasImage = true;
+            this.image = file;
+          },
+          gravarDados : function () {
+            //TODO implementar
+          }
+        }
     }
 </script>
 
@@ -64,6 +102,14 @@
 
   .margin-left-8 {
     margin-left: 8px;
+  }
+
+  .margin-bottom-15{
+    margin-bottom: 15px;
+  }
+
+  .border-img {
+    border: 3px solid black;
   }
 
 </style>
