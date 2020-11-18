@@ -5,34 +5,45 @@
       <h2 class="w3-col w3-center bold-500">Gerar ocorrência</h2>
     </div>
 
-    <div class="padding-10">
+    <div class="margin-top-80 padding-10">
       <div class="w3-center">
-        <img class="border-img" v-if="!imagem_pet" src="../assets/imagens/cachorrinho.png" alt="Girl in a jacket" width="80" height="80">
-        <img v-else class="detalhe-foto-pet w3-center w3-border w3-col w3-center" v-bind:src="imagem_pet">
+        <img class="border-img" :src="image" alt="" width="80" height="80">
       </div>
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Nome do pet: (preenchido)">
+      <input class="w3-input w3-text-black bold-500 margin-top-30" type="text" placeholder="Nome do pet: (preenchido)">
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Raça: (preenchido)">
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Cor: (preenchido)">
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Número da coleira (preenchido)">
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Descrição:">
     </div>
 
-    <nav class="container w3-display-bottomright w3-padding"> 
-      <a 
-      href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-orange" tooltip="Voltar para perfil">
+    <nav class="container w3-display-bottomright w3-padding">
+
+      <router-link
+        to="/Perfil"
+        style="font-size:20px;padding: 4px!important; padding-left: 9px!important;"
+        class="buttons w3-orange" tooltip="Voltar para perfil">
         <i class="fas fa-arrow-left"></i>
-      </a>
-      
-      <a
-      href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-purple" tooltip="Inserir foto">
+      </router-link>
+
+      <label for="fileInput" slot="upload-label" class="buttons w3-purple" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" tooltip="Inserir foto">
         <i class="fas fa-camera"></i>
-      </a>
+      </label>
+      <image-uploader style="display: none"
+                      class="w3-col"
+                      :quality="1.00"
+                      :preview="false"
+                      :className="['fileinput', { 'fileinput--loaded': hasImage }]"
+                      capture="user"
+                      :debug="1"
+                      doNotResize="gif"
+                      :autoRotate="true"
+                      outputFormat="string"
+                      @input="setImage"
+      ></image-uploader>
 
       <a 
       href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-green" tooltip="Gravar dados">
+      class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados">
         <i class="fas fa-database"></i>
       </a>
 
@@ -49,11 +60,31 @@
 </template>
 
 <script>
+    import ImageUploader from 'vue-image-upload-resize'
     export default {
         name: "GerarOcorrencia",
-        data(){
-          return{
-            imagem_pet:undefined
+        components: {
+          ImageUploader,
+        },
+        data : ()=> {
+          return {
+            hasImage : false,
+            image : require('../assets/imagens/cachorrinho.png')
+          }
+        },
+        mounted () {
+
+        },
+        methods: {
+          prencherTela : function (){
+            //TODO implementar
+          },
+          setImage: function (file) {
+            this.hasImage = true;
+            this.image = file;
+          },
+          gravarDados : function () {
+            //TODO implementar
           }
         }
     }

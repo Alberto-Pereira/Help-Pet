@@ -88,6 +88,6 @@ export default {
 <style scoped>
 img {
   max-width: 150px;
-  height: 150;
+  height: 150px;
 }
 </style>
