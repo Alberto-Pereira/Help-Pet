@@ -101,6 +101,12 @@ export default {
       dados_pessoais: undefined
     }
   },
+  mounted(){
+    let parametros_login = localStorage.getItem("autorizacao");
+    if(parametros_login !== "autorizado"){
+      this.$router.push({ name: 'Entrar' });
+    }
+  },
   created(){
     let parametros_login = localStorage.getItem("autorizacao");
     let parametros_locais = localStorage.getItem('parametros-usuario');
@@ -130,7 +136,7 @@ export default {
       let dados = localStorage.getItem('parametros-usuario');
       localStorage.setItem('parametros-usuario', null);
       localStorage.setItem('autorizacao', "deslogado");
-      this.$router.push({ name: 'ApresentacaoEntrada' });
+      this.$router.push({ name: 'Entrar' });
     },
     prencherTela : function (){
           api.get("/infoUser/"+this.dados_pessoais[0].id_usuario)

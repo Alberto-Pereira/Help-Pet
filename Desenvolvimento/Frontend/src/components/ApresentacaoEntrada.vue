@@ -23,16 +23,17 @@
     
   },
   mounted() {
-    setTimeout(() => {this.redirect()},9000)
+    let parametros_login = localStorage.getItem("autorizacao");
+    if (parametros_login === "autorizado") {
+      this.$router.push({ name: 'Perfil' });
+    }else{
+      setTimeout(() => {this.redirect()},9000)
+    }
+
   },
   methods:{
     redirect(){
-      let parametros_login = localStorage.getItem("autorizacao");
-      if (parametros_login === "autorizado") {
-        this.$router.push({ name: 'Perfil' });
-      }else{
         this.$router.push({ name: 'Entrar' });
-      }
     }
   }
 }

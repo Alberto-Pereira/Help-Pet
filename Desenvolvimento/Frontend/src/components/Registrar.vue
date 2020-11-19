@@ -6,7 +6,7 @@
     </div>
 
     <div class="w3-row w3-margin-bottom">
-      <router-link to="/">
+      <router-link to="/Entrar">
         <h6 class="w3-col padding-10 w3-text-purple">Entrar</h6>
       </router-link>
     </div>
@@ -50,9 +50,9 @@ export default {
   },
   mounted(){
     let parametros_login = localStorage.getItem("autorizacao");
-    if(parametros_login !== "autorizado"){
-        this.$router.push({ name: 'Entrar' });
-      }
+    if (parametros_login === "autorizado") {
+      this.$router.push({ name: 'Perfil' });
+    }
   },
   methods:{
     async gravar(){
