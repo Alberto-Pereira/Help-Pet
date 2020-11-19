@@ -48,6 +48,12 @@ export default {
       parametros_usuario: undefined
     }
   },
+  mounted(){
+    let parametros_login = localStorage.getItem("autorizacao");
+    if(parametros_login !== "autorizado"){
+        this.$router.push({ name: 'Entrar' });
+      }
+  },
   methods:{
     async gravar(){
        try {

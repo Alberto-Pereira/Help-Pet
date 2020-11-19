@@ -13,7 +13,7 @@
 
     <div class="w3-center" style="margin-top: 70px;">
        <div>
-          <h3>{{nome_usuario.toUpperCase()}}</h3>
+          <h3>{{nome_usuario+ ' ' + sobre_nome}}</h3>
         </div>
       <!-- Interruptor arredondado (toggle) -->
       <label class="switch">
@@ -27,7 +27,7 @@
     <div id="meus-pets" v-show="!pets_mostrar" v-for="(pet, indice) in meus_pets" :key="indice" class="w3-margin-top w3-card w3-padding w3-container">
       <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet">
       &nbsp;
-      <strong class="w3-col s6 m6 l6">sade{{pet.nome_pet}}</strong>
+      <strong class="w3-col s6 m6 l6">{{pet.nome_pet}}</strong>
       <button v-if="meus_pets.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
     </div>
 
@@ -42,8 +42,7 @@
 
     <nav class="container w3-display-bottomright w3-padding"> 
       <a 
-      href="#" 
-      @click="capturarImage('DetalhesPet')"
+      @click="logout()"
       class="buttons w3-red" 
       style="font-size:20px; padding: 4px!important; padding-left: 10px!important;" 
       tooltip="Sair">
@@ -52,7 +51,7 @@
       
       <router-link 
       to="/Dadospessoais"
-      href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+      style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
       class="buttons w3-purple" tooltip="Configuração do usuário">
         <i class="fas fa-user-cog"></i>
       </router-link>
@@ -62,11 +61,11 @@
         <i class="fas fa-dog"></i>
       </a>
       
-      <a 
-      href="#" style="font-size:20px;padding: 4px!important; padding-left: 10px!important;" 
-      class="buttons w3-green" tooltip="Mural de adoção">
+      <router-link 
+      to="/DadosPet" style="font-size:20px;padding: 4px!important; padding-left: 10px!important;" 
+      class="buttons w3-green" tooltip="Adicionar Pets">
         <i class="fas fa-plus"></i>
-      </a>
+      </router-link>
 
       <a 
       class="buttons w3-blue" 
@@ -82,6 +81,7 @@
 <script>
 import axios from 'axios' 
 import Mensagem from '@/components/Mensagem'
+import api from "../service/api";
 export default {
   name: 'Perfil',
   components:{
@@ -90,28 +90,64 @@ export default {
   data () {
     return {
       url: 'http://localhost:3333',
-      nome_usuario:"sade",
+      nome_usuario:"",
+      sobre_nome: "",
       meus_pets:[],
       mais:0,
       pets_perdidos:[],
       pets_mostrar: false,
       tem_imagem_usuario:false,
-      usuario_imagem:undefined
+      usuario_imagem:undefined,
+      dados_pessoais: undefined
     }
   },
-  async mounted(){
+  created(){
+    let parametros_login = localStorage.getItem("autorizacao");
     let parametros_locais = localStorage.getItem('parametros-usuario');
-    //if(parametros_locais){
-     // this.tem_imagem_usuario = true;
-    //}
-    //comentados para usar depois
-    //this.meus_pets = JSON.stringify(parametros_locais.meus_pets);
-    if(!parametros_locais){
-      //await this.$router.replace(" ");
-     // document.location.reload(true);
+    this.dados_pessoais = JSON.parse(parametros_locais);
+    
+    let parametros_locais_detalhes = localStorage.getItem('parametros-usuario-detalhes');
+    let locais_detalhes = JSON.parse(localStorage.getItem('parametros-usuario-detalhes'));
+    this.nome_usuario = this.dados_pessoais[0].nome_usuario;
+    this.sobre_nome = this.dados_pessoais[0].sobrenome_usuario
+    this.usuario_imagem = this.dados_pessoais[0].imagem_usuario;
+
+    if(parametros_locais_detalhes){
+      if(parametros_locais.imagem_usuario){
+        this.usuario_imagem = parametros_locais.imagem_usuario;
+      }
+      
+     
     }
+    if(parametros_login !== "autorizado"){
+        this.$router.push({ name: 'Entrar' });
+      }
+    this.prencherTela();
+    
   },
   methods:{
+    logout(){
+      let dados = localStorage.getItem('parametros-usuario');
+      localStorage.setItem('parametros-usuario', null);
+      localStorage.setItem('autorizacao', "deslogado");
+      this.$router.push({ name: 'ApresentacaoEntrada' });
+    },
+    prencherTela : function (){
+          api.get("/infoUser/"+this.dados_pessoais[0].id_usuario)
+          .then(function (response) {
+            if(response){
+               localStorage.setItem('detalhes-usuario-detalhado', JSON.stringify(response.data));
+               let dados_gravados = localStorage.getItem('parametros-usuario-detalhes');
+               this.nome_usuario = dados_gravados.nome_usuario;
+               this.sobre_nome = dados_gravados.sobrenome_usuario;
+              // colocar mensagem de sucesso
+
+            }
+          
+          }).catch(function (error) {
+            //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
+          })
+        },
     buscarPetsPerdidos(){
       this.pets_mostrar = !this.pets_mostrar
       axios.post(this.url+'/pets', {

@@ -194,6 +194,11 @@
       };
     },
     mounted(){
+    
+      let parametros_login = localStorage.getItem("autorizacao");
+      if(parametros_login !== "autorizado"){
+        this.$router.push({ name: 'Entrar' });
+      }
       console.log(navigator.geolocation)
       this.localizacao = navigator.geolocation;
     },

@@ -17,6 +17,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'ApresentacaoEntrada',
+      component: ApresentacaoEntrada
+    },
+    {
+      path: '/Entrar',
       name: 'Entrar',
       component: Entrar
     },
@@ -55,10 +60,6 @@ export default new Router({
       name: 'GerarOcorrencia',
       component: GerarOcorrencia
     },
-    {
-      path: '/ApresentacaoEntrada',
-      name: 'ApresentacaoEntrada',
-      component: ApresentacaoEntrada
-    }
+    
   ]
 })

@@ -10,40 +10,18 @@
             return {
             tipo: '',
             mensagem: '',
-            ativado: false,
             };
         },
         methods: {
-            async exclamar(tipo, mensagem){
+            exclamar(tipo, mensagem){
+                
                 this.tipo = tipo;
                 this.mensagem = mensagem;
-               var x = document.getElementById("snackbar");
+                const x = document.getElementById("snackbar");
                 x.className = "show";
-                await setTimeout(function(){ x.className = x.className.replace("show", ""); }, 6000);
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 6000);
                 
             },
-            getEstilo(){
-                if(this.tipo == "info"){
-                    return "w3-yellow";
-                }
-                if(this.tipo == "erro"){
-                    return "w3-red";
-                }
-                if(this.tipo == "sucesso"){
-                    return "w3-green";
-                }
-            },
-            getIcone(){
-                if(this.tipo == "info"){
-                    return "fas fa-info-circle";
-                }
-                if(this.tipo == "erro"){
-                    return "fas fa-exclamation-triangle";
-                }
-                if(this.tipo == "sucesso"){
-                    return "far fa-thumbs-up";
-                }
-            } 
         }
     }
 </script>

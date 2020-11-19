@@ -1,6 +1,6 @@
 <template>
 
-  <div class="geral w3-container extender-div-tela-toda" style="padding:0px;">
+  <div class="geral w3-container extender-div-tela-toda w3-small" style="padding:0px;">
 
     <div class="w3-blue w3-col" >
       <h2 class="w3-col w3-center bold-500">Dados pessoais</h2>
@@ -8,7 +8,7 @@
 
     <div class="margin-top-80 padding-10">
       <div class="w3-center">
-        <img class="border-img" :src="image" alt="" width="80" height="80">
+        <img class="w3-border w3-round" :src="image" alt="" width="150" height="150">
       </div>
       <input class="w3-input w3-text-black bold-500 margin-top-30" type="text" v-model="cpf" placeholder="Cpf:">
       <input class="w3-input w3-margin-top w3-text-black bold-500" v-model="endereco" type="text" placeholder="Endereço:">
@@ -43,7 +43,7 @@
 
       <a 
       href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados">
+      class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados()">
         <i class="fas fa-database"></i>
       </a>
 
@@ -61,6 +61,7 @@
 
 <script>
     import ImageUploader from 'vue-image-upload-resize'
+    import api from "../service/api";
     export default {
       name: "DadosPessoais",
       components: {
@@ -78,22 +79,64 @@
           image : require('../assets/imagens/user.png')
         }
       },
-      mounted(){
-        let parametros_locais = localStorage.getItem('parametros-usuario');
-        //alimentar dados_pessoais com os parametros se existir
+      created(){
+        let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
+        let detalhes_usuario_detalhado = JSON.parse(localStorage.getItem('detalhes-usuario-detalhado'));
+        if(detalhes_usuario_detalhado){
+
+          this.image = detalhes_usuario_detalhado[0].imagem_usuario
+          this.cpf = detalhes_usuario_detalhado[0].cpf;
+          this.telefone = detalhes_usuario_detalhado[0].fone;
+        }
+       
+        this.dados_pessoais = parametros_locais;
+        let parametros_login = localStorage.getItem("autorizacao");
+        if(parametros_login !== "autorizado"){
+            this.$router.push({ name: 'Entrar' });
+          }
       },
       methods: {
         prencherTela : function (){
-          //TODO implementar
+          api.get("/infoUser/"+this.dados_pessoais.id_usuario)
+          .then(function (response) {
+            if(response){
+               localStorage.setItem('detalhes-usuario-detalhado', JSON.stringify(response.data));
+                this.image = response.data.imagem_usuario;
+                this.cpf = response.data.cpf;
+                this.telefone = response.data.fone;
+              // colocar mensagem de sucesso
+
+            }
+          
+          }).catch(function (error) {
+            //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
+          })
         },
         setImage: function (file) {
           this.hasImage = true;
           this.image = file;
+          
         },
         gravarDados : function () {
-          //TODO implementar
-        }
+           api.post("/detailUser/"+this.dados_pessoais.id_usuario, {
+            img_user: this.image,
+            cpf: this.cpf,
+            fone: this.telefone
+          }).then(function (response) {
+            if(response){
+               localStorage.setItem('detalhes-usuario', JSON.stringify(response.data));
+               this.prencherTela();
+              // colocar mensagem de sucesso
+
+            }
+          
+          }).catch(function (error) {
+            //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
+          })
+        },
+        
       }
+       
 
     }
 </script>

@@ -1,28 +1,29 @@
 <template>
 
-  <div class="geral w3-container extender-div-tela-toda" style="padding:0px;">
+  <div class="geral w3-container extender-div-tela-toda w3-small" style="padding:0px;">
     <div class="w3-blue w3-col" >
       <h2 class="w3-col w3-center bold-500">Dados do Pet</h2>
     </div>
 
     <div class="margin-top-80 padding-10">
       <div class="w3-center margin-bottom-15">
-        <img class="border-img" :src="image" alt="" width="80" height="80">
+        <img class="w3-border w3-round" :src="image" alt="" width="150" height="150">
       </div>
       <span class="margin-left-8 bold-500 font-cinza-meio-claro">Para adoção? </span>
       <span class="w3-text-green bold-500">
         <label for="checksim">Sim</label>
-        <input class="w3-radio" type="radio" name="paraadocao" value="Sim" checked id="checksim">
+        <input class="w3-radio" type="radio" name="paraadocao" value="a"  v-model="status" checked id="checksim">
       </span>
       <span class="w3-text-red bold-500">
         <label for="checknao">Não</label>
-        <input class="w3-radio" type="radio" name="paraadocao" value="Não" id="checknao">
+        <input class="w3-radio" type="radio" name="paraadocao" value="l" v-model="status" id="checknao">
       </span>
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Nome do pet:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Raça:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Cor:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Número da coleira (gera automatico):">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" placeholder="Descrição:">
+      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="nome" placeholder="Nome do pet:">
+      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="raca" placeholder="Raça:">
+      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="cor" placeholder="Cor:">
+      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="sexo" placeholder="sexo:">
+      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="numero_coleira" placeholder="Número da coleira (gera automatico):">
+      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="descricao" placeholder="Descrição:">
     </div>
 
     <nav class="container w3-display-bottomright w3-padding"> 
@@ -69,6 +70,7 @@
 
 <script>
     import ImageUploader from 'vue-image-upload-resize'
+    import api from "../service/api";
     export default {
         name: "DadosPet",
         components: {
@@ -77,11 +79,22 @@
         data : ()=> {
           return {
             hasImage : false,
-            image : require('../assets/imagens/cachorrinho.png')
+            image : require('../assets/imagens/cachorrinho.png'),
+            descricao:'',
+            sexo: '',
+            cor: '',
+            nome: '',
+            raca: '',
+            numero_coleira:'',
+            status:''
           }
         },
-        mounted () {
-
+        mounted(){
+          let parametros_login = localStorage.getItem("autorizacao");
+          if(parametros_login !== "autorizado"){
+              this.$router.push({ name: 'Entrar' });
+            }
+          
         },
         methods: {
           prencherTela : function (){
@@ -92,7 +105,26 @@
             this.image = file;
           },
           gravarDados : function () {
-            //TODO implementar
+            let localizacao = [navigator.geolocation.logitude, navigator.geolocation.latitude];
+            let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
+            api.post("/newPet/"+parametros_locais[0].id_usuario, {
+              img_pet: this.image,
+              namePet: this.nome,
+              sexPet: this.sexo,
+              colorPet: this.cor,
+              collarNumber: this.numero_coleira,
+              description: this.descricao,
+              breed: this.raca,
+              status: this.status
+            }).then(function (response) {
+              if(response){
+                let dados = response.data
+                this.$router.push({ name: 'Perfil' });
+              }
+            
+            }).catch(function (error) {
+              //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
+            })
           }
         }
     }

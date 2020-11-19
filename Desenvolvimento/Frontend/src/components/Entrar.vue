@@ -31,32 +31,48 @@
       >
     </form>
 
-    <mensagem ref="enviaMensagem" />
+    <mensagem ref="envia-mensagem"/>
   </div>
 </template>
 
 <script>
 import Mensagem from "@/components/Mensagem";
 import api from "../service/api";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
+Vue.use(Vuex)
+const store = new Vuex.Store({
+  state: {
+    logado: false
+  },
+  mutations: {
+    autorizacao (state) {
+      state.logado = "autorizado"
+    }
+  }
+})
 export default {
+  
   components: {
     Mensagem
   },
+  
   name: "Entrar",
   data() {
     return {
       senha: "",
       email: "",
       parametros_usuario: undefined
+      
     };
+    
   },
   mounted() {
-    this.parametros_locais = JSON.stringify(localStorage.getItem("parametros-usuario"));
-    if (this.parametros_locais) {
-      this.email = this.parametros_locais.email;
-      this.senha = this.parametros_locais.senha;
-      this.logar();
+    let parametros_login = localStorage.getItem("autorizacao");
+    console.log("parametros_login")
+    if (parametros_login === "autorizado") {
+      this.$router.push({ name: 'Perfil' });
     }
   },
 
@@ -68,14 +84,15 @@ export default {
         password: this.senha
       }).then(function (response) {
         if(response){
+          let dados = response.data
           window.location.href = window.location.origin+"/Perfil"
-          localStorage.setItem('parametros-usuario', JSON.stringify(response.data));
+          localStorage.setItem('parametros-usuario', JSON.stringify(dados));
+          store.commit('autorizacao');
+          localStorage.setItem('autorizacao', store.state.logado);
         }
        
       }).catch(function (error) {
-        //this.$refs.enviaMensagem.exclamar("erro", "Houve falha na requisição!");
-        console.log(error);
-         
+        //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
       })
       
     },

@@ -18,9 +18,20 @@
 </template>
 
 <script>
-    export default {
-        name: "Sucesso"
-    }
+  export default {
+    name: "Sucesso",
+    data () {
+      return {
+        
+      }
+    },
+    mounted(){
+      let parametros_login = localStorage.getItem("autorizacao");
+      if(parametros_login !== "autorizado"){
+          this.$router.push({ name: 'Entrar' });
+        }
+    },
+  }
 </script>
 
 <style scoped>
