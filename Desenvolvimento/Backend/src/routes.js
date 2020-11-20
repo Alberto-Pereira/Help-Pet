@@ -6,6 +6,7 @@ const DetailUserController = require("./controllers/DetailUserController");
 const SessionController = require("./controllers/SessionController");
 const PetController = require("./controllers/PetController");
 const AdoptController = require("./controllers/AdoptController");
+const MissingController = require("./controllers/MissingController");
 
 // Rotas do usuario
 // Listar usuarios
@@ -36,11 +37,21 @@ routes.get("/pets/:idUser", PetController.index);
 routes.get("/pet/:idUser", PetController.show);
 // Atualizar um pet
 routes.put("/updatePet/:idUser", PetController.update);
+
+// Adoção do pet
 // Listar os pets para doação
 routes.get("/adoptPet", AdoptController.index);
 // Pet para adoção
 routes.post("/adoptPet/:idUser", AdoptController.store);
-// Pet adoção do pet
+// Adoção do pet
 routes.put("/adoptPet/:idUser", AdoptController.update);
+
+// Pet perdido
+// Listar pets perdidos
+routes.get("/missingPet", MissingController.index);
+// Informar pet perdido
+routes.put("/missingPet/:idUser", MissingController.update);
+// Pet localizado
+routes.delete("/missingPet/:idUser", MissingController.delete);
 
 module.exports = routes;

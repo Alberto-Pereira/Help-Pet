@@ -7,7 +7,7 @@ module.exports = {
     const [count] = await connection("pet").count();
 
     const pets = await connection("pet")
-      .where("status_pet", "=", "a")
+      .from("animais_doacoes")
       .limit(10)
       .offset((page - 1) * 10);
 
@@ -17,33 +17,19 @@ module.exports = {
   },
   async store(req, res) {
     const { idUser } = req.params;
-    const {
-      img_pet,
-      namePet,
-      sexPet,
-      colorPet,
-      collarNumber,
-      description,
-      location,
-      breed,
-    } = req.body;
+    const { idPet, location } = req.body;
 
     const user = await connection("usuario").where("id_usuario", idUser);
     if (user.length != 0) {
       if (!isNaN(location[0]) && !isNaN(location[1])) {
-        await connection("pet").insert({
-          imagem_pet: img_pet,
-          id_usuario_pet_fk: idUser,
-          nome_pet: namePet,
-          sexo_pet: sexPet,
-          cor_pet: colorPet,
-          numero_coleira: collarNumber,
-          descricao_pet: description,
-          latitude: location[0],
-          longitude: location[1],
-          status_pet: "a",
-          raca_pet: breed,
-        });
+        await connection("pet")
+          .where("id_pet", idPet)
+          .andWhere("id_usuario_pet_fk", idUser)
+          .update({
+            latitude: location[0],
+            longitude: location[1],
+            status_pet: "a",
+          });
         res.status(200).json({ success: "pet disponibilizado para adoção" });
       } else {
         res.status(400).json({ error: "requisição escrita errado" });
