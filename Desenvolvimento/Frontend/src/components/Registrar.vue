@@ -1,6 +1,17 @@
 <template>
 
   <div class="geral w3-container cor-fundo-app extender-div-tela-toda" style="padding:0px;">
+    
+    <div v-show="processando" class="wrapper">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <span>Help!Pet</span>
+    </div>
+
     <div class="w3-blue w3-col" >
       <h2 class="w3-col w3-center bold-500">Inscrever-se</h2>
     </div>
@@ -45,7 +56,8 @@ export default {
       senha: '',
       confirma_senha: '',
       email: '',
-      parametros_usuario: undefined
+      parametros_usuario: undefined,
+      processando: false
     }
   },
   mounted(){
@@ -56,6 +68,7 @@ export default {
   },
   methods:{
     async gravar(){
+      
        try {
          /* validação de email*/
         let usuario = this.email.substring(0, this.email.indexOf("@"));
@@ -78,7 +91,7 @@ export default {
              this.$refs.enviaMensagem.exclamar("erro", "Senhas diferentes!");
              return;
           }
-        
+          this.processando = true;
           const resposta = await api
             .post("/newUser", {
               name: this.nome,
@@ -88,15 +101,16 @@ export default {
               typeUser: "A"
             })
             console.log(resposta);
-            
+            if(resposta){
+              this.processando = false;
+            }
             localStorage.setItem('logado', JSON.stringify({logado:true}));
             window.location.href = window.location.origin+"/Sucesso";
             return;
             
           }
         } catch (error) {
-          
-          console.log("falhei na requisição");
+          this.processando = false
           this.email = this.email;
           this.$refs.enviaMensagem.exclamar("erro", error.data);
           return;

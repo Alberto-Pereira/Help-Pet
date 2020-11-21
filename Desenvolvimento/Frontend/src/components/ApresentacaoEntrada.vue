@@ -3,7 +3,7 @@
   <div class="geral w3-container extender-div-tela-toda cor-fundo-app-azul">
     
     <div class="w3-center margin-top-100">
-      <img class="logo" src="../assets/imagens/logo-entrada.png" width="320" height="320">
+      <img class="w3-animate-zoom" src="../assets/imagens/logo-entrada.png" width="300" height="300">
       <i class="fas fa-paw pata1"></i>
       <i class="fas fa-paw pata2"></i>
       <i class="fas fa-paw pata3"></i>
@@ -44,10 +44,7 @@
   from {color: black;}
   to {color: transparent;}
   }
-  @keyframes logo {
-  from {visibility: hidden;}
-  to {visibility: visible;}
-  }
+  
   .pata1 {
   width: 100px;
   height: 100px;

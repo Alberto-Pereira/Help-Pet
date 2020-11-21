@@ -1,5 +1,14 @@
 <template>
   <div class="entrar w3-col">
+    <div v-show="processando" class="wrapper">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <span>Help!Pet</span>
+    </div>
     <div class="w3-blue w3-mobile w3-center" style="height: 30vh; margin-top:0px!important;">
         <span class="w3-text-white w3-center fonte-titulo w3-col">Perfil</span>
         <div class="w3-center w3-col s4 m8 l2">
@@ -98,7 +107,8 @@ export default {
       pets_mostrar: false,
       tem_imagem_usuario:false,
       usuario_imagem:undefined,
-      dados_pessoais: undefined
+      dados_pessoais: undefined,
+      processando: false
     }
   },
   mounted(){
@@ -139,9 +149,11 @@ export default {
       this.$router.push({ name: 'Entrar' });
     },
     prencherTela : function (){
+          this.processando = true;
           api.get("/infoUser/"+this.dados_pessoais[0].id_usuario)
           .then(function (response) {
             if(response){
+               this.processando = false;
                localStorage.setItem('detalhes-usuario-detalhado', JSON.stringify(response.data));
                let dados_gravados = localStorage.getItem('parametros-usuario-detalhes');
                this.nome_usuario = dados_gravados.nome_usuario;
@@ -151,6 +163,7 @@ export default {
             }
           
           }).catch(function (error) {
+            this.processando = false;
             //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
           })
         },

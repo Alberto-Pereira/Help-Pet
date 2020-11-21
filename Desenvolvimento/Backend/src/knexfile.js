@@ -24,8 +24,8 @@ module.exports = {
     connection: {
       host: "127.0.0.1",
       user: "root",
-      password: "123456",
-      database: "helppet test",
+      password: "",
+      database: "helppet",
     },
     pool: {
       min: 2,
