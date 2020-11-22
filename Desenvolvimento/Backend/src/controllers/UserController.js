@@ -51,7 +51,7 @@ module.exports = {
 
     const user = await connection("usuario")
       .select("*")
-      .from("perfil_usuario")
+      .from("usuario")
       .where("id_usuario", id);
     if (user) {
       res.json(user);
@@ -75,7 +75,8 @@ module.exports = {
       .where("email", email)
       .whereNot("id_usuario", id);
 
-    if (emails.length == 0) {
+    if (emails.length == 0) { 
+     
       const updated = await connection("usuario")
         .where("id_usuario", id)
         .update(user);
