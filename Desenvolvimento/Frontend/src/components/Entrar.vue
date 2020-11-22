@@ -35,7 +35,8 @@
         >
           Entrar
         </button>
-        <span @click="recuperarSenha()" class="w3-text-green w3-margin-top"
+
+        <span  class="w3-text-green w3-margin-top"
           >Perdeu sua senha?</span
         >
         &nbsp; &nbsp;
@@ -52,21 +53,10 @@
 
 <script>
 import Mensagem from "@/components/Mensagem";
-import api from "../service/api";
-import Vue from 'vue'
-import Vuex from 'vuex'
+import api from "@/service/api";
 
-Vue.use(Vuex)
-const store = new Vuex.Store({
-  state: {
-    logado: false
-  },
-  mutations: {
-    autorizacao (state) {
-      state.logado = "autorizado"
-    }
-  }
-})
+
+
 export default {
   
   components: {
@@ -86,9 +76,9 @@ export default {
   },
   mounted() {
     let parametros_login = localStorage.getItem("autorizacao");
-    console.log("parametros_login")
-    if (parametros_login === "autorizado") {
-    //  this.$router.push({ name: 'Perfil' });
+    
+    if (parametros_login) {
+      this.$router.push({ name: 'Perfil' });
     }
   },
 
@@ -96,25 +86,24 @@ export default {
     logar() {
       this.parametros_usuario = []
       this.processando = true;
-      let resposta =  api.post("/loginUser", {
+     
+      api.post("/loginUser", {
         email: this.email,
         password: this.senha
-      })
-     
-        if(resposta){
-          
-          let dados = resposta
-          console.log(JSON.parse(JSON.stringify(dados)))
-          this.$refs.enviaMensagem.exclamar("", "Logado com sucesso!")
+      }).then(function (response) {
+        if(response){
+        
+          localStorage.setItem('parametros-usuario', JSON.stringify(response.data));
+          window.location.href = window.location.origin+"/Perfil"
          
-          localStorage.setItem('parametros-usuario', JSON.stringify(dados));
-           //window.location.href = window.location.origin+"/Perfil"
-          store.commit('autorizacao');
-          localStorage.setItem('autorizacao', store.state.logado);
-        }else{
-           this.$refs.enviaMensagem.exclamar("", "Não foi possivel logar!")
+          localStorage.setItem('autorizacao', true);
+          //this.$refs.enviaMensagem.exclamar("", "Logado com sucesso!")
+            
         }
-        this.processando = false;
+      }).catch(function (error) {
+        
+        //this.$refs.enviaMensagem.exclamar("", "Não foi possivel logar!")
+      })
     },
   }
 };

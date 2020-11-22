@@ -7,16 +7,16 @@
 
     <div class="margin-top-80 padding-10">
       <div class="w3-center margin-bottom-15">
-        <img class="w3-border w3-round" :src="image" alt="" width="150" height="150">
+        <img style="border-radius: 50%" class="w3-border" :src="image" alt="" width="150" height="150">
       </div>
       <span class="margin-left-8 bold-500 font-cinza-meio-claro">Para adoção? </span>
       <span class="w3-text-green bold-500">
         <label for="checksim">Sim</label>
-        <input class="w3-radio" type="radio" name="paraadocao" value="a"  v-model="status" checked id="checksim">
+        <input class="w3-radio" type="radio" name="paraadocao" value="a"  v-model="status"  id="checksim">
       </span>
       <span class="w3-text-red bold-500">
         <label for="checknao">Não</label>
-        <input class="w3-radio" type="radio" name="paraadocao" value="l" v-model="status" id="checknao">
+        <input class="w3-radio" type="radio" name="paraadocao" value="n" v-model="status" unchecked id="checknao">
       </span>
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="nome" placeholder="Nome do pet:">
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="raca" placeholder="Raça:">
@@ -52,7 +52,7 @@
 
       <a 
       href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados">
+      class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados()">
         <i class="fas fa-database"></i>
       </a>
 
@@ -91,40 +91,36 @@
         },
         mounted(){
           let parametros_login = localStorage.getItem("autorizacao");
-          if(parametros_login !== "autorizado"){
+          if(!parametros_login){
               this.$router.push({ name: 'Entrar' });
             }
           
         },
         methods: {
-          prencherTela : function (){
-            //TODO implementar
-          },
+         
           setImage: function (file) {
             this.hasImage = true;
             this.image = file;
           },
-          gravarDados : function () {
+          async gravarDados(){
+            console.log("aqui")
             let localizacao = [navigator.geolocation.logitude, navigator.geolocation.latitude];
             let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
-            api.post("/newPet/"+parametros_locais[0].id_usuario, {
+            let resposta = await api.post("/newPet/"+parametros_locais[0].id_usuario, {
               img_pet: this.image,
               namePet: this.nome,
               sexPet: this.sexo,
               colorPet: this.cor,
               collarNumber: this.numero_coleira,
+              location: localizacao,
               description: this.descricao,
               breed: this.raca,
               status: this.status
-            }).then(function (response) {
-              if(response){
-                let dados = response.data
-                this.$router.push({ name: 'Perfil' });
-              }
-            
-            }).catch(function (error) {
-              //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
             })
+            console.log("resposta", resposta)
+            if(resposta){
+               await this.$router.push({ name: 'Perfil' });
+            }
           }
         }
     }

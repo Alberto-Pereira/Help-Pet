@@ -9,10 +9,10 @@
         <div class="shadow"></div>
         <span>Help!Pet</span>
     </div>
-    <div class="w3-blue w3-mobile w3-center" style="height: 30vh; margin-top:0px!important;">
+    <div class="w3-blue w3-mobile w3-center" style="height: 200px; margin-top:0px!important;">
         <span class="w3-text-white w3-center fonte-titulo w3-col">Perfil</span>
         <div class="w3-center w3-col s4 m8 l2">
-            <span class="circulo w3-white">
+            <span class="circulo w3-white w3-center">
                 <img class="perfil w3-center" v-if="!tem_imagem_usuario" src="../assets/imagens/avatar.jpg">
                 <img v-else class="perfil w3-center" v-bind:src="usuario_imagem">
             </span>
@@ -22,7 +22,7 @@
 
     <div class="w3-center" style="margin-top: 70px;">
        <div>
-          <h3>{{nome_usuario+ ' ' + sobre_nome}}</h3>
+          <h3>{{nome_usuario}}</h3>
         </div>
       <!-- Interruptor arredondado (toggle) -->
       <label class="switch">
@@ -33,21 +33,21 @@
         </span>
       </label>
     </div>
-    <div id="meus-pets" v-show="!pets_mostrar" v-for="(pet, indice) in meus_pets" :key="indice" class="w3-margin-top w3-card w3-padding w3-container">
-      <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet">
+    <div id="meus-pets" v-show="!pets_mostrar" v-for="pet in meus_pets"  class="w3-margin-top w3-card w3-padding w3-container">
+      <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet" width="15" height="15">
       &nbsp;
       <strong class="w3-col s6 m6 l6">{{pet.nome_pet}}</strong>
       <button v-if="meus_pets.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
     </div>
 
-    <div id="pets-perdidos" v-show="pets_mostrar" v-for="(pet_perdido, indice) in pets_perdidos" :key="indice" class="w3-margin-top w3-card w3-padding w3-container">
-      <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet_perdido.imagem_pet">
+    <div id="pets-perdidos" v-show="pets_mostrar && !nao_tem_mensagem" v-for="pet_perdido in pets_perdidos"  class="w3-margin-top w3-card w3-padding w3-container">
+      <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet_perdido.imagem_pet" width="15" height="15" >
       &nbsp;
       <strong class="w3-col s6 m6 l6">{{pet_perdido.nome_pet}}</strong>
       <button v-if="pets_perdidos.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
     </div>
    
-    <mensagem ref="enviaMensagem"/>
+    <mensagem ref="enviaMensagem" />
 
     <nav class="container w3-display-bottomright w3-padding"> 
       <a 
@@ -98,7 +98,6 @@ export default {
   },
   data () {
     return {
-      url: 'http://localhost:3333',
       nome_usuario:"",
       sobre_nome: "",
       meus_pets:[],
@@ -107,40 +106,33 @@ export default {
       pets_mostrar: false,
       tem_imagem_usuario:false,
       usuario_imagem:undefined,
-      dados_pessoais: undefined,
-      processando: false
+      processando: false,
+      dados_usuario: [],
+      nao_tem_mensagem: true
+      
     }
   },
-  mounted(){
+  async mounted(){
     let parametros_login = localStorage.getItem("autorizacao");
-    if(parametros_login !== "autorizado"){
+    this.dados_usuario = localStorage.getItem('parametros-usuario');
+    if(!parametros_login){
       this.$router.push({ name: 'Entrar' });
     }
-  },
-  created(){
-    let parametros_login = localStorage.getItem("autorizacao");
-    let parametros_locais = localStorage.getItem('parametros-usuario');
-    /*
-    if(parametros_locais){
-      this.dados_pessoais = JSON.parse(parametros_locais);
-      this.nome_usuario = this.dados_pessoais[0].nome_usuario;
-      this.sobre_nome = this.dados_pessoais[0].sobrenome_usuario
-      this.usuario_imagem = this.dados_pessoais[0].imagem_usuario;
-    }
+    //this.prencherTela()
+    let dados_localstorage = []
+    dados_localstorage = JSON.parse(this.dados_usuario)
+    let dados=[]
+    dados = await api.get("/infoUser/"+ dados_localstorage[0].id_usuario)
+    this.nome_usuario = dados.data[0].nome_usuario
+    this.nome_usuario = this.nome_usuario.toUpperCase()
+    this.usuario_imagem = dados.data[0].imagem_usuario
+    let pets = []
+    pets =  await api.get("/pets/"+ dados_localstorage[0].id_usuario)
+    this.meus_pets = pets.data
     
-    if(parametros_locais_detalhes){
-      if(parametros_locais.imagem_usuario){
-        this.usuario_imagem = parametros_locais.imagem_usuario;
-      }
-      
-     
-    }
-    if(parametros_login !== "autorizado"){
-        this.$router.push({ name: 'Entrar' });
-      }
-    //this.prencherTela();
-    */
+    console.log(pets.data)
   },
+ 
   methods:{
     logout(){
       let dados = localStorage.getItem('parametros-usuario');
@@ -148,42 +140,49 @@ export default {
       localStorage.setItem('autorizacao', "deslogado");
       this.$router.push({ name: 'Entrar' });
     },
+    /*
     prencherTela : function (){
-          this.processando = true;
-          api.get("/infoUser/"+this.dados_pessoais[0].id_usuario)
+         
+          let dados_localstorage = []
+          dados_localstorage = JSON.parse(this.dados_usuario)
+          let dados = []
+           api.get("/infoUser/"+ dados_localstorage[0].id_usuario)
           .then(function (response) {
             if(response){
-               this.processando = false;
-             
-               let dados_gravados = localStorage.getItem('parametros-usuario');
-               this.nome_usuario = dados_gravados.nome_usuario;
-               this.sobre_nome = dados_gravados.sobrenome_usuario;
+               //this.processando = false;
+              
+                //this.nome_usuario = response.data.nome_usuario
+                 console.log("aqui", response.data)
+                 for(let i in  response.data){
+                   dados.push(response.data[i])
+                   
+                 }
+                   this.nome_usuario = dados[0].nome_usuario
+                 console.log(dados)
+                //console.log("aqui",dados_localstorage[0].nome_usuario)
+                //this.nome_usuario = dados_localstorage[0].nome_usuario
               // colocar mensagem de sucesso
 
             }
           
           }).catch(function (error) {
-            this.processando = false;
+            
             //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
           })
-        },
-    buscarPetsPerdidos(){
+        },*/
+    async buscarPetsPerdidos(){
       this.pets_mostrar = !this.pets_mostrar
-      axios.post(this.url+'/pets', {
-      mais: this.mais,
-      })
-      .then(function (response) {
-        console.log(response);
-        let pets = response.data;
-        localStorage.setItem('pets_perdidos', pets);
-        this.pets_perdidos.push(JSON.stringify(localStorage.getItem('pets_perdidos')));
-      })
-      .catch(function (error) {
-        console.log(error);
-        this.$refs.enviaMensagem.exclamar("erro", "Falha na requisição!");
-      });
-      
-      this.mais++;
+      let pets_perdidos_dados = []
+      pets_perdidos_dados =  await api.get("/missingPet")
+      this.pets_perdidos = pets_perdidos_dados.data
+
+      if(this.pets_perdidos !== "Nenhum pet perdido"){
+        this.nao_tem_mensagem = await false
+      }
+      if(this.nao_tem_mensagem){
+        this.$refs.enviaMensagem.exclamar(" ", "Não encontramos pet perdido")
+      }
+     
     }
 
   }

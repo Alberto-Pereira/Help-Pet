@@ -99,27 +99,24 @@
        
         this.dados_pessoais = parametros_locais;
         let parametros_login = localStorage.getItem("autorizacao");
-        if(parametros_login !== "autorizado"){
+        if(!parametros_login){
             this.$router.push({ name: 'Entrar' });
           }
+        this.prencherTela()
       },
 
       methods: {
-        prencherTela : function (){
-          api.get("/infoUser/"+this.dados_pessoais.id_usuario)
-          .then(function (response) {
-            if(response){
-               localStorage.setItem('detalhes-usuario-detalhado', JSON.stringify(response.data));
-                this.image = response.data.imagem_usuario;
-                this.cpf = response.data.cpf;
-                this.telefone = response.data.fone;
-              // colocar mensagem de sucesso
+        async prencherTela(){
+          let complementar = await api.get("/infoUser/"+ this.dados_pessoais[0].id_usuario)
 
-            }
-          
-          }).catch(function (error) {
-            //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
-          })
+          console.log(complementar.data)
+          this.imagem_usuario = complementar.data[0].imagem_usuario;
+          this.cpf = complementar.data[0].cpf;
+          this.telefone = complementar.data[0].telefone;
+          this.whatsapp = complementar.data[0].whatsapp;
+          this.telegram = complementar.data[0].telegram;
+
+
         },
         setImage: function (file) {
           this.hasImage = true;
@@ -127,29 +124,17 @@
           
         },
 
-        gravarDados : function () {
-           //let cpf_valido = this.ValidarCPF();
+        async gravarDados() {
+           //let cpf_valido = await this.ValidarCPF();
            //if(!cpf_valido){
             // return;
            //}
-
-           api.post("/detailUser/"+this.dados_pessoais.id_usuario, {
+            let resposta = await api.post("/infoUser/"+ this.dados_pessoais[0].id_usuario, {
             img_user: this.image,
             cpf: this.cpf,
             fone: this.telefone,
             whatsapp: this.whatsapp,
             telegram: this.telegram
-          }).then(function (response) {
-            if(response){
-               localStorage.setItem('detalhes-usuario', JSON.stringify(response.data));
-               //this.$refs.enviaMensagem.exclamar("", "Dados Gravados com sucesso");
-               //this.prencherTela();
-              // colocar mensagem de sucesso
-
-            }
-          
-          }).catch(function (error) {
-            //this.$refs.enviaMensagem.exclamar("", "Não foi possivel gravar dados!");
           })
         }, 
         ValidarCPF(){
@@ -170,7 +155,7 @@
 
           let digitoGerado=(soma1*10)+soma2;
           if(digitoGerado!=digitoDigitado)        
-            //this.$refs.enviaMensagem.exclamar("", 'CPF Invalido!');   
+            this.$refs.enviaMensagem.exclamar("", 'CPF Invalido!');   
             //document.getElementById("cpf").focus();  
             return false;    
         }
