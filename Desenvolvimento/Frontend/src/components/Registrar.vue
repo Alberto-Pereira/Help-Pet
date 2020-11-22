@@ -9,7 +9,6 @@
         <div class="shadow"></div>
         <div class="shadow"></div>
         <div class="shadow"></div>
-        <span>Help!Pet</span>
     </div>
 
     <div class="w3-blue w3-col" >
@@ -25,10 +24,10 @@
     <form class="w3-container w3-margin-top font-cinza-claro">
       <input class="w3-input w3-margin-top w3-round" v-model="nome" type="text" placeholder="Nome">
       <input class="w3-input w3-margin-top w3-round" v-model="sobre_nome" type="text" placeholder="Sobre nome">
-      <input class="w3-input w3-margin-top w3-round" v-model="email" type="email" placeholder="Email">
-      <input class="w3-input w3-margin-top w3-round" v-model="senha" type="password" placeholder="Senha">
-      <input class="w3-input w3-margin-top w3-round" v-model="confirma_senha" type="password" placeholder="Confirmar senha">
-      <input class="margin-top-30" type="checkbox">
+      <input class="w3-input w3-margin-top w3-round" autocomplete="off" v-model="email" type="email" placeholder="Email">
+      <input class="w3-input w3-margin-top w3-round" autocomplete="off" v-model="senha" type="password" placeholder="Senha">
+      <input class="w3-input w3-margin-top w3-round" autocomplete="off" v-model="confirma_senha" type="password" placeholder="Confirmar senha">
+      <input class="margin-top-30" v-model="concordar" type="checkbox">
       <label>Concordar com os termos de uso.</label>
     </form>
 
@@ -57,7 +56,8 @@ export default {
       confirma_senha: '',
       email: '',
       parametros_usuario: undefined,
-      processando: false
+      processando: false,
+      concordar:undefined
     }
   },
   mounted(){
@@ -68,7 +68,10 @@ export default {
   },
   methods:{
     async gravar(){
-      
+      if(!this.concordar){
+        this.$refs.enviaMensagem.exclamar("erro", "Você deve concordar com as politicas de uso!");
+        return;
+      }
        try {
          /* validação de email*/
         let usuario = this.email.substring(0, this.email.indexOf("@"));
