@@ -120,14 +120,14 @@ export default {
   created(){
     let parametros_login = localStorage.getItem("autorizacao");
     let parametros_locais = localStorage.getItem('parametros-usuario');
-    this.dados_pessoais = JSON.parse(parametros_locais);
+    /*
+    if(parametros_locais){
+      this.dados_pessoais = JSON.parse(parametros_locais);
+      this.nome_usuario = this.dados_pessoais[0].nome_usuario;
+      this.sobre_nome = this.dados_pessoais[0].sobrenome_usuario
+      this.usuario_imagem = this.dados_pessoais[0].imagem_usuario;
+    }
     
-    let parametros_locais_detalhes = localStorage.getItem('parametros-usuario-detalhes');
-    let locais_detalhes = JSON.parse(localStorage.getItem('parametros-usuario-detalhes'));
-    this.nome_usuario = this.dados_pessoais[0].nome_usuario;
-    this.sobre_nome = this.dados_pessoais[0].sobrenome_usuario
-    this.usuario_imagem = this.dados_pessoais[0].imagem_usuario;
-
     if(parametros_locais_detalhes){
       if(parametros_locais.imagem_usuario){
         this.usuario_imagem = parametros_locais.imagem_usuario;
@@ -138,8 +138,8 @@ export default {
     if(parametros_login !== "autorizado"){
         this.$router.push({ name: 'Entrar' });
       }
-    this.prencherTela();
-    
+    //this.prencherTela();
+    */
   },
   methods:{
     logout(){
@@ -154,8 +154,8 @@ export default {
           .then(function (response) {
             if(response){
                this.processando = false;
-               localStorage.setItem('detalhes-usuario-detalhado', JSON.stringify(response.data));
-               let dados_gravados = localStorage.getItem('parametros-usuario-detalhes');
+             
+               let dados_gravados = localStorage.getItem('parametros-usuario');
                this.nome_usuario = dados_gravados.nome_usuario;
                this.sobre_nome = dados_gravados.sobrenome_usuario;
               // colocar mensagem de sucesso

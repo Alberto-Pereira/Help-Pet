@@ -8,14 +8,18 @@
 
     <div class="margin-top-80 padding-10">
       <div class="w3-center">
-        <img class="w3-border w3-round" :src="image" alt="" width="150" height="150">
+        <img style="border-radius: 50%; box-shadow: 5px 1px 20px 0px;" class="w3-border" :src="image" alt="" width="150" height="150">
       </div>
-      <input class="w3-input w3-text-black bold-500 margin-top-30" type="text" v-model="cpf" placeholder="Cpf:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" v-model="endereco" type="text" placeholder="Endereço:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" v-model="telefone" type="text" placeholder="Telefone:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" v-model="whatsapp" type="text" placeholder="Whatsapp:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" v-model="telegram" type="text" placeholder="Telegram:">
+      <input id="cpf" class="w3-input w3-text-black bold-500 margin-top-30" type="text" v-model="cpf" placeholder="Cpf:">
+      <input id="telefone" class="w3-input w3-margin-top w3-text-black bold-500" v-model="telefone" type="text" placeholder="Telefone:">
+      <input id="whatsapp" class="w3-input w3-margin-top w3-text-black bold-500" v-model="whatsapp" type="text" placeholder="Whatsapp:">
+      <input id="telegram" class="w3-input w3-margin-top w3-text-black bold-500" v-model="telegram" type="text" placeholder="Telegram:">
     </div>
+     <router-link 
+      to="/Cadastrar-endereco"
+      class="w3-button w3-blue w3-col w3-margin-top">
+        Cadastrar endereço
+      </router-link>
 
     <nav class="container w3-display-bottomright w3-padding"> 
       <router-link 
@@ -54,19 +58,22 @@
         <i class="fas fa-paw"></i>
       </a>
     </nav>
-
+    <mensagem ref="enviaMensagem" />
   </div>
     
 </template>
 
 <script>
     import ImageUploader from 'vue-image-upload-resize'
-    import api from "../service/api";
+    import api from "../service/api"
+    import Mensagem from "@/components/Mensagem";
     export default {
       name: "DadosPessoais",
       components: {
         ImageUploader,
+        Mensagem
       },
+  
       data () {
         return {
           endereco:'',
@@ -79,6 +86,7 @@
           image : require('../assets/imagens/user.png')
         }
       },
+
       created(){
         let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
         let detalhes_usuario_detalhado = JSON.parse(localStorage.getItem('detalhes-usuario-detalhado'));
@@ -95,6 +103,7 @@
             this.$router.push({ name: 'Entrar' });
           }
       },
+
       methods: {
         prencherTela : function (){
           api.get("/infoUser/"+this.dados_pessoais.id_usuario)
@@ -117,27 +126,55 @@
           this.image = file;
           
         },
+
         gravarDados : function () {
+           //let cpf_valido = this.ValidarCPF();
+           //if(!cpf_valido){
+            // return;
+           //}
+
            api.post("/detailUser/"+this.dados_pessoais.id_usuario, {
             img_user: this.image,
             cpf: this.cpf,
-            fone: this.telefone
+            fone: this.telefone,
+            whatsapp: this.whatsapp,
+            telegram: this.telegram
           }).then(function (response) {
             if(response){
                localStorage.setItem('detalhes-usuario', JSON.stringify(response.data));
-               this.prencherTela();
+               //this.$refs.enviaMensagem.exclamar("", "Dados Gravados com sucesso");
+               //this.prencherTela();
               // colocar mensagem de sucesso
 
             }
           
           }).catch(function (error) {
-            //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
+            //this.$refs.enviaMensagem.exclamar("", "Não foi possivel gravar dados!");
           })
-        },
-        
-      }
-       
+        }, 
+        ValidarCPF(){
+          let cpf = this.cpf;
+          exp = /\.|\-/g
+          cpf = cpf.toString().replace( exp, "" ); 
+          let digitoDigitado = eval(cpf.charAt(9)+cpf.charAt(10));
+          let soma1=0, soma2=0;
+          let vlr =11;
 
+          for(i=0;i<9;i++){
+                  soma1+=eval(cpf.charAt(i)*(vlr-1));
+                  soma2+=eval(cpf.charAt(i)*vlr);
+                  vlr--;
+          }       
+          soma1 = (((soma1*10)%11)==10 ? 0:((soma1*10)%11));
+          soma2=(((soma2+(2*soma1))*10)%11);
+
+          let digitoGerado=(soma1*10)+soma2;
+          if(digitoGerado!=digitoDigitado)        
+            //this.$refs.enviaMensagem.exclamar("", 'CPF Invalido!');   
+            //document.getElementById("cpf").focus();  
+            return false;    
+        }
+      }
     }
 </script>
 

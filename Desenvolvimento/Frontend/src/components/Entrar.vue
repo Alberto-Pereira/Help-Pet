@@ -4,11 +4,10 @@
      <div v-if="processando" class="wrapper">
         <div class="circle"></div>
         <div class="circle"></div>
-        <div class="circle"></div>
+        <div class="circle"></div>          
         <div class="shadow"></div>
         <div class="shadow"></div>
         <div class="shadow"></div>
-        <span>Help!Pet</span>
     </div>
 
     <!--<span class="w3-text-green w3-margin-top w3-col s6 m6 l6"><h1>Entrar</h1></span>-->
@@ -21,12 +20,14 @@
           type="email"
           v-model="email"
           placeholder="Email"
+          autocomplete="off"
         />
         <input
           class="w3-input w3-margin-bottom w3-margin-top"
           type="password"
           v-model="senha"
           placeholder="Senha"
+          autocomplete="off"
         />
         <button
           @click="logar()"
@@ -43,8 +44,9 @@
         >
       </form>
 
-      <mensagem ref="envia-mensagem"/>
+     
     </div>
+     <mensagem ref="enviaMensagem" />
   </div>
 </template>
 
@@ -86,7 +88,7 @@ export default {
     let parametros_login = localStorage.getItem("autorizacao");
     console.log("parametros_login")
     if (parametros_login === "autorizado") {
-      this.$router.push({ name: 'Perfil' });
+    //  this.$router.push({ name: 'Perfil' });
     }
   },
 
@@ -94,26 +96,26 @@ export default {
     logar() {
       this.parametros_usuario = []
       this.processando = true;
-      api.post("/loginUser", {
+      let resposta =  api.post("/loginUser", {
         email: this.email,
         password: this.senha
-      }).then(function (response) {
-        if(response){
-          this.processando = false;
-          let dados = response.data
-          window.location.href = window.location.origin+"/Perfil"
+      })
+     
+        if(resposta){
+          
+          let dados = resposta
+          console.log(JSON.parse(JSON.stringify(dados)))
+          this.$refs.enviaMensagem.exclamar("", "Logado com sucesso!")
+         
           localStorage.setItem('parametros-usuario', JSON.stringify(dados));
+           //window.location.href = window.location.origin+"/Perfil"
           store.commit('autorizacao');
           localStorage.setItem('autorizacao', store.state.logado);
+        }else{
+           this.$refs.enviaMensagem.exclamar("", "Não foi possivel logar!")
         }
-       
-      }).catch(function (error) {
         this.processando = false;
-        //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
-      })
-      
     },
-    recuperarSenha() {}
   }
 };
 </script>
