@@ -1,6 +1,16 @@
 <template>
 
   <div class="geral w3-container extender-div-tela-toda w3-small" style="padding:0px;">
+    <div v-show="processando" class="wrapper">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+     
+    </div>
+
     <div class="w3-blue w3-col" >
       <h2 class="w3-col w3-center bold-500">Dados do Pet</h2>
     </div>
@@ -26,7 +36,7 @@
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="descricao" placeholder="Descrição:">
     </div>
 
-    <nav class="container w3-display-bottomright w3-padding"> 
+    <nav class="container w3-display-bottomright w3-padding" > 
       <router-link 
       to="/Perfil"
       style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
@@ -85,8 +95,9 @@
             cor: '',
             nome: '',
             raca: '',
-            numero_coleira:'',
-            status:''
+            numero_coleira: undefined,
+            status: undefined,
+            processando: false
           }
         },
         mounted(){
@@ -103,24 +114,37 @@
             this.image = file;
           },
           async gravarDados(){
-            console.log("aqui")
+            
             let localizacao = [navigator.geolocation.logitude, navigator.geolocation.latitude];
+            if(!localizacao){
+              [	-16.727694,-49.277374]
+            }
+            let resposta;
             let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
-            let resposta = await api.post("/newPet/"+parametros_locais[0].id_usuario, {
-              img_pet: this.image,
-              namePet: this.nome,
-              sexPet: this.sexo,
-              colorPet: this.cor,
-              collarNumber: this.numero_coleira,
-              location: localizacao,
-              description: this.descricao,
-              breed: this.raca,
-              status: this.status
-            })
+            this.processando = true
+            try {
+                resposta = await api.post("/newPet/"+parametros_locais[0].id_usuario, {
+                img_pet: this.image,
+                namePet: this.nome,
+                sexPet: this.sexo,
+                colorPet: this.cor,
+                collarNumber: this.numero_coleira,
+                description: this.descricao,
+                location: localizacao,
+                status: this.status,
+                breed: this.raca,
+              })
+              this.processando = false
+            } catch (error) {
+              this.processando = false
+            }
+            
+             console.log("aqui")
             console.log("resposta", resposta)
             if(resposta){
                await this.$router.push({ name: 'Perfil' });
             }
+           
           }
         }
     }

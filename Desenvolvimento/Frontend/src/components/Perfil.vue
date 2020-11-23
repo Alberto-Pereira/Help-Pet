@@ -7,7 +7,7 @@
         <div class="shadow"></div>
         <div class="shadow"></div>
         <div class="shadow"></div>
-        <span>Help!Pet</span>
+        
     </div>
     <div class="w3-blue w3-mobile w3-center" style="height: 200px; margin-top:0px!important;">
         <span class="w3-text-white w3-center fonte-titulo w3-col">Perfil</span>
@@ -33,23 +33,39 @@
         </span>
       </label>
     </div>
-    <div id="meus-pets" v-show="!pets_mostrar" v-for="pet in meus_pets"  class="w3-margin-top w3-card w3-padding w3-container">
-      <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet" width="15" height="15">
+    <div id="meus-pets" v-show="!pets_mostrar" v-for="pet in meus_pets"  class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
+      <div class="w3-col s2">
+        <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet" width="15" height="15">
+      </div>
       &nbsp;
-      <strong class="w3-col s6 m6 l6">{{pet.nome_pet}}</strong>
+      <div class="w3-col s8">
+        <strong class="">{{pet.nome_pet}}</strong>
+      </div>
+      <div class="w3-col s2 w3-small">
+        <button @click="ativarDetalhes(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue "><i class="fas fa-edit"></i> Detalhes </button>
+      </div>
+      
       <button v-if="meus_pets.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
     </div>
 
-    <div id="pets-perdidos" v-show="pets_mostrar && !nao_tem_mensagem" v-for="pet_perdido in pets_perdidos"  class="w3-margin-top w3-card w3-padding w3-container">
-      <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet_perdido.imagem_pet" width="15" height="15" >
+    <div id="pets-perdidos" v-show="pets_mostrar && !nao_tem_mensagem" v-for="pet_perdido in pets_perdidos"  class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
+      <div class="w3-col s2">
+        <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet_perdido.imagem_pet" width="15" height="15">
+      </div>
       &nbsp;
-      <strong class="w3-col s6 m6 l6">{{pet_perdido.nome_pet}}</strong>
+      <div class="w3-col s8">
+        <strong class="">{{pet_perdido.nome_pet}}</strong>
+      </div>
+      <div class="w3-col s2 w3-small">
+        <button @click="ativarDetalhes(pet_perdido)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue "><i class="fas fa-edit"></i> Detalhes </button>
+      </div>
+      
       <button v-if="pets_perdidos.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
     </div>
    
     <mensagem ref="enviaMensagem" />
 
-    <nav class="container w3-display-bottomright w3-padding"> 
+    <nav class="container w3-display-bottomright w3-padding" style="position:fixed;"> 
       <a 
       @click="logout()"
       class="buttons w3-red" 
@@ -137,8 +153,12 @@ export default {
     logout(){
       let dados = localStorage.getItem('parametros-usuario');
       localStorage.setItem('parametros-usuario', null);
-      localStorage.setItem('autorizacao', "deslogado");
+      localStorage.setItem('autorizacao', false);
       this.$router.push({ name: 'Entrar' });
+    },
+    ativarDetalhes(pet){
+      localStorage.setItem('pet-detalhe', JSON.stringify(pet));
+      this.$router.push({ name: 'DetalhesPet' });
     },
     /*
     prencherTela : function (){
@@ -194,6 +214,11 @@ export default {
 img{
   width: 30px;
   height: 30px;
+}
+.detalhe-foto-pet{
+  border-radius: 50%;
+  width: 40px!important;
+  height: 40px!important;
 }
 
 </style>

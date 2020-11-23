@@ -1,6 +1,5 @@
 <template>
     <div id="snackbar">{{mensagem}}</div>
-    
 </template>
 
 <script>

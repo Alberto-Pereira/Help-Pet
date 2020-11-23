@@ -1,28 +1,16 @@
 <template>
 
-  <div class="geral w3-container extender-div-tela-toda w3-center">
-    <div class="w3-row w3-margin-top w3-col">
-      <router-link to="/perfil">
-        <h6 class="w3-col s2 font-amarela w3-btn w3-round"><i class="fas fa-arrow-left"></i></h6>
-      </router-link>
-      <h2 class="w3-col s8 w3-center font-verde bold-500">Detalhes Pet</h2>
-      <h6 class="w3-col s2 padding-10 font-amarela" @click="mostrar_filtro = !mostrar_filtro">
-        <i class="fas fa-filter"></i>
-      </h6>
+  <div class="geral w3-container extender-div-tela-toda w3-center" style="padding:0px;">
+    <div class="w3-blue w3-col">
+     
+      <h2 class="w3-col w3-center bold-500">Detalhes Pet</h2>
+      
     </div>
-
-    <input
-    v-if="mostrar_filtro" 
-    class="w3-border w3-round-xxlarge w3-margin-bottom w3-left-align w3-col m8 s8 l8 w3-animate-zoom" 
-    type="text" 
-    placeholder="Pesquisar"
-    >
-    <i  v-if="mostrar_filtro" class="fas fa-check w3-col s3 m3 l3 w3-left-align w3-animate-zoom"></i>
 
     <div id="visualizar">
       <div class="w3-container w3-col">
          
-          <img class="detalhe-foto-pet w3-center w3-border w3-col w3-center" v-bind:src="imagem_pet">
+          <img style="border-radius: 50%" class="detalhe-foto-pet w3-center w3-border w3-col w3-center" v-bind:src="imagem_pet">
           <i v-if="pode_editar" @click="editando = !editando" class="fas fa-edit"></i> Editar
           <span 
           :style="getStatus()" 
@@ -39,7 +27,7 @@
    
 
       <div 
-      class="w3-margin-top padding-10 w3-col w3-border w3-container w3-mobile w3-round labels w3-animate-zoom w3-small"
+      class="w3-margin-top padding-10 w3-col w3-border w3-container w3-mobile w3-round labels w3-animate-zoom w3-small w3-blue"
       v-if="!editando"
       >
         <span class="w3-span w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-user"></i> : {{nome_proprietario}}</span>
@@ -139,6 +127,13 @@
     </div>
 
     <nav class="container w3-display-bottomright w3-hide-large w3-hide-medium"> 
+      <router-link 
+      to="/Perfil"
+      style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+      class="buttons w3-orange" tooltip="Voltar para perfil">
+        <i class="fas fa-arrow-left"></i>
+      </router-link>
+
       <a 
       href="#" 
       @click="capturarImage('DetalhesPet')"
@@ -153,9 +148,10 @@
       class="buttons w3-purple" tooltip="Gravar dados">
         <i class="fas fa-database"></i>
       </a>
+      
 
       <a 
-      class="buttons w3-orange" 
+      class="buttons w3-blue" 
       style="font-size:30px;" 
       tooltip="Opções" href="#">
       <i class="fas fa-paw"></i></a>
@@ -193,14 +189,29 @@
         mostrar_filtro: false,          
       };
     },
-    mounted(){
+    async mounted(){
     
       let parametros_login = localStorage.getItem("autorizacao");
-      if(parametros_login !== "autorizado"){
+      let nome_proprietario = await JSON.parse(localStorage.getItem("parametros-usuario"))
+      if(!parametros_login){
         this.$router.push({ name: 'Entrar' });
       }
-      console.log(navigator.geolocation)
+      
       this.localizacao = navigator.geolocation;
+      let detalhe_pet = await JSON.parse(localStorage.getItem("pet-detalhe"));
+
+      this.imagem_pet = detalhe_pet.imagem_pet;
+      this.nome_pet = detalhe_pet.nome_pet;
+      this.status = detalhe_pet.status_pet;
+      this.sexo = detalhe_pet.sexo_pet;
+      this.codigo_coleira = detalhe_pet.numero_coleira;
+      this.descricao = detalhe_pet.descricao_pet;
+      this.cor = detalhe_pet.cor_pet;
+      this.raca = detalhe_pet.raca_pet;
+      this.longitude = detalhe_pet.longitude;
+      this.latitude = detalhe_pet.latitude;
+      this.nome_proprietario = nome_proprietario[0].nome_usuario+" "+ nome_proprietario[0].sobrenome_usuario;
+      console.log("dadadadsd",detalhe_pet[0].nome_usuario)
     },
        
     methods: {
