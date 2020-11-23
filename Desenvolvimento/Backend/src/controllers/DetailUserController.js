@@ -15,9 +15,9 @@ module.exports = {
         ? await connection("dados_pessoais").insert({
             imagem_usuario: img_user,
             id_usuario_dados_fk: id,
-            cpf,
-            whatsapp,
-            telegram,
+            cpf:cpf,
+            whatsapp:whatsapp,
+            telegram:telegram,
             telefone: fone,
           })
         : res.status(401).json("dados pessoais ja cadastrado");

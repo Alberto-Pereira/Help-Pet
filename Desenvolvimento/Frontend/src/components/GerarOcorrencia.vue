@@ -74,7 +74,7 @@
         },
         mounted () {
           let parametros_login = localStorage.getItem("autorizacao");
-          if(parametros_login !== "autorizado"){
+          if(!parametros_login){
               this.$router.push({ name: 'Entrar' });
             }
         },

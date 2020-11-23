@@ -110,7 +110,12 @@
           let complementar = await api.get("/infoUser/"+ this.dados_pessoais[0].id_usuario)
 
           console.log(complementar.data)
-          this.imagem_usuario = complementar.data[0].imagem_usuario;
+          if(complementar.data[0].imagem_usuario.indexOf("base64") == 0){
+             this.image = complementar.data[0].imagem_usuario
+          }else{
+            this.image = localStorage.getItem('imagem-usuario')
+          }
+          
           this.cpf = complementar.data[0].cpf;
           this.telefone = complementar.data[0].telefone;
           this.whatsapp = complementar.data[0].whatsapp;
@@ -129,7 +134,8 @@
            //if(!cpf_valido){
             // return;
            //}
-            let resposta = await api.post("/infoUser/"+ this.dados_pessoais[0].id_usuario, {
+            localStorage.setItem("imagem-usuario", this.image);
+            let resposta = await api.post("/detailUser/"+ this.dados_pessoais[0].id_usuario, {
             img_user: this.image,
             cpf: this.cpf,
             fone: this.telefone,

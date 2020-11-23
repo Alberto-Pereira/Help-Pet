@@ -14,7 +14,7 @@
         <div class="w3-center w3-col s4 m8 l2">
             <span class="circulo w3-white w3-center">
                 <img class="perfil w3-center" v-if="!tem_imagem_usuario" src="../assets/imagens/avatar.jpg">
-                <img v-else class="perfil w3-center" v-bind:src="usuario_imagem">
+                <img v-else class="perfil w3-center" :src="usuario_imagem" alt="">
             </span>
            
         </div>
@@ -38,11 +38,17 @@
         <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet" width="15" height="15">
       </div>
       &nbsp;
-      <div class="w3-col s8">
+      <div class="w3-col s4">
         <strong class="">{{pet.nome_pet}}</strong>
       </div>
-      <div class="w3-col s2 w3-small">
-        <button @click="ativarDetalhes(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue "><i class="fas fa-edit"></i> Detalhes </button>
+      <div class="w3-col s4 w3-small">
+        <button @click="ativarDetalhes(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue ">
+          <i class="fas fa-edit"></i> Detalhes 
+        </button>
+        &nbsp;
+        <button @click="gerarOcorrencia(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-red w3-margin-top ">
+          <i class="fas fa-exclamation-triangle"></i> Ocorrencia 
+        </button>
       </div>
       
       <button v-if="meus_pets.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
@@ -128,25 +134,35 @@ export default {
       
     }
   },
-  async mounted(){
+  mounted(){
     let parametros_login = localStorage.getItem("autorizacao");
     this.dados_usuario = localStorage.getItem('parametros-usuario');
-    if(!parametros_login){
+    if(!parametros_login || !this.dados_usuario){
       this.$router.push({ name: 'Entrar' });
     }
     //this.prencherTela()
     let dados_localstorage = []
-    dados_localstorage = JSON.parse(this.dados_usuario)
+    dados_localstorage = JSON.parse(localStorage.getItem('parametros-usuario'));
     let dados=[]
-    dados = await api.get("/infoUser/"+ dados_localstorage[0].id_usuario)
+    dados = api.get("/infoUser/"+ dados_localstorage[0].id_usuario)
     this.nome_usuario = dados.data[0].nome_usuario
     this.nome_usuario = this.nome_usuario.toUpperCase()
-    this.usuario_imagem = dados.data[0].imagem_usuario
-    let pets = []
-    pets =  await api.get("/pets/"+ dados_localstorage[0].id_usuario)
-    this.meus_pets = pets.data
+    if(dados.data[0].imagem_usuario.indexOf("base64") == 0){
+       this.usuario_imagem = dados.data[0].imagem_usuario
+       this.tem_imagem_usuario = true
     
-    console.log(pets.data)
+    }else if(localStorage.getItem('imagem-usuario')){
+      this.usuario_imagem = localStorage.getItem('imagem-usuario');
+      this.tem_imagem_usuario = true
+    }
+    
+   
+    let pets = []
+    if(dados_localstorage[0].id_usuario){
+      pets =  api.get("/pets/"+ dados_localstorage[0].id_usuario)
+      this.meus_pets = pets.data
+    }
+   
   },
  
   methods:{
@@ -159,6 +175,10 @@ export default {
     ativarDetalhes(pet){
       localStorage.setItem('pet-detalhe', JSON.stringify(pet));
       this.$router.push({ name: 'DetalhesPet' });
+    },
+     gerarOcorrencia(pet){
+      localStorage.setItem('pet-ocorrencia', JSON.stringify(pet));
+      this.$router.push({ name: 'GerarOcorrencia' });
     },
     /*
     prencherTela : function (){

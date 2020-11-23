@@ -61,10 +61,7 @@ export default {
     }
   },
   mounted(){
-    let parametros_login = localStorage.getItem("autorizacao");
-    if (parametros_login === "autorizado") {
-      this.$router.push({ name: 'Perfil' });
-    }
+    
   },
   methods:{
     async gravar(){
@@ -107,8 +104,8 @@ export default {
             if(resposta){
               this.processando = false;
             }
-            localStorage.setItem('logado', JSON.stringify({logado:true}));
-            window.location.href = window.location.origin+"/Sucesso";
+            localStorage.setItem('autorizacao', false);
+            this.$router.push({ name: 'Sucesso' });
             return;
             
           }
