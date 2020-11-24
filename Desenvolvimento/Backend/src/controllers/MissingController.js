@@ -2,7 +2,25 @@ const connection = require("../database/connection");
 
 module.exports = {
   async index(req, res) {
-    const pets = await connection("pet").from("animais_perdidos");
+    const {
+      page = 1,
+      namePet,
+      sexPet,
+      colorPet,
+      collarNumber,
+      breed,
+    } = req.query;
+    const pets = await connection("pet")
+      .from("animais_perdidos")
+      .where("nome_pet", namePet)
+      .andWhere("sexo_pet", sexPet)
+      .andWhere("cor_pet", colorPet)
+      .andWhere("numero_coleira", collarNumber)
+      .andWhere("raca_pet", breed)
+      .limit(10)
+      .offset((page - 1) * 10);
+
+    res.header("X-Total-Count", count["count(*)"]);
 
     if (pets.length == 0) {
       res.status(200).json("Nenhum pet perdido");
@@ -18,6 +36,7 @@ module.exports = {
     if (user.length != 0) {
       const response = await connection("pet")
         .where("id_pet", idPet)
+
         .andWhere("id_usuario_pet_fk", idUser)
         .update({
           status_pet: "d",
