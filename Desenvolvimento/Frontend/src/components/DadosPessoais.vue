@@ -107,6 +107,7 @@
 
       methods: {
         async prencherTela(){
+          console.log("detal use", this.dados_pessoais[0].id_usuario)
           let complementar = await api.get("/infoUser/"+ this.dados_pessoais[0].id_usuario)
 
           console.log(complementar.data)
@@ -129,19 +130,25 @@
           
         },
 
-        async gravarDados() {
+         gravarDados() {
            //let cpf_valido = await this.ValidarCPF();
            //if(!cpf_valido){
             // return;
            //}
+
             localStorage.setItem("imagem-usuario", this.image);
-            let resposta = await api.post("/detailUser/"+ this.dados_pessoais[0].id_usuario, {
+            let resposta =  api.post("/detailUser/"+ this.dados_pessoais[0].id_usuario, {
             img_user: this.image,
             cpf: this.cpf,
             fone: this.telefone,
             whatsapp: this.whatsapp,
             telegram: this.telegram
           })
+          if(resposta){
+            console.log("aqui")
+          }else{
+            console.log("deu ruim")
+          }
         }, 
         ValidarCPF(){
           let cpf = this.cpf;

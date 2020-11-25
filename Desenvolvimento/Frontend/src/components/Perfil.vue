@@ -164,14 +164,12 @@ export default {
     
       pets =  await api.get("/pets/"+ dados_localstorage[0].id_usuario)
       this.meus_pets = pets.data
-    
-   
+  
   },
  
   methods:{
     logout(){
       let dados = localStorage.getItem('parametros-usuario');
-      localStorage.setItem('parametros-usuario', null);
       localStorage.setItem('autorizacao', false);
       this.$router.push({ name: 'Entrar' });
     },
