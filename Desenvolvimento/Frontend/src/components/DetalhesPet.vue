@@ -2,21 +2,22 @@
 
   <div class="geral w3-container extender-div-tela-toda w3-center" style="padding:0px;">
     <div class="w3-blue w3-col">
-     
+
       <h2 class="w3-col w3-center bold-500">Detalhes Pet</h2>
-      
+
+    </div>
+
+    <div class="margin-top-80">
+      <div class="w3-center">
+        <img :src="image" alt="" class="w3-border" height="150"
+             style="border-radius: 50%; box-shadow: 5px 1px 20px 0px;" width="150">
+      </div>
     </div>
 
     <div id="visualizar">
+
       <div class="w3-container w3-col">
-         
-          <img style="border-radius: 50%" class="detalhe-foto-pet w3-center w3-border w3-col w3-center" v-bind:src="imagem_pet">
-          <i v-if="pode_editar" @click="editando = !editando" class="fas fa-edit"></i> Editar
-          <span 
-          :style="getStatus()" 
-          v-if="!editando" 
-          class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"
-          >
+          <span :style="getStatus()" class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align" v-if="!editando">
               <i class="fas fa-exclamation-circle"></i> : 
               <label style="color:green;" v-if="status == 'n'">Normal</label>
               <label style="color:yellow;" v-if="status == 'a'">Para adoção</label>
@@ -24,12 +25,9 @@
               <label style="color:blue;" v-if="status == 'l'">Localizado</label>
           </span>
       </div>
-   
 
-      <div 
-      class="w3-margin-top padding-10 w3-col w3-border w3-container w3-mobile w3-round labels w3-animate-zoom w3-small w3-blue"
-      v-if="!editando"
-      >
+
+      <div class="w3-margin-top padding-10 w3-col w3-border w3-container w3-mobile w3-round labels w3-animate-zoom w3-small w3-blue" v-if="!editando">
         <span class="w3-span w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-user"></i> : {{nome_proprietario}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align">
           <i class="fas fa-paw"></i> : {{nome_pet}}
@@ -38,141 +36,114 @@
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-horse-head"></i> : {{raca}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-qrcode"></i> : {{codigo_coleira}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-venus"></i><i class="fas fa-mars"></i> : {{sexo}}</span>
-        <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align ">Descrição : 
-            <label class="w3-border w3-round-xxlarge w3-col w3-container">{{descricao}}</label> 
-          </span> 
+        <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align ">Descrição :
+          <label class="w3-border w3-round-xxlarge w3-col w3-container">{{descricao}}</label>
+        </span>
       </div>
     </div>
 
-    <div 
-    id="editar" 
-    class="w3-border w3-container w3-round w3-col w3-animate-zoom w3-margin-top w3-small" 
-    v-if="editando"
-    >
+    <div class="w3-border w3-container w3-round w3-col w3-animate-zoom w3-margin-top w3-small" id="editar" v-if="editando">
+
       <div class="margin-top-30 w3-margin-bottom w3-left-align w3-col">
+
         <span class="margin-left-8 bold-500 font-cinza-meio-claro">Status? </span>
 
-        <span class="w3-text-green bold-500 w3-half" @click="status = 'n'">
-          <i v-if="status == 'n'" class="far fa-check-circle"></i>
-          <i v-else class="far fa-circle"></i>
+        <span @click="status = 'n'" class="w3-text-green bold-500 w3-half">
+          <i class="far fa-check-circle" v-if="status == 'n'"></i>
+          <i class="far fa-circle" v-else></i>
           <label>Normal</label>
         </span>
 
-        <span class="w3-text-yellow bold-500 w3-half" @click="status = 'a'">
-          <i v-if="status == 'a'" class="far fa-check-circle"></i>
-          <i v-else class="far fa-circle"></i>
+        <span @click="status = 'a'" class="w3-text-yellow bold-500 w3-half">
+          <i class="far fa-check-circle" v-if="status == 'a'"></i>
+          <i class="far fa-circle" v-else></i>
           <label>Para adoção</label>
         </span>
 
-        <span class="w3-text-red bold-500 w3-half" @click="status = 'p'">
-          <i v-if="status == 'p'" class="far fa-check-circle"></i>
-          <i v-else class="far fa-circle"></i>
+        <span @click="status = 'p'" class="w3-text-red bold-500 w3-half">
+          <i class="far fa-check-circle" v-if="status == 'p'"></i>
+          <i class="far fa-circle" v-else></i>
           <label>Perdido</label>
         </span>
 
-        <span class="w3-text-blue bold-500 w3-half" @click="status = 'l'">
-          <i v-if="status == 'l'" class="far fa-check-circle"></i>
-          <i v-else class="far fa-circle"></i>
+        <span @click="status = 'l'" class="w3-text-blue bold-500 w3-half">
+          <i class="far fa-check-circle" v-if="status == 'l'"></i>
+          <i class="far fa-circle" v-else></i>
           <label>Encontrado</label>
         </span>
 
-        <input 
-        class="w3-input w3-margin-top w3-text-black bold-500" 
-        v-model="nome_pet" type="text" 
-        placeholder="Nome do pet:"
-        >
+        <input class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Nome do pet:" type="text" v-model="nome_pet">
+        <input class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Raça:" type="text" v-model="raca">
+        <input class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Cor:" type="text" v-model="cor">
+        <input class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Sexo:" type="text" v-model="sexo">
+        <input class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Número da coleira (gera automatico):" type="text" v-model="codigo_coleira">
+        <input class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Descrição:" type="text" v-model="descricao">
 
-        <input 
-        class="w3-input w3-margin-top w3-text-black bold-500"
-         v-model="raca" type="text" 
-         placeholder="Raça:"
-        >
-
-        <input 
-        class="w3-input w3-margin-top w3-text-black bold-500" 
-        v-model="cor" 
-        type="text" 
-        placeholder="Cor:"
-        >
-
-        <input 
-        class="w3-input w3-margin-top w3-text-black bold-500" 
-        v-model="sexo" 
-        type="text" 
-        placeholder="Sexo:"
-        >
-
-        <input 
-        class="w3-input w3-margin-top w3-text-black bold-500" 
-        v-model="codigo_coleira" 
-        type="text" 
-        placeholder="Número da coleira (gera automatico):"
-        >
-
-        <input 
-        class="w3-input w3-margin-top w3-text-black bold-500"
-        v-model="descricao" 
-        type="text" 
-        placeholder="Descrição:"
-        >
       </div>
-    </div>
-    
-    <div class="margin-top-50 w3-hide-small">
-      <button @click="capturarImage('DetalhesPet')" class="w3-col w3-btn w3-round-xxlarge w3-center fundo-azul-claro w3-text-white w3-margin-top">
-            Buscar foto para perfil
-      </button>
 
-      <button class="w3-col w3-btn w3-round-xxlarge w3-center fundo-roxo w3-text-white w3-margin-top">Gravar dados</button>
     </div>
 
-    <nav class="container w3-display-bottomright w3-hide-large w3-hide-medium"> 
-      <router-link 
-      to="/Perfil"
-      style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-orange" tooltip="Voltar para perfil">
+    <nav class="container w3-display-bottomright w3-padding">
+      <router-link
+        class="buttons w3-orange"
+        style="font-size:20px;padding: 4px!important; padding-left: 9px!important;"
+        to="/Perfil" tooltip="Voltar para perfil">
         <i class="fas fa-arrow-left"></i>
       </router-link>
 
-      <a 
-      href="#" 
-      @click="capturarImage('DetalhesPet')"
-      class="buttons w3-blue" 
-      style="font-size:20px; margin-top: 10px!important;" 
-      tooltip="Inserir foto">
-        <i class="fas fa-camera"></i>
+      <a
+        @click="editando = !editando" class="buttons w3-brown"
+        href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" tooltip="Editar" v-if="pode_editar">
+        <i class="fas fa-edit"></i>
       </a>
-      
-      <a 
-      href="#" style="font-size:20px; margin-top: 10px!important;" 
-      class="buttons w3-purple" tooltip="Gravar dados">
+
+      <label class="buttons w3-purple" for="fileInput" slot="upload-label" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" tooltip="Inserir foto">
+        <i class="fas fa-camera"></i>
+      </label>
+      <image-uploader :autoRotate="true"
+                      :className="['fileinput', { 'fileinput--loaded': hasImage }]"
+                      :debug="1"
+                      :preview="false"
+                      :quality="1.00"
+                      @input="setImage"
+                      capture="user"
+                      class="w3-col"
+                      doNotResize="gif"
+                      outputFormat="string"
+                      style="display: none"
+      ></image-uploader>
+
+      <a
+        @click="gravarDados()" class="buttons w3-green"
+        href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" tooltip="Gravar dados">
         <i class="fas fa-database"></i>
       </a>
-      
 
-      <a 
-      class="buttons w3-blue" 
-      style="font-size:30px;" 
-      tooltip="Opções" href="#">
-      <i class="fas fa-paw"></i></a>
+      <a
+        class="buttons w3-blue"
+        href="#"
+        style="font-size:30px; padding: 4px!important; padding-left: 10px!important;">
+        <i class="fas fa-paw"></i>
+      </a>
     </nav>
-    
-    <capturar-image ref="capturar" @pegaImagem="recebeImage"/>
+
 
   </div>
-    
+
 </template>
 
 <script>
   import CapturarImage from '@/components/CapturarImage'
+  import ImageUploader from 'vue-image-upload-resize'
+
   export default {
     components: {
-      CapturarImage,    
+      CapturarImage,
+      ImageUploader
     },
     name: "DetalhesPet",
     data() {
       return {
-        imagem_pet:"",
         localizacao: undefined,
         nome_proprietario: "",
         nome_pet: "",
@@ -186,21 +157,23 @@
         latitude: undefined,
         pode_editar: true,
         editando: false,
-        mostrar_filtro: false,          
+        mostrar_filtro: false,
+        hasImage: false,
+        image: require('../assets/imagens/user.png')
       };
     },
-    async mounted(){
-    
+    async mounted() {
+
       let parametros_login = localStorage.getItem("autorizacao");
-      let nome_proprietario = await JSON.parse(localStorage.getItem("parametros-usuario"))
-      if(!parametros_login){
-        this.$router.push({ name: 'Entrar' });
+      let nome_proprietario = await JSON.parse(localStorage.getItem("parametros-usuario"));
+      if (!parametros_login) {
+        this.$router.push({name: 'Entrar'});
       }
-      
+
       this.localizacao = navigator.geolocation;
       let detalhe_pet = await JSON.parse(localStorage.getItem("pet-detalhe"));
 
-      this.imagem_pet = detalhe_pet.imagem_pet;
+      //this.imagem_pet = detalhe_pet.imagem_pet; TODO verificar pois foi trocado para image
       this.nome_pet = detalhe_pet.nome_pet;
       this.status = detalhe_pet.status_pet;
       this.sexo = detalhe_pet.sexo_pet;
@@ -210,39 +183,42 @@
       this.raca = detalhe_pet.raca_pet;
       this.longitude = detalhe_pet.longitude;
       this.latitude = detalhe_pet.latitude;
-      this.nome_proprietario = nome_proprietario[0].nome_usuario+" "+ nome_proprietario[0].sobrenome_usuario;
-      console.log("dadadadsd",detalhe_pet[0].nome_usuario)
+      this.nome_proprietario = nome_proprietario[0].nome_usuario + " " + nome_proprietario[0].sobrenome_usuario;
+      console.log("dadadadsd", detalhe_pet[0].nome_usuario)
     },
-       
+
     methods: {
-      capturarImage(detalhe_pet) {
-        this.$refs.capturar.abrirModal(detalhe_pet);
+      getStatus() {
+        if (status == 'd') {
+          return 'color: red!important;';
+        } else if (status == 'a') {
+          return 'color: yellow!important;';
+        } else {
+          return 'color: green!important;';
+        }
       },
-      recebeImage(image){
-        this.imagem_pet = image;
+      setImage: function (file) {
+        this.hasImage = true;
+        this.image = file;
+
       },
-      getStatus(){
-        if(status == 'd'){
-        return 'color: red!important;';
-      }else if(status == 'a'){
-        return 'color: yellow!important;';
-      }else{
-        return 'color: green!important;';
+      gravarDados() {
+
       }
-    }       
+    }
   }
-}
 </script>
 
 <style scoped>
-.detalhe-foto-pet{
-  max-width: 100%;
-  border-radius: 25px;
-  width: 200px;
-  height: 200px;
-  box-shadow: cadetblue 1px 2px 5px 2px;
-}
-.labels{
-  box-shadow: cadetblue 1px 2px 5px 2px;
-}
+  .detalhe-foto-pet {
+    max-width: 100%;
+    border-radius: 25px;
+    width: 200px;
+    height: 200px;
+    box-shadow: cadetblue 1px 2px 5px 2px;
+  }
+
+  .labels {
+    box-shadow: cadetblue 1px 2px 5px 2px;
+  }
 </style>

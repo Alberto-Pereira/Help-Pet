@@ -14,12 +14,15 @@
       <input id="telefone" class="w3-input w3-margin-top w3-text-black bold-500" v-model="telefone" type="text" placeholder="Telefone:">
       <input id="whatsapp" class="w3-input w3-margin-top w3-text-black bold-500" v-model="whatsapp" type="text" placeholder="Whatsapp:">
       <input id="telegram" class="w3-input w3-margin-top w3-text-black bold-500" v-model="telegram" type="text" placeholder="Telegram:">
-    </div>
-     <router-link 
-      to="/Cadastrar-endereco"
-      class="w3-button w3-blue w3-col w3-margin-top">
+
+      <router-link
+        to="/Cadastrar-endereco"
+        class="w3-button w3-blue w3-col margin-top-50 w3-round-xxlarge">
         Cadastrar endereço
       </router-link>
+
+    </div>
+
 
     <nav class="container w3-display-bottomright w3-padding"> 
       <router-link 
