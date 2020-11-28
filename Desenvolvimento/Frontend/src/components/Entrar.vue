@@ -92,7 +92,6 @@ export default {
         password: this.senha
       }).then(function (response) {
         if(response){
-        
           localStorage.setItem('parametros-usuario', JSON.stringify(response.data));
           window.location.href = window.location.origin+"/Perfil"
          
