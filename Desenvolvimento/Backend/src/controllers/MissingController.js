@@ -6,8 +6,34 @@ module.exports = {
 
     const [count] = await connection("pet").from("animais_perdidos").count();
 
-    const pets = await connection("pet")
-      .from("animais_perdidos")
+    const pets = await connection
+      .select(
+        "pet.id_pet",
+        "usuario.id_usuario",
+        "pet.imagem_pet",
+        "pet.nome_pet",
+        "pet.raca_pet",
+        "pet.sexo_pet",
+        "pet.cor_pet",
+        "pet.numero_coleira",
+        "pet.descricao_pet",
+        "pet.longitude",
+        "pet.latitude",
+        "dados_pessoais.imagem_usuario",
+        "dados_pessoais.telefone",
+        "dados_pessoais.whatsapp",
+        "dados_pessoais.telegram",
+        "usuario.nome_usuario",
+        "usuario.sobrenome_usuario"
+      )
+      .from("pet")
+      .leftJoin(
+        "dados_pessoais",
+        "pet.id_usuario_pet_fk",
+        "dados_pessoais.id_usuario_dados_fk"
+      )
+      .leftJoin("usuario", "pet.id_usuario_pet_fk", "usuario.id_usuario")
+      .where("pet.status_pet", "d")
       .limit(10)
       .offset((page - 1) * 10);
 
@@ -27,14 +53,17 @@ module.exports = {
     if (user.length != 0) {
       const response = await connection("pet")
         .where("id_pet", idPet)
-
         .andWhere("id_usuario_pet_fk", idUser)
         .update({
           status_pet: "d",
           latitude: 0,
           longitude: 0,
         });
-      res.status(200).json({ idPet: response });
+      if (response == 1) {
+        res.status(200).json({ success: "pet está desaparecido!" });
+      } else {
+        res.status(400).json({ error: "pet não foi modificado!" });
+      }
     } else {
       res.status(404).json({ error: "Usuario não existe" });
     }

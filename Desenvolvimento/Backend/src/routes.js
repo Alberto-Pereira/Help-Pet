@@ -7,6 +7,7 @@ const SessionController = require("./controllers/SessionController");
 const PetController = require("./controllers/PetController");
 const AdoptController = require("./controllers/AdoptController");
 const MissingController = require("./controllers/MissingController");
+const ForgotPasswordController = require("./controllers/ForgotPasswordController");
 
 // Rotas do usuario
 // Listar usuarios
@@ -23,8 +24,12 @@ routes.get("/infoUser/:id", UserController.show);
 routes.post("/detailUser/:id", DetailUserController.store);
 // Mostrar dados pessoais
 routes.get("/detailUser/:id", DetailUserController.show);
+// Atualizar dados pessoais
+routes.put("/detailUser/:id", DetailUserController.update);
 // Login do usuario
 routes.post("/loginUser", SessionController.show);
+// Recuperar senha
+routes.post("/forgotPassword", ForgotPasswordController.show);
 
 // PETS
 // Cadastrar pets
