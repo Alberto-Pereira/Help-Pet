@@ -1,4 +1,1 @@
-# file: ~/.gitignore_global
-.DS_Store
-.idea
-.vscode
+node_modules
