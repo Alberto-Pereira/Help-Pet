@@ -2,24 +2,12 @@ const connection = require("../database/connection");
 
 module.exports = {
   async index(req, res) {
-    const {
-      page = 1,
-      breed,
-      colorPet,
-      sexPet,
-      namePet,
-      collarNumber,
-    } = req.query;
+    const { page = 1 } = req.query;
 
-    const [count] = await connection("pet").count();
+    const [count] = await connection("pet").from("animais_doacoes").count();
 
     const pets = await connection("pet")
       .from("animais_doacoes")
-      .where("nome_pet", namePet)
-      .andWhere("sexo_pet", sexPet)
-      .andWhere("cor_pet", colorPet)
-      .andWhere("numero_coleira", collarNumber)
-      .andWhere("raca_pet", breed)
       .limit(10)
       .offset((page - 1) * 10);
 
