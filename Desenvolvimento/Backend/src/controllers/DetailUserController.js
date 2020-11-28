@@ -20,7 +20,7 @@ module.exports = {
             telegram:telegram,
             telefone: fone,
           })
-        : res.status(401).json("dados pessoais ja cadastrado");
+        : res.json("401");
       res.json({ img_user, cpf, fone, whatsapp, fone });
     } else {
       res.json("CPF já cadastrado");

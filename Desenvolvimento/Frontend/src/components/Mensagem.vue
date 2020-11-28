@@ -12,7 +12,7 @@
             };
         },
         methods: {
-            exclamar(tipo, mensagem){
+            exclamar: function(tipo, mensagem){
                 
                 this.tipo = tipo;
                 this.mensagem = mensagem;

@@ -58,7 +58,7 @@
         <i class="fas fa-paw"></i>
       </a>
     </nav>
-    <mensagem ref="enviaMensagem" />
+    <Mensagem ref="enviarMensagem" />
   </div>
     
 </template>
@@ -66,7 +66,7 @@
 <script>
     import ImageUploader from 'vue-image-upload-resize'
     import api from "../service/api"
-    import Mensagem from "@/components/Mensagem";
+    import Mensagem from "@/components/Mensagem"
     export default {
       name: "DadosPessoais",
       components: {
@@ -130,25 +130,29 @@
           
         },
 
-         gravarDados() {
+        async gravarDados() {
+        
            //let cpf_valido = await this.ValidarCPF();
            //if(!cpf_valido){
             // return;
            //}
 
-            localStorage.setItem("imagem-usuario", this.image);
-            let resposta =  api.post("/detailUser/"+ this.dados_pessoais[0].id_usuario, {
+          api.post("/detailUser/"+ this.dados_pessoais[0].id_usuario, {
             img_user: this.image,
             cpf: this.cpf,
             fone: this.telefone,
             whatsapp: this.whatsapp,
             telegram: this.telegram
           })
-          if(resposta){
-            console.log("aqui")
-          }else{
-            console.log("deu ruim")
-          }
+          .then(function (response) {
+            if(response.data == "401"){
+              console.log("Dados ja gravados!");
+            }
+          
+          }).catch(function (error) {
+            
+            this.$refs.enviarMensagem.exclamar("", "Não foi gravar dados!")
+          })
         }, 
         ValidarCPF(){
           let cpf = this.cpf;
