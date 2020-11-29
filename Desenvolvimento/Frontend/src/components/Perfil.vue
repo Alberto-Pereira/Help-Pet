@@ -93,11 +93,13 @@
       class="buttons w3-purple" tooltip="Configuração do usuário">
         <i class="fas fa-user-cog"></i>
       </router-link>
-      <a 
-      href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-green" tooltip="Mural de adoção">
+
+      <router-link
+      to="/MuralPets"
+       style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+      class="buttons w3-green" tooltip="Mural de pets">
         <i class="fas fa-dog"></i>
-      </a>
+      </router-link>
       
       <router-link 
       to="/DadosPet" style="font-size:20px;padding: 4px!important; padding-left: 10px!important;" 
@@ -151,10 +153,10 @@ export default {
   created(){
     
     let parametros_login = localStorage.getItem("autorizacao");
-     console.log("entrei", parametros_login? true:false)
+    this.dados_usuario = localStorage.getItem('parametros-usuario');
     
-    if(parametros_login){
-        this.dados_usuario = localStorage.getItem('parametros-usuario');
+    if(parametros_login && this.dados_usuario !== "deslogado" ){
+        
         this.prencherTela(this.dados_usuario);
     }else{
       this.$router.push({ name: 'Entrar' });
@@ -175,6 +177,7 @@ export default {
 
     logout(){
       localStorage.setItem('autorizacao', false);
+      localStorage.setItem('parametros-usuario', "deslogado");
       this.$router.push({ name: 'Entrar' });
     },
 

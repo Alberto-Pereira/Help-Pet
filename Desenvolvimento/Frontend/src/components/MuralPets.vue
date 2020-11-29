@@ -8,7 +8,6 @@
 
     <div class="w3-row margin-lr">
       <input type="text"  class="w3-input w3-border w3-round w3-col s6 m3 l3" v-model="nome_pet" placeholder="Pesquisar">
-      <button class="w3-btn w3-white w3-border w3-border-grey w3-round-xlarge margin-l-10-px">Pesquisar</button>
     </div>
     <input class="w3-radio margin-lr" @click="buscarPetsAdocao()" type="radio" name="gender" value="adocao" checked>
     <label>Adoção</label>
@@ -52,9 +51,6 @@
       </a>
     </nav>
 
-
-
-
   </div>
 
 </template>
@@ -75,17 +71,26 @@
             nome_pet: ''
           }
         },
+      
+       mounted() {
+        let parametros_login = localStorage.getItem("autorizacao");
+        let parametros_usuario = (localStorage.getItem("parametros-usuario"));
+        if (!parametros_login && parametros_usuario == "deslogado") {
+          this.$router.push({ name: 'Entrar' });
+        }
+      },
       created(){
-        //TODO implementar
+        
         this.buscarPetsAdocao()
       },
       
       computed: { 
-        filtro: function () {
-          return this.pets.filter((pet) => pet.nome_pet.includes(this.nome_pet));
-        }
+       
       },
       methods: {
+         filtro: function () {
+          return this.pets.filter((pet) => pet.nome_pet.includes(this.nome_pet));
+        },
         
         async buscarPetsAdocao(){
           let  dados = await api.get('/adoptPet')

@@ -1,6 +1,28 @@
 <template>
 
   <div class="geral w3-container extender-div-tela-toda w3-center" style="padding:0px;">
+    <div id="atualizar-pet" v-if="mostrar_modal" class="w3-modal" style="display: block;">
+      <div class="w3-modal-content">
+        <div class="w3-container">
+          <span @click="mostrar_modal = false"
+          class="w3-button w3-display-topright">&times;</span>
+          <p class="">Encontrou meu pet?</p>
+          <p class="w3-btn w3-orange" @click="opcoes('atualizar')">Atualizar localização</p>
+          <p class="w3-btn w3-blue" @click="opcoes('ver')">Apenas ver a ultima localização do pet</p>
+        </div>
+      </div>
+    </div>
+    <div id="deletar" v-if="tem_certeza" class="w3-modal" style="display: block;">
+      <div class="w3-modal-content">
+        <div class="w3-container">
+          <span @click="tem_certeza = false"
+          class="w3-button w3-display-topright">&times;</span>
+          <p class="">Tem certeza que quer excluir pet?</p>
+          <p class="w3-btn w3-green" @click="deletarPet(true)">Sim</p>
+          <p class="w3-btn w3-red" @click="tem_certeza = false">Não</p>
+        </div>
+      </div>
+    </div>
     <div class="w3-blue w3-col">
 
       <h2 class="w3-col w3-center bold-500">Detalhes Pet</h2>
@@ -26,7 +48,8 @@
           </span>
       </div>
 
-       <div v-if="id_pet_dono != id_logado" class="w3-col w3-blue" @click="chamar()"><i class="fab fa-whatsapp"></i> Falar com proprietario agora</div>
+      <div v-if="id_pet_dono != id_logado" class="w3-col w3-blue w3-btn" @click="chamar()"><i class="fab fa-whatsapp"></i> Falar com proprietario agora</div>
+      <div class="w3-col w3-purple w3-btn" @click="mapa()"><i class="fas fa-map-marked-alt"></i> Ultima localização do pet</div>
       <div class="w3-margin-top w3-col w3-border w3-container w3-mobile w3-round labels w3-animate-zoom w3-small" v-if="!editando">
         <span class="w3-span w3-text-black bold-500 w3-col w3-left-align"><i class="fas fa-user"></i> : {{nome_proprietario}}</span>
         <span class="w3-span w3-margin-top w3-text-black bold-500 w3-col w3-left-align">
@@ -87,6 +110,7 @@
           <label>Descrição</label>
           <input class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Descrição:" type="text" v-model="descricao">
          </div>
+         <div class="w3-col w3-blue w3-btn w3-margin-top" @click="atualizarPet">Atualizar dados</div>
       </div>
 
     </div>
@@ -128,6 +152,12 @@
         href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" tooltip="Gravar dados">
         <i class="fas fa-database"></i>
       </a>
+      <a
+        v-if="id_pet_dono == id_logado"
+        @click="deletarPet(false)" class="buttons w3-red"
+        style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" tooltip="Excluir pet">
+        <i class="fas fa-trash"></i>
+      </a>
 
       <a
         class="buttons w3-blue"
@@ -136,7 +166,7 @@
         <i class="fas fa-paw"></i>
       </a>
     </nav>
-
+    <mensagem ref="enviaMensagem" />
 
   </div>
 
@@ -145,12 +175,14 @@
 <script>
   import CapturarImage from '@/components/CapturarImage'
   import ImageUploader from 'vue-image-upload-resize'
+  import Mensagem from "@/components/Mensagem";
   import api from "@/service/api";
 
   export default {
     components: {
       CapturarImage,
-      ImageUploader
+      ImageUploader,
+      Mensagem
     },
     name: "DetalhesPet",
     data() {
@@ -174,14 +206,17 @@
         image: '',
         id_pet_dono:'',
         id_logado:'',
-        id_pet:0
+        id_pet:0,
+        mostrar_modal: false,
+        tem_certeza: false
       };
     },
     async created() {
-
+      console.log('window', window)
+       console.log('navigator', navigator)
       let parametros_login = localStorage.getItem("autorizacao");
       let nome_proprietario = await JSON.parse(localStorage.getItem("parametros-usuario"));
-      if (!parametros_login) {
+      if (!parametros_login && nome_proprietario == "deslogado") {
         this.$router.push({name: 'Entrar'});
       }
 
@@ -219,17 +254,97 @@
         }
       },
       atualizarStatusPerdido(){
+         let sucesso = false
          api.put('/missingPet/'+ this.id_pet_dono , {
-          "idPet": this.id_pet
+          idPet: this.id_pet
         }).then(function (response) {
-         
-        }).catch(function (error) {
+          sucesso = true;
           
-          //this.$refs.enviaMensagem.exclamar("", "Não foi possivel logar!")
+        }).catch(function (error) {
+          sucesso = false;
+          
         })
+        if(sucesso){
+          this.$refs.enviaMensagem.exclamar("sucesso", "Status de perdido já atualizados, se ouver mais detalhes edite os dados do pet.")
+        }else{
+          this.$refs.enviaMensagem.exclamar("error", "Não foi possivel atualizar status perdido.")
+        }
+      },
+      atualizarPet(){
+         let sucesso = false
+         api.put('/updatePet/'+ this.id_pet_dono , {
+          idPet: this.id_pet,
+          img_pet: this.imagem,
+          namePet: this.nome_pet,
+          sexPet: this.sexo,
+          colorPet: this.cor,
+          description: this.descricao,
+          location: [
+            this.latitude,
+            this.longitude
+          ],
+          status: this.status,
+          breed: this.raca
+        }).then(function (response) {
+          sucesso = true
+        }).catch(function (error) {
+          sucesso = false
+        })
+        if(sucesso){
+          this.$refs.enviaMensagem.exclamar("sucesso", "Pet atualizado.")
+        }else{
+          this.$refs.enviaMensagem.exclamar("error", "Não foi possivel atualizar Pet.")
+        }
+      },
+      deletarPet(questionar){
+        if(!questionar){
+          this.tem_certeza = true;
+        }
+        if(questionar){
+          this.tem_certeza = false;
+          let sucesso = false
+          api.delete('/missingPet/'+ this.id_pet)
+          .then(function (response) {
+            sucesso = true;
+            
+          }).catch(function (error) {
+            sucesso = false;
+            
+          })
+          if(sucesso){
+            this.$refs.enviaMensagem.exclamar("sucesso", "Apagado com sucesso.")
+          }else{
+            this.$refs.enviaMensagem.exclamar("error", "não foi possivel apagar.")
+          }
+        }
+
       },
       chamar(){
         window.location.href = 'https://api.whatsapp.com/send?phone='+this.whatsapp+'&text=Olá você é responsável por esse pet '+this.nome_pet+'? &source&data=';
+      },
+      mapa(){
+        if(this.id_pet_dono !== this.id_logado){
+          this.mostrar_modal = true;
+        }else{
+          window.location.href = 'https://www.google.com.br/maps/@'+this.latitude,this.longitude+',16z'
+        }
+        
+      },
+      opcoes: function(value){
+        if(value == 'atualizar'){
+          if(navigator.geolocation){
+            let localizacao = navigator.geolocation;
+            this.latitude = localizacao.coords.latitude;
+            this.longitude = localizacao.coords.longitude;
+            this.atualizarPet();
+          }else{
+            this.$refs.enviaMensagem.exclamar("erro", "Não há suporte para localização");
+            return false;
+          }
+        }
+        if(value == 'ver'){
+          window.location.href = 'https://www.google.com.br/maps/@'+this.latitude,this.longitude+',16z'
+        }
       },
       setImage: function (file) {
         this.hasImage = true;
