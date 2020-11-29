@@ -33,7 +33,7 @@
         </span>
       </label>
     </div>
-    <div v-show="!pets_mostrar && meus_pets.length > 0" @change="buscarPets()">
+    <div v-show="!pets_mostrar && meus_pets.length > 0" @change="buscarPets()"  class="w3-animate-zoom">
       <div id="meus-pets"  v-for="(pet, index_pet) in meus_pets"  :key="index_pet" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
         <div class="w3-col s2">
           <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet" width="15" height="15">
@@ -49,29 +49,27 @@
             class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue ">
             <i class="fas fa-edit"></i> Detalhes 
           </button>
-          &nbsp;
-          <button 
-            style="width: 150px"
-            @click="gerarOcorrencia(pet)" 
-            class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-red">
-            <i class="fas fa-exclamation-triangle"></i> Ocorrencia 
-          </button>
         </div>
         
         <button v-if="meus_pets.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
       </div>
     </div>
-    <div v-show="pets_mostrar && !nao_tem_mensagem && pets_perdidos.length > 0">
+    <div v-show="pets_mostrar && !nao_tem_mensagem && pets_perdidos.length > 0" class="w3-animate-zoom">
       <div id="pets-perdidos" v-for="(pet_perdido, indice) in pets_perdidos" :key="indice" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
         <div class="w3-col s2">
           <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet_perdido.imagem_pet" width="15" height="15">
         </div>
         &nbsp;
-        <div class="w3-col s8">
+        <div class="w3-col s4">
           <strong class="">{{pet_perdido.nome_pet}}</strong>
         </div>
-        <div class="w3-col s2 w3-small">
-          <button @click="ativarDetalhes(pet_perdido)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue "><i class="fas fa-edit"></i> Detalhes </button>
+        <div class="w3-col s4 w3-small">
+          <button 
+            @click="ativarDetalhes(pet_perdido)" 
+            style="width: 150px"
+            class="w3-btn w3-white w3-border w3-round-xxlarge w3-center w3-border-blue w3-right-align">
+            <i class="fas fa-edit"></i> Detalhes 
+          </button>
         </div>
         
         <button v-if="pets_perdidos.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
@@ -151,12 +149,17 @@ export default {
     
   },
   created(){
+    
     let parametros_login = localStorage.getItem("autorizacao");
-    this.dados_usuario = localStorage.getItem('parametros-usuario');
-    if(!parametros_login || !this.dados_usuario){
+     console.log("entrei", parametros_login? true:false)
+    
+    if(parametros_login){
+        this.dados_usuario = localStorage.getItem('parametros-usuario');
+        this.prencherTela(this.dados_usuario);
+    }else{
       this.$router.push({ name: 'Entrar' });
     }
-    this.prencherTela(this.dados_usuario);
+    
   },
   methods:{
     async buscarPets(){
@@ -171,7 +174,6 @@ export default {
     },
 
     logout(){
-      let dados = localStorage.getItem('parametros-usuario');
       localStorage.setItem('autorizacao', false);
       this.$router.push({ name: 'Entrar' });
     },
@@ -198,7 +200,6 @@ export default {
                   let dados1 =[]
                   dados1.push(response.data[0])
                   dados = JSON.parse(JSON.stringify(dados1[0]))
-                  console.log("aqui", dados)
             }
           
           }).catch(function (error) {

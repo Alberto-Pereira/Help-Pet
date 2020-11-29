@@ -77,7 +77,7 @@ export default {
   mounted() {
     let parametros_login = localStorage.getItem("autorizacao");
     
-    if (parametros_login) {
+    if (parametros_login == true) {
       this.$router.push({ name: 'Perfil' });
     }
   },

@@ -7,16 +7,36 @@
     </div>
 
     <div class="w3-row margin-lr">
-      <input type="text"  class="w3-input w3-border w3-round w3-col s6 m3 l3" placeholder="Pesquisar">
+      <input type="text"  class="w3-input w3-border w3-round w3-col s6 m3 l3" v-model="nome_pet" placeholder="Pesquisar">
       <button class="w3-btn w3-white w3-border w3-border-grey w3-round-xlarge margin-l-10-px">Pesquisar</button>
     </div>
+    <input class="w3-radio margin-lr" @click="buscarPetsAdocao()" type="radio" name="gender" value="adocao" checked>
+    <label>Adoção</label>
 
-    <div id="listView" class="margin-top-15 margin-lr border-red">
-      <span class="w3-text-red">Aqui vai a listview</span>
+    <input class="w3-radio margin-lr" @click="buscarPetsPerdidos()" type="radio" name="gender" value="perdidos">
+    <label>Perdidos</label>
+
+    <div id="listView" class="">
+      <div>
+        <div id="pets-perdidos" v-for="(pet, indice) in filtro()"  :key="indice" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
+          <div class="w3-col s2">
+            <img class="detalhe-foto-pet w3-center w3-border w3-col s12 m12 l12" v-bind:src="pet.imagem_pet" width="70" height="50">
+          </div>
+          &nbsp;
+          <div class="w3-col s8">
+            <strong class="">{{pet.nome_pet}}</strong>
+          </div>
+          <div class="w3-col s12 w3-small w3-right-align">
+            <button @click="ativarDetalhes(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue "><i class="fas fa-edit"></i> Detalhes </button>
+          </div>
+          
+          <button v-if="pets.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
+        </div>
+      </div>
     </div>
 
 
-    <nav class="container w3-display-bottomright w3-padding">
+    <nav class="container w3-display-bottomright w3-padding" style="position: fixed;">
       <router-link
         to="/Perfil"
         style="font-size:20px;padding: 4px!important; padding-left: 9px!important;"
@@ -41,6 +61,7 @@
 
 <script>
     import ImageUploader from 'vue-image-upload-resize'
+    import api from "@/service/api";
     export default {
         name: "MuralPets",
         components: {
@@ -49,13 +70,41 @@
         data () {
           return {
             hasImage : false,
-            image : require('../assets/imagens/user.png')
+            image : '',
+            pets:[],
+            nome_pet: ''
           }
         },
       created(){
         //TODO implementar
+        this.buscarPetsAdocao()
+      },
+      
+      computed: { 
+        filtro: function () {
+          return this.pets.filter((pet) => pet.nome_pet.includes(this.nome_pet));
+        }
       },
       methods: {
+        
+        async buscarPetsAdocao(){
+          let  dados = await api.get('/adoptPet')
+          this.pets = dados.data;
+          this.pets[0].status_pet = 'a'
+         
+        },
+
+        ativarDetalhes(pet){
+          localStorage.setItem('pet-detalhe', JSON.stringify(pet));
+          this.$router.push({ name: 'DetalhesPet' });
+        },
+
+        async buscarPetsPerdidos(){
+          let  dados = await api.get('/missingPet')
+          this.pets = dados.data;
+          this.pets[0].status_pet = 'p'
+          
+        },
 
       }
     }
