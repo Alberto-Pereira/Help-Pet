@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div class="w3-center" style="margin-top: 70px;">
+    <div class="w3-center w3-small" style="margin-top: 70px;">
        <div>
           <h3>{{dados_master.nome_usuario}}</h3>
         </div>
@@ -43,11 +43,17 @@
           <strong class="">{{pet.nome_pet}}</strong>
         </div>
         <div class="w3-col s4 w3-small">
-          <button @click="ativarDetalhes(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue ">
+          <button 
+            @click="ativarDetalhes(pet)" 
+            style="width: 150px"
+            class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue ">
             <i class="fas fa-edit"></i> Detalhes 
           </button>
           &nbsp;
-          <button @click="gerarOcorrencia(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-red w3-margin-top ">
+          <button 
+            style="width: 150px"
+            @click="gerarOcorrencia(pet)" 
+            class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-red">
             <i class="fas fa-exclamation-triangle"></i> Ocorrencia 
           </button>
         </div>
@@ -116,10 +122,12 @@
  
 import Mensagem from '@/components/Mensagem'
 import api from "../service/api";
+import DetalhesPet from '@/components/DetalhesPet'
 export default {
   name: 'Perfil',
   components:{
-    Mensagem
+    Mensagem,
+    DetalhesPet
   },
   
   data () {
@@ -161,15 +169,18 @@ export default {
       }
       
     },
+
     logout(){
       let dados = localStorage.getItem('parametros-usuario');
       localStorage.setItem('autorizacao', false);
       this.$router.push({ name: 'Entrar' });
     },
+
     ativarDetalhes(pet){
       localStorage.setItem('pet-detalhe', JSON.stringify(pet));
       this.$router.push({ name: 'DetalhesPet' });
     },
+
      gerarOcorrencia(pet){
       localStorage.setItem('pet-ocorrencia', JSON.stringify(pet));
       this.$router.push({ name: 'GerarOcorrencia' });
@@ -206,7 +217,8 @@ export default {
       let pets_perdidos_dados = []
       pets_perdidos_dados =  await api.get("/missingPet")
       this.pets_perdidos = pets_perdidos_dados.data
-      console.log("dados",pets_perdidos_dados)
+      this.pets_perdidos[0].status_pet = 'p'
+      console.log("dados",this.pets_perdidos)
       if(this.pets_perdidos !== "Nenhum pet perdido"){
         this.nao_tem_mensagem = false
       }
