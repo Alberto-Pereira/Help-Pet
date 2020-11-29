@@ -37,6 +37,24 @@ module.exports = {
     useNullAsDefault: true,
   },
 
+  developmentBack2: {
+    client: "mysql",
+    connection: {
+      host: "127.0.0.1",
+      user: "root",
+      password: "drug",
+      database: "helppet test",
+    },
+    pool: {
+      min: 2,
+      max: 10,
+    },
+    migrations: {
+      tableName: "knex_migrations",
+    },
+    useNullAsDefault: true,
+  },
+
   production: {
     client: "mysql",
     connection: {

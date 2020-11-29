@@ -2,6 +2,7 @@ const express = require("express");
 const routes = express.Router();
 
 const UserController = require("./controllers/UserController");
+const AdressUserController = require("./controllers/AdressUserController");
 const DetailUserController = require("./controllers/DetailUserController");
 const SessionController = require("./controllers/SessionController");
 const PetController = require("./controllers/PetController");
@@ -26,6 +27,14 @@ routes.post("/detailUser/:id", DetailUserController.store);
 routes.get("/detailUser/:id", DetailUserController.show);
 // Atualizar dados pessoais
 routes.put("/detailUser/:id", DetailUserController.update);
+//Criar novo endereço
+routes.post("/newAdress/:idUser", AdressUserController.store);
+//Deletar um endereço
+routes.delete("/deleteAdress/:idUser", AdressUserController.delete);
+//Atualizar endereço
+routes.put("/updateAdress/:idUser", AdressUserController.update);
+//Mostrar detalhadamente o endereço do usuario
+routes.get("/infoAdress/:idUser", AdressUserController.show);
 // Login do usuario
 routes.post("/loginUser", SessionController.show);
 // Recuperar senha
