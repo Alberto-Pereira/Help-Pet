@@ -67,10 +67,11 @@ module.exports = {
       nome_usuario: name,
       sobrenome_usuario: lastName,
       email,
-      senha: crypto.createHash("sha1").update(password).digest("hex"),
-      tipo_usuario: typeUser,
+      tipo_usuario: typeUser.toUpperCase(),
     };
-
+    if (password != null) {
+      user.senha = crypto.createHash("sha1").update(password).digest("hex");
+    }
     const emails = await connection("usuario")
       .where("email", email)
       .whereNot("id_usuario", id);
