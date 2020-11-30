@@ -102,7 +102,7 @@
        
         this.dados_pessoais = parametros_locais;
         let parametros_login = localStorage.getItem("autorizacao");
-        if(!parametros_login){
+        if(!parametros_login && parametros_locais == "deslogado"){
             this.$router.push({ name: 'Entrar' });
           }
         this.prencherTela()

@@ -4,7 +4,7 @@
 
     <div class="w3-col cor-fundo-app-branca margin-top-150 border-radius padding-30">
       <h2 class="w3-center bold">Parabéns</h2>
-      <div class="font-cinza-meio-claro w3-center">Você cadastrou seu e-mail e senha com sucesso clique nas opções para segunda etapa do cadastro</div>
+      <div class="font-cinza-meio-claro w3-center">Você cadastrou seu e-mail e senha com sucesso faça login e complete o seu cadastro.</div>
       <router-link to="/Entrar">
         <button class="w3-col w3-btn w3-round-xxlarge w3-center fundo-roxo w3-text-white margin-top-80 w3-margin-bottom">Fazer login</button>
       </router-link>
@@ -24,7 +24,8 @@
     },
     mounted(){
       let parametros_login = localStorage.getItem("autorizacao");
-      if(!parametros_login){
+        let parametros_usuario = (localStorage.getItem("parametros-usuario"));
+        if (!parametros_login && parametros_usuario == "deslogado" || !parametros_usuario) {
           this.$router.push({ name: 'Entrar' });
         }
     },

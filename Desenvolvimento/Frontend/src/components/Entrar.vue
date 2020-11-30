@@ -76,8 +76,8 @@ export default {
   },
   mounted() {
     let parametros_login = localStorage.getItem("autorizacao");
-    
-    if (parametros_login) {
+    let parametros_usuario = (localStorage.getItem("parametros-usuario"));
+    if (parametros_login && parametros_usuario !== "deslogado") {
       this.$router.push({ name: 'Perfil' });
     }
   },
