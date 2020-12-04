@@ -1,48 +1,21 @@
-<p align="center">
-  <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/tenaQuZ.png" alt="Project logo"></a>
-  <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/WJ3F9J5.png" alt="Project logo"></a>
-</p>
+# helppet
 
-<h3 align="center">Help!Pet</h3>
+> A Vue.js project
 
-<div align="center">
+## Build Setup
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+``` bash
+# install dependencies
+npm install
 
-</div>
+# serve with hot reload at localhost:8080
+npm run dev
 
----
+# build for production with minification
+npm run build
 
-<p align="center">Este projeto foi desenvolvido para atender o projeto integrador da PUCGO - Pontifícia Universidade Católica de Goiás
-    <br> 
-</p>
+# build for production and view the bundle analyzer report
+npm run build --report
+```
 
-## 📝 Sumário
-
-- [Sobre](#about)
-- [Arquitetura](#pattern)
-- [Contribuidores](../CONTRIBUTING.md)
-- [Autores](#authors)
-
-## 🧐 Sobre <a name = "about"></a>
-
-Está aplicação tem o intuito de ajudar os pais de Pet a encontrarem seus animais perdidos ou adotarem pets para preencherem os corações deles ❤.
-
-## Arquitetura <a name = "pattern"></a>
-
-- Documents:
-  - Todos os documentos produzidos estaram nesta pasta, como por exemplo o documento de plano de qualidade, configuração entre outros.
-
-## ✍️ Autores <a name = "authors"></a>
-
-- [@Pedronex](https://github.com/Pedronex)
-- [@WjCK](https://github.com/WjCK)
-- [@Alberto-Pereira](https://github.com/Alberto-Pereira)
-- [@Douglas-de-Freitas](https://github.com/Douglas-de-Freitas)
-- [@HaymanL](https://github.com/HaymanL)
-- [@lucasmachadom4](https://github.com/lucasmachadom4)
-- [@sadinho](https://github.com/sadinho)
-
-Veja a lista de [contribuidores](https://github.com/Pedronex/Help-Pet/contributors) que participaram deste projeto.
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
