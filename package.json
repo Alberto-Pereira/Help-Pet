@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js",
-    "docs:build": "vuepress build docs"
+    "build": "node build/build.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
