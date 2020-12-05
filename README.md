@@ -14,7 +14,7 @@ A lista das rotas estão nos arquivos
 
 # REST API
 
-Está rest api
+Está rest api foi feita para a aplicação do Help!Pet que está na seguis
 
 ## Listar usuarios
 
@@ -405,7 +405,7 @@ Está rest api
             "descricao_pet": "descrição",
             "longitude": coordenada(X),
             "latitude": coordenada(Y),
-            "status_pet": "a"
+            "status_pet": "EstadoPet"
         }
     ]
 
@@ -413,7 +413,7 @@ Está rest api
 
 ### Request
 
-``
+`/pet/idUser?idPet=Number(idPet)`
 
 ### Response
 
