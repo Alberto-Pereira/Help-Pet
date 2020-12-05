@@ -25,7 +25,7 @@ module.exports = {
       });
       res.status(201).json({ name, lastName, email, password, typeUser });
     } else {
-      res.json("Email ja cadastrado");
+      res.status(401).json("Email ja cadastrado");
     }
   },
   async delete(req, res) {
