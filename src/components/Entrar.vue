@@ -1,118 +1,109 @@
 <template>
-  <div class="entrar w3-center w3-col">
-    
-     <div v-if="processando" class="wrapper">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>          
-        <div class="shadow"></div>
-        <div class="shadow"></div>
-        <div class="shadow"></div>
+  <div
+    class="geral w3-container cor-fundo-app extender-div-tela-toda"
+    style="padding:0px;"
+  >
+    <div v-show="processando" class="wrapper">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="shadow"></div>
+      <div class="shadow"></div>
+      <div class="shadow"></div>
     </div>
 
-    <!--<span class="w3-text-green w3-margin-top w3-col s6 m6 l6"><h1>Entrar</h1></span>-->
-    <div>
-      <img class="centralizado" src="../assets/imagens/logo.png" />
-
-      <form class="w3-container">
-        <input
-          class="w3-input w3-margin-bottom"
-          type="email"
-          v-model="email"
-          placeholder="Email"
-          autocomplete="off"
-        />
-        <input
-          class="w3-input w3-margin-bottom w3-margin-top"
-          type="password"
-          v-model="senha"
-          placeholder="Senha"
-          autocomplete="off"
-        />
-        <button
-          @click="logar()"
-          class="w3-btn w3-blue w3-round-xxlarge w3-margin-top  w3-margin-bottom w3-col"
-        >
-          Entrar
-        </button>
-
-        <span  class="w3-text-green w3-margin-top"
-          >Perdeu sua senha?</span
-        >
-        &nbsp; &nbsp;
-        <router-link to="/Registrar" class="w3-text-green w3-margin-top"
-          >Criar conta?</router-link
-        >
-      </form>
-
-     
+    <div class="w3-blue w3-col">
+      <h2 class="w3-col w3-center bold-500">Login</h2>
     </div>
-     <mensagem ref="enviaMensagem" />
+
+    <div class="w3-row w3-margin-bottom">
+      <router-link to="/Entrar">
+        <h6 class="w3-col padding-10 w3-text-purple">Entrar</h6>
+      </router-link>
+    </div>
+
+    <form class="w3-container w3-margin-top font-cinza-claro">
+      <input
+        class="w3-input w3-margin-top w3-round"
+        autocomplete="off"
+        v-model="email"
+        type="email"
+        placeholder="Email"
+      />
+      <input
+        class="w3-input w3-margin-top w3-round"
+        autocomplete="off"
+        v-model="senha"
+        type="password"
+        placeholder="Senha"
+      />
+    </form>
+
+    <div class="w3-row margin-top-50">
+      <button
+        @click="login()"
+        class="w3-col w3-btn w3-round-xxlarge w3-center fundo-roxo w3-text-white"
+      >
+        Login
+      </button>
+    </div>
+    <mensagem ref="enviaMensagem" />
   </div>
 </template>
 
 <script>
 import Mensagem from "@/components/Mensagem";
-import api from "@/service/api";
-
-
+import api from "../service/api";
 
 export default {
-  
+  name: "Registrar",
   components: {
     Mensagem
   },
-  
-  name: "Entrar",
   data() {
     return {
+      nome: "",
+      sobre_nome: "",
       senha: "",
+      confirma_senha: "",
       email: "",
       parametros_usuario: undefined,
-      processando: false
-      
+      processando: false,
+      concordar: undefined
     };
-    
   },
-  mounted() {
-    let parametros_login = localStorage.getItem("autorizacao");
-    let parametros_usuario = (localStorage.getItem("parametros-usuario"));
-    if (parametros_login && parametros_usuario !== "deslogado") {
-      this.$router.push({ name: 'Perfil' });
-    }
-  },
-
+  mounted() {},
   methods: {
-    logar() {
-      this.parametros_usuario = []
-      this.processando = true;
-     
-      api.post("/loginUser", {
-        email: this.email,
-        password: this.senha
-      }).then(function (response) {
-        console.log("ferreira")
-        if(response){
-          localStorage.setItem('parametros-usuario', JSON.stringify(response.data));
-          window.location.href = window.location.origin+"/Perfil"
-         
-          localStorage.setItem('autorizacao', true);
-          //this.$refs.enviaMensagem.exclamar("", "Logado com sucesso!")
-            
+    async login() {
+      try {
+        /* validação de email*/
+        let usuario = this.email.substring(0, this.email.indexOf("@"));
+        let dominio = this.email.substring(
+          this.email.indexOf("@") + 1,
+          this.email.length
+        );
+
+        const resposta = await api.post("/loginUser", {
+          password: this.senha,
+          email: this.email
+        });
+        if (resposta.status == 201 || resposta.status == 200) {
+          this.processando = false;
+          localStorage.setItem("autorizacao", false);
+          this.$router.push({ name: "Sucesso" });
         }
-      }).catch(function (error) {
-        
-        //this.$refs.enviaMensagem.exclamar("", "Não foi possivel logar!")
-      })
-    },
+      } catch (error) {
+        this.processando = false;
+        this.email = this.email;
+        this.$refs.enviaMensagem.exclamar(
+          "erro",
+          "Não foi possivel realizar o cadastro, cadastro já existente"
+        );
+        return;
+      }
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-img {
-  max-width: 150px;
-  height: 150px;
-}
-</style>
+<style scoped></style>
