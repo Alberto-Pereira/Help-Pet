@@ -104,7 +104,7 @@ export default {
         if (resposta.status == 201 || resposta.status == 200) {
           this.processando = false;
           localStorage.setItem("autorizacao", "logado");
-          localStorage.setItem('parametros-usuario', resposta.data)
+          localStorage.setItem('parametros-usuario', JSON.stringify(resposta.data))
           this.$router.push({ name: "Perfil" });
         }
       } catch (error) {
