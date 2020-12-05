@@ -11,7 +11,8 @@ module.exports = {
       .where("email", email);
     if (user.length == 0) {
       res.status(401).send("Email ou senha incorreto");
+    } else {
+      res.status(200).json(user[0]);
     }
-    res.status(200).json(user[0]);
   },
 };
