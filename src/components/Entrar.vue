@@ -47,6 +47,11 @@
         Login
       </button>
     </div>
+    <div class="w3-row w3-margin-bottom">
+      <router-link to="/Registrar">
+        <h7 class="w3-col padding-10 w3-text-green">Criar conta</h7>
+      </router-link>
+    </div>
     <mensagem ref="enviaMensagem" />
   </div>
 </template>
