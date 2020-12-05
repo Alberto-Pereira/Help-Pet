@@ -72,7 +72,14 @@ export default {
       concordar: undefined
     };
   },
-  mounted() {},
+  mounted() {
+    let logado = localStorage.getItem("autorizacao");
+    if(logado != "logado"){
+      this.$router.push({ name: "Entrar" });
+    }else if(logado == "logado"){
+       this.$router.push({ name: "Perfil" });
+    }
+  },
   methods: {
     async login() {
       try {
@@ -89,8 +96,9 @@ export default {
         });
         if (resposta.status == 201 || resposta.status == 200) {
           this.processando = false;
-          localStorage.setItem("autorizacao", false);
-          this.$router.push({ name: "Sucesso" });
+          localStorage.setItem("autorizacao", "logado");
+          localStorage.setItem('parametros-usuario', resposta.data)
+          this.$router.push({ name: "Perfil" });
         }
       } catch (error) {
         this.processando = false;
