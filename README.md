@@ -16,7 +16,7 @@ A lista das rotas estão nos arquivos
 
 Está rest api
 
-## Coletar as listas
+## Listar usuarios
 
 ### Requisição
 
@@ -59,7 +59,12 @@ Está rest api
     Location: /thing/1
     Content-Length: 36
 
-    {"id":1,"name":"name","password":sha1("password"), "typeUser": "levelAcess"}
+    {
+        "id":1,
+        "name":"NomeUsuario",
+        "password":sha1("Senha"),
+        "typeUser": "NivelUsuario"
+    }
 
 ## Detalhes do usuario
 
@@ -93,242 +98,140 @@ Está rest api
     Connection: keep-alive
     Content-Type: application/json
 
-##
+## Atualizar usuário
 
 ### Request
 
-`POST /thing/`
+`PUT /updateUser/idUser`
 
-    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
+    {
+        "name": "NomeUsuario",
+        "lastName": "Sobrenome",
+        "password": "Senha",
+        "type_user": "A" || "D"
+    }
 
 ### Response
 
-    HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 201 Created
-    Connection: close
-    Content-Type: application/json
-    Location: /thing/2
-    Content-Length: 35
+    [
+        {
+            "Success": "usuario atualizado"
+        },
+        {
+            "user": {
+                "nome_usuario": "NomeUsuario",
+                "sobrenome_usuario": "Sobrenome",
+                "email":"email@email.com",
+                "tipo_usuario":"A",
+                "senha":"sha1(password)"
+            }
+        }
+    ]
 
-    {"id":2,"name":"Bar","status":null}
+---
 
-## Get list of Things again
+## Detalhe do usuario
 
 ### Request
 
-`GET /thing/`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+`GET /detailUser/idUser`
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 74
+    [
+        {
+            "imagem_usuario"base64(...),
+            "cpf": 11111111111,
+            "id_usuario_dados_fk":"idUser",
+            "telefone":"Numero",
+            "whatsapp":"NumeroWpp",
+            "telegram":"NumeroTelegram",
+        }
+    ]
 
-    [{"id":1,"name":"Foo","status":"new"},{"id":2,"name":"Bar","status":null}]
-
-## Change a Thing's state
+## Adicionar Detalhes do usuario
 
 ### Request
 
-`PUT /thing/:id/status/changed`
+`POST /detailUser/idUser`
 
-    curl -i -H 'Accept: application/json' -X PUT http://localhost:7000/thing/1/status/changed
+    [
+        {
+            "img_user"base64(...),
+            "cpf": 11111111111,
+            "id_usuario_dados_fk":"idUser",
+            "fone":"Numero",
+            "whatsapp":"NumeroWpp",
+            "telegram":"NumeroTelegram",
+        }
+    ]
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
+    [
+        {
+            "imagem_usuario"base64(...),
+            "cpf": 11111111111,
+            "id_usuario_dados_fk":"idUser",
+            "telefone":"Numero",
+            "whatsapp":"NumeroWpp",
+            "telegram":"NumeroTelegram",
+        }
+    ]
 
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Get changed Thing
+## Deletar Detalhes do usuario
 
 ### Request
 
-`GET /thing/id`
+`PUT /detailUser/idUser`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+    [
+        {
+            "img_user"base64(...),
+            "cpf": 11111111111,
+            "id_usuario_dados_fk":"idUser",
+            "fone":"Numero",
+            "whatsapp":"NumeroWpp",
+            "telegram":"NumeroTelegram",
+        }
+    ]
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
+    [
+        {
+            "imagem_usuario"base64(...),
+            "cpf": 11111111111,
+            "id_usuario_dados_fk":"idUser",
+            "telefone":"Numero",
+            "whatsapp":"NumeroWpp",
+            "telegram":"NumeroTelegram",
+        }
+    ]
 
-    {"id":1,"name":"Foo","status":"changed"}
+---
 
-## Change a Thing
+## Login usuario
 
 ### Request
 
-`PUT /thing/:id`
+`POST /loginUser`
 
-    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed2"}
-
-## Attempt to change a Thing using partial params
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/thing/1
+    {
+        "email":"email@email.com",
+        "password":"senha"
+    }
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
+    [
+        {
+            "id_usuario":Number(idUser),
+            "nome_usuario":"NomeUsuario",
+            "sobrenome_usuario":"Sobrenome",
+            "email":"email@email.com",
+            "tipo_usuario":"a"
+        }
+    ]
 
-    {"id":1,"name":"Foo","status":"changed3"}
-
-## Attempt to change a Thing using invalid params
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'id=99&status=changed4' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed4"}
-
-## Change a Thing using the \_method hack
-
-### Request
-
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Baz","status":"changed4"}
-
-## Change a Thing using the \_method hack in the url
-
-### Request
-
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/thing/1?_method=PUT
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: text/html;charset=utf-8
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
-### Response
-
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 204 No Content
-    Connection: close
-
-## Try to delete same Thing again
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Get deleted Thing
-
-### Request
-
-`GET /thing/1`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing using the \_method hack
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/thing/2/
-
-### Response
-
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 204 No Content
-    Connection: close
+---
