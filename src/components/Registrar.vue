@@ -92,6 +92,7 @@ export default {
              return;
           }
           this.processando = true;
+        
           const resposta = await api
             .post("/newUser", {
               name: this.nome,
@@ -100,29 +101,26 @@ export default {
               email: this.email,
               typeUser: "A"
             })
-            console.log(resposta);
-            if(resposta){
+            if(resposta.status == 201 || resposta.status == 200){
               this.processando = false;
+              localStorage.setItem('autorizacao', false);
+              this.$router.push({ name: 'Sucesso' });
             }
-            localStorage.setItem('autorizacao', false);
-            this.$router.push({ name: 'Sucesso' });
-            return;
-            
+              
           }
         } catch (error) {
           this.processando = false
           this.email = this.email;
-          this.$refs.enviaMensagem.exclamar("erro", error.data);
+          this.$refs.enviaMensagem.exclamar("erro", "Não foi possivel realizar o cadastro, cadastro já existente");
           return;
         }
-       
+ 
     } 
   }
 }
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>

@@ -91,6 +91,7 @@ export default {
         email: this.email,
         password: this.senha
       }).then(function (response) {
+        console.log("ferreira")
         if(response){
           localStorage.setItem('parametros-usuario', JSON.stringify(response.data));
           window.location.href = window.location.origin+"/Perfil"
