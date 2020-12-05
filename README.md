@@ -10,6 +10,7 @@
 <div align="center">
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/516f3e56-4f34-4e14-b2fd-ad45b6f894b3/deploy-status)](https://app.netlify.com/sites/help-pet/deploys)
 
 </div>
 
