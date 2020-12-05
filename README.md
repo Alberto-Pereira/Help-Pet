@@ -236,4 +236,43 @@ Está rest api
 
 ---
 
-##
+## Esqueceu a senha
+
+### Request
+
+`POST /forgotPassword`
+
+    {
+        "cpf": "11111111111",
+        "fone": "telefone"
+    }
+
+### Response
+
+    {
+        "idUser": Number("Identificador do usuario")
+    }
+
+---
+
+## Endereço
+
+### Request
+
+`/newAdress/idUser`
+
+    {
+        "cep": "11111111",
+        "street":"nomeRua",
+        "residencialNumber": "numeroRua",
+        "complement": "complemento",
+        "district": "Bairro/Setor",
+        "city": "Cidade",
+        "state": "estado"
+    }
+
+### Response
+
+    {
+
+    }

@@ -34,7 +34,7 @@ module.exports = {
           cidade: city,
           estado: state,
         });
-        res.status(200).json({ idUserAdress: response });
+        res.status(200).json(response[0]);
       } else {
         res.status(400).json("Endereço não criado");
       }
