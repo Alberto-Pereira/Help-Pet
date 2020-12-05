@@ -86,7 +86,7 @@
           telegram:'',
           dados_pessoais:undefined,
           hasImage : false,
-          image : require('../assets/imagens/user.png')
+          image : ''//require('../assets/imagens/user.png')
         }
       },
 

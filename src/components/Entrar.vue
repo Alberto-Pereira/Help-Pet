@@ -12,19 +12,15 @@
       <div class="shadow"></div>
     </div>
 
-    <div class="w3-blue w3-col">
-      <h2 class="w3-col w3-center bold-500">Login</h2>
+    <div class="w3-col w3-center">
+       <img class="detalhe-foto-pet w3-center" :src="logo" width="100" height="100">
     </div>
 
-    <div class="w3-row w3-margin-bottom">
-      <router-link to="/Entrar">
-        <h6 class="w3-col padding-10 w3-text-purple">Entrar</h6>
-      </router-link>
-    </div>
-
-    <form class="w3-container w3-margin-top font-cinza-claro">
+    <form class="w3-container w3-margin-top font-cinza-claro w3-col w3-center">
+      <center>
       <input
         class="w3-input w3-margin-top w3-round"
+        style="max-width: 350px;"
         autocomplete="off"
         v-model="email"
         type="email"
@@ -32,24 +28,29 @@
       />
       <input
         class="w3-input w3-margin-top w3-round"
+        style="max-width: 350px;"
         autocomplete="off"
         v-model="senha"
         type="password"
         placeholder="Senha"
       />
+      </center>
     </form>
 
-    <div class="w3-row margin-top-50">
+    <div class="w3-col margin-top-50 padding-10">
       <button
         @click="login()"
-        class="w3-col w3-btn w3-round-xxlarge w3-center fundo-roxo w3-text-white"
+        class="w3-col w3-btn  w3-center fundo-roxo w3-text-white"
       >
         Login
       </button>
     </div>
-    <div class="w3-row w3-margin-bottom">
+    <div class="w3-col w3-margin-bottom w3-center">
       <router-link to="/Registrar">
-        <h7 class="w3-col padding-10 w3-text-green">Criar conta</h7>
+        <h7 class="w3-col s6 l6 m6 padding-10 w3-text-green">Criar conta</h7>
+      </router-link>
+       <router-link to="/">
+        <h7 class="w3-col s6 l6 m6 padding-10 w3-text-green">Esqueçeu a senha?</h7>
       </router-link>
     </div>
     <mensagem ref="enviaMensagem" />
@@ -74,7 +75,8 @@ export default {
       email: "",
       parametros_usuario: undefined,
       processando: false,
-      concordar: undefined
+      concordar: undefined,
+      logo: require("../assets/imagens/logo.svg")
     };
   },
   mounted() {
@@ -110,7 +112,7 @@ export default {
         this.email = this.email;
         this.$refs.enviaMensagem.exclamar(
           "erro",
-          "Não foi possivel realizar o cadastro, cadastro já existente"
+          "Não foi possivel realizar o login"
         );
         return;
       }
