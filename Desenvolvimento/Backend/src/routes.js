@@ -15,6 +15,8 @@ const ForgotPasswordController = require("./controllers/ForgotPasswordController
 routes.get("/users", UserController.index);
 // Criar novo usuario
 routes.post("/newUser", UserController.store);
+// Login do usuario
+routes.post("/loginUser", SessionController.show);
 // Deletar um usuario
 routes.delete("/deleteUser/:id", UserController.delete);
 // Atualizar usuario
@@ -35,8 +37,6 @@ routes.delete("/deleteAdress/:idUser", AdressUserController.delete);
 routes.put("/updateAdress/:idUser", AdressUserController.update);
 //Mostrar detalhadamente o endereço do usuario
 routes.get("/infoAdress/:idUser", AdressUserController.show);
-// Login do usuario
-routes.post("/loginUser", SessionController.show);
 // Recuperar senha
 routes.post("/forgotPassword", ForgotPasswordController.show);
 

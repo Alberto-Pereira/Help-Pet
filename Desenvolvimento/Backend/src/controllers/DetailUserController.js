@@ -33,7 +33,7 @@ module.exports = {
       .select("*")
       .where("id_usuario_dados_fk", id);
 
-    res.json(personalData);
+    res.json(personalData[0]);
   },
   async update(req, res) {
     const { id } = req.params;
