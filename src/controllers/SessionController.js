@@ -2,8 +2,8 @@ const connection = require("../database/connection");
 const crypto = require("crypto");
 
 module.exports = {
-  async store(req, res) {
-    const { email, password } = req.params;
+  async show(req, res) {
+    const { email, password } = req.body;
     const crypt = crypto.createHash("sha1").update(password).digest("hex");
 
     const user = await connection("usuario")
