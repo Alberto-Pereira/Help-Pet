@@ -2,23 +2,74 @@
 
 A aplicação completa está contida no arquivo `src/server.js`.
 
-A lista das rotas estão nos arquivos
+As rotas estão localizadas em `src/routes.js`
+
+## Pré Requisitos
+
+- Banco de dados: MariaDB ou MySQL
+- Ter o Node instalado na versão LTS
+- Conhecer os comandos `npm install` e `npm run`
+- Clonar o repositório
+- Entrar via terminal o `Desenvolvimento/backend`
 
 ## Instalação
 
-    yarn install ou npm install
+    yarn ou npm install
 
-## Rodar a aplicação
+## Rodar a aplicação em standalone
+
+No arquivo `knexfile.js` adicione as informações do seu banco de dados da mariaDB ou mySQL para rodar a aplicação na propria pasta `Desenvolvimento` temos o SQL para realizar a inseção dos dados gerados pelas requisições posteriores.
+
+Para iniciar o sevidor digite o comando
 
     yarn dev ou npm run dev
 
+e seguir a lista das requisições a baixo
+
 # REST API
 
-Está rest api foi feita para a aplicação do Help!Pet que está na seguis
+Está rest api foi feita para a aplicação do Help!Pet que está na seguinte rota:
 
-## Listar usuarios
+[![HelpPet](https://img.shields.io/badge/Help!Pet%20-Site-blue)](https://help-pet.netlify.app)
 
-### Requisição
+Logo a baixo está a listagem de todas as rotas com suas respectivas requisições e respostas.
+
+# Sumario
+
+- [Lista de requisições](#list)
+- [Rotas do usuario](#list)
+  - [Listar usuarios](#indexU)
+  - [Adicionar um novo usuario](#storeU)
+  - [Detalhes do usuario](#showU)
+  - [Deletar Usuario](#deleteU)
+  - [Atualizar usuário](#updateU)
+  - [Detalhe do usuario](#showD)
+  - [Adicionar Detalhes do usuario](#storeD)
+  - [Deletar Detalhes do usuario](#deleteD)
+  - [Login usuario](#showL)
+  - [Esqueceu a senha](#showF)
+  - [Cadastrar Endereço](#storeA)
+  - [Mostrar endereço](#showA)
+  - [Atualizar endereço](#updateA)
+  - [Deletar endereço](#deleteA)
+- [Rotas do Pet](#Pets)
+  - [Criar Pets](#storeP)
+  - [Deletar Pets](#deleteP)
+  - [Listar Todos os Pet](#indexP)
+  - [Consultar um Pet](#showP)
+  - [Atualizar o Pet](#updateP)
+  - [Mural de Pets Para Adoção](#indexAP)
+  - [Disponibilizar o Pet para adoção](#storeAP)
+  - [Adoção do Pet](#updateAP)
+  - [Mural de Pets Perdidos](#indexMP)
+  - [Colocar como pet desaparecido](#updateMP)
+  - [Pet Localizado](#deleteMP)
+
+# Requisições <a name = "list"></a>
+
+## Listar Usuarios <a name = "indexU"></a>
+
+### Request
 
 `GET /users/`
 
@@ -35,9 +86,9 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         }
     ]
 
-## Adicionar um novo usuario
+## Adicionar um Novo Usuario <a name = "storeU"></a>
 
-### Requisição
+### Request
 
 `POST /newUser/`
 
@@ -49,7 +100,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         "typeUser": String
     }
 
-### Resposta
+### Response
 
     HTTP/1.1 201 Created
     Date: Thu, 24 Feb 2011 12:36:30 GMT
@@ -66,7 +117,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         "typeUser": "NivelUsuario"
     }
 
-## Detalhes do usuario
+## Detalhes do Usuario <a name = "showU"></a>
 
 ### Request
 
@@ -90,7 +141,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         "telegram": "numeroTelegram"
     }
 
-## Deletar Usuario (Não exclui exatamente muda de status)
+## Deletar Usuario (Não exclui exatamente muda de status) <a name = "deleteU"></a>
 
 ### Request
 
@@ -103,7 +154,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
     Connection: keep-alive
     Content-Type: application/json
 
-## Atualizar usuário
+## Atualizar Usuário <a name = "updateU"></a>
 
 ### Request
 
@@ -139,7 +190,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
 
 ---
 
-## Detalhe do usuario
+## Detalhe do Usuário <a name = "showD"></a>
 
 ### Request
 
@@ -162,7 +213,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         }
     ]
 
-## Adicionar Detalhes do usuario
+## Adicionar Detalhes do Usuário <a name = "storeD"></a>
 
 ### Request
 
@@ -192,7 +243,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         }
     ]
 
-## Deletar Detalhes do usuario
+## Deletar Detalhes do Usuário <a name = "deleteD"></a>
 
 ### Request
 
@@ -224,7 +275,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
 
 ---
 
-## Login usuario
+## Login Usuário <a name = "showL"></a>
 
 ### Request
 
@@ -249,7 +300,7 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
 
 ---
 
-## Esqueceu a senha
+## Esqueceu a Senha <a name = "showF"></a>
 
 ### Request
 
@@ -268,11 +319,11 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
 
 ---
 
-## Cadastrar Endereço
+## Cadastrar Endereço <a name = "storeA"></a>
 
 ### Request
 
-`/newAdress/idUser`
+`POST /newAdress/idUser`
 
     {
         "cep": "11111111",
@@ -290,11 +341,11 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         "success":"endereço cadastrado"
     }
 
-## Mostrar endereço
+## Mostrar Endereço <a name = "showA"></a>
 
 ### Request
 
-`/infoAdress/idUser`
+`GET /infoAdress/idUser`
 
 ### Resonse
 
@@ -309,11 +360,11 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         "estado": "estado"
     }
 
-## Atualizar endereço
+## Atualizar Endereço <a name = "updateA"></a>
 
 ### Request
 
-`/updateAdress/idUser`
+`PUT /updateAdress/idUser`
 
     {
         "cep": "11111111",
@@ -329,11 +380,11 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
 
     "Endereço atualizado com sucesso!"
 
-## Deletar endereço
+## Deletar Endereço <a name = "deleteA"></a>
 
 ### request
 
-`/deleteAdress/idUser`
+`DELETE /deleteAdress/idUser`
 
 ### response
 
@@ -343,13 +394,13 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
 
 ---
 
-# Pets
+# Pets <a name = "pets"></a>
 
-## Criar Pets
+## Criar Pets <a name = "storeP"></a>
 
 ### Request
 
-`/newPet/idUser`
+`POST /newPet/idUser`
 
     {
         "img_pet": base64(""),
@@ -369,11 +420,11 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         "idPet": Number(identificadorPet)
     }
 
-## Deletar Pets
+## Deletar Pets <a name = "deleteP"></a>
 
 ### Request
 
-`/deletePet/idUser`
+`DELETE /deletePet/idUser`
 
     {
         "idPet":Number(identificadorPet)
@@ -384,11 +435,11 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
     Status: 204 No Content
     Connection: keep-alive
 
-## Listar Todos os Pet
+## Listar Todos os Pet <a name = "indexP"></a>
 
 ### Request
 
-`/pets/idUser`
+`GET /pets/idUser`
 
 ### Response
 
@@ -409,18 +460,145 @@ Está rest api foi feita para a aplicação do Help!Pet que está na seguis
         }
     ]
 
-## Consultar um Pet
+## Consultar um Pet <a name = "showP"></a>
 
 ### Request
 
-`/pet/idUser?idPet=Number(idPet)`
+`GET /pet/idUser?idPet=Number(idPet)`
 
 ### Response
 
-## Atualizar o Pet
+    {
+        "imagem_pet": base64(""),
+        "id_pet": Number(idPet),
+        "id_usuario_pet_fk": Number(idUser)
+        "nome_pet": "NomePet",
+        "raca_pet": "RacaPet",
+        "sexo_pet": "sexoPet",
+        "cor_pet": "CorPet",
+        "numero_coleira": Number(RGA),
+        "descricao_pet": "Descrição",
+        "longitude": coordenadas(X),
+        "latitude": coordenadas(Y),
+        "status_pet": estado('N')
+    }
+
+## Atualizar o Pet <a name = "updateP"></a>
 
 ### Request
 
-``
+`PUT /updatePet/idUser`
+
+    {
+        "img_pet": base64(""),
+        "namePet": "nomePet",
+        "sexPet": "sexoPet",
+        "colorPet": "corPet",
+        "collarNumber": Number(RGA),
+        "description": "Descrição",
+        "location": coordenadas[X,Y],
+        "status": estado('N'),
+        "breed": "raça"
+    }
 
 ### Response
+
+    Status: 204 No Content
+    Connection: keep-alive
+    Content-Type: application/json
+
+---
+
+## Mural de Pets Para Adoção <a name = "indexAP"></a>
+
+### Request
+
+`GET /adoptPet/?page="1"`
+
+### Response
+
+    [
+        {pet},{pet},{pet}...
+    ]
+
+## Disponibilizar o Pet para Adoção <a name = "storeAP"></a>
+
+### Request
+
+`POST /adoptPet/idUser`
+
+    {
+        "idPet": Number(idPet),
+        "location":Coordenadas([X,Y])
+    }
+
+### Respose
+
+    {
+        "success": "pet disponibilizado para adoção"
+    }
+
+## Adoção do Pet <a name = "updateAP"></a>
+
+### Request
+
+`PUT /adoptPet/idUser`
+
+    {
+        "userAdopt": Number(idAdotante),
+        "idPet": Number(idPet)
+    }
+
+### Response
+
+    { Number(idPetNovaListagem) }
+
+---
+
+## Mural de Pets Perdidos <a name = "indexMP"></a>
+
+### Request
+
+`GET /missingPet`
+
+### Response
+
+    {
+        {pet},
+        {pet},
+        {pet}
+        ...
+    }
+
+## Colocar como Pet Desaparecido <a name = "updateMP"></a>
+
+### Request
+
+`PUT /missingPet/idUser`
+
+    {
+        "idPet": Number(idPet)
+    }
+
+### Response
+
+    {
+    "success": "pet está desaparecido!"
+    }
+
+## Pet Localizado <a name = "deleteMP"></a>
+
+### Request
+
+`DELETE /missingPet/2`
+
+    {
+        "idPet": Number(idPet),
+        "location": Coordenadas([X,Y])
+    }
+
+### Response
+
+    Status: 204 No Content
+    Connection: keep-alive
+    Content-Type: application/json
