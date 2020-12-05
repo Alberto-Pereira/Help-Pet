@@ -11,7 +11,10 @@ module.exports = {
     // Coletar email
     const emails = await connection("usuario").where("email", email);
     // criptografando a senha
-    const cryptPass = crypto.createHash("sha1").update(password).digest("hex");
+    const cryptPass = crypto
+      .createHash("sha1")
+      .update(password)
+      .digest("hex");
 
     // Validação do cadastro
     if (emails.length == 0 && email.length != 0) {
@@ -40,7 +43,9 @@ module.exports = {
       // Resetar a contagem do auto_increment
       await connection.raw("ALTER TABLE usuario AUTO_INCREMENT = 0;");
       // Atualizar o usuario
-      await connection("usuario").where("id_usuario", id).update(user[0]);
+      await connection("usuario")
+        .where("id_usuario", id)
+        .update(user[0]);
       return res.status(204).send("Usuario desativado");
     } else {
       return res.status(400).send("Usuario não encontrado");
@@ -54,7 +59,7 @@ module.exports = {
       .from("perfil_usuario")
       .where("id_usuario", id);
     if (user) {
-      res.json(user);
+      res.json(user[0]);
     } else {
       res.status(404).send("Não foi possivel encontrar o usuario");
     }
@@ -70,7 +75,10 @@ module.exports = {
       tipo_usuario: typeUser.toUpperCase(),
     };
     if (password != null) {
-      user.senha = crypto.createHash("sha1").update(password).digest("hex");
+      user.senha = crypto
+        .createHash("sha1")
+        .update(password)
+        .digest("hex");
     }
     const emails = await connection("usuario")
       .where("email", email)

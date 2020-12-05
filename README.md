@@ -74,6 +74,11 @@ Está rest api
 
 ### Response
 
+    HTTP/1.1 200 Ok
+    Status: 200 Ok
+    Connection: keep-alive
+    Content-Type: application/json
+
     {
         "imagem_usuario":Base64("data:image/..."),
         "id_usuario":1,
@@ -113,6 +118,10 @@ Está rest api
 
 ### Response
 
+    Status: 200 Ok
+    Connection: keep-alive
+    Content-Type: application/json
+
     [
         {
             "Success": "usuario atualizado"
@@ -137,6 +146,10 @@ Está rest api
 `GET /detailUser/idUser`
 
 ### Response
+
+    Status: 200 Ok
+    Connection: keep-alive
+    Content-Type: application/json
 
     [
         {
@@ -255,7 +268,7 @@ Está rest api
 
 ---
 
-## Endereço
+## Cadastrar Endereço
 
 ### Request
 
@@ -274,5 +287,140 @@ Está rest api
 ### Response
 
     {
-        ""
+        "success":"endereço cadastrado"
     }
+
+## Mostrar endereço
+
+### Request
+
+`/infoAdress/idUser`
+
+### Resonse
+
+    {
+        "cep": "11111111",
+        "id_usuario_endereco_fk": idUsuario,
+        "rua":"rua",
+        "num_residencia":"numero",
+        "complemento":"complemento",
+        "bairro":"bairro/setor",
+        "cidade":"cidade",
+        "estado": "estado"
+    }
+
+## Atualizar endereço
+
+### Request
+
+`/updateAdress/idUser`
+
+    {
+        "cep": "11111111",
+        "street":"nomeRua",
+        "residencialNumber": "numeroRua",
+        "complement": "complemento",
+        "district": "Bairro/Setor",
+        "city": "Cidade",
+        "state": "estado"
+    }
+
+### Response
+
+    "Endereço atualizado com sucesso!"
+
+## Deletar endereço
+
+### request
+
+`/deleteAdress/idUser`
+
+### response
+
+    Status: 204 No Content
+    Connection: keep-alive
+    Content-Type: application/json
+
+---
+
+# Pets
+
+## Criar Pets
+
+### Request
+
+`/newPet/idUser`
+
+    {
+        "img_pet": base64(""),
+        "namePet": "nomePet",
+        "sexPet": "sexoPet",
+        "colorPet": "corPet",
+        "collarNumber": Number(RGA),
+        "description": "Descrição",
+        "location": coordenadas[X,Y],
+        "status": estado('N'),
+        "breed": "raça"
+    }
+
+### Response
+
+    {
+        "idPet": Number(identificadorPet)
+    }
+
+## Deletar Pets
+
+### Request
+
+`/deletePet/idUser`
+
+    {
+        "idPet":Number(identificadorPet)
+    }
+
+### Response
+
+    Status: 204 No Content
+    Connection: keep-alive
+
+## Listar Todos os Pet
+
+### Request
+
+`/pets/idUser`
+
+### Response
+
+    [
+        {
+            "imagem_pet": base64(...),
+            "id_pet": Number(idPet),
+            "id_usuario_pet_fk": Number(idUser),
+            "nome_pet": "NomePet",
+            "raca_pet": "RaçaPet",
+            "sexo_pet": "SexoPet",
+            "cor_pet": "Cor",
+            "numero_coleira": Number(RGA),
+            "descricao_pet": "descrição",
+            "longitude": coordenada(X),
+            "latitude": coordenada(Y),
+            "status_pet": "a"
+        }
+    ]
+
+## Consultar um Pet
+
+### Request
+
+``
+
+### Response
+
+## Atualizar o Pet
+
+### Request
+
+``
+
+### Response

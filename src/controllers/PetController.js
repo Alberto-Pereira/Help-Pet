@@ -48,7 +48,7 @@ module.exports = {
             status_pet: status,
             raca_pet: breed,
           });
-          res.status(200).json({ idPet: response });
+          res.status(200).json({ idPet: response[0] });
         } else {
           res.status(400).json({ error: "requisição escrita errado" });
         }
