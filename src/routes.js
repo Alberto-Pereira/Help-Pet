@@ -36,7 +36,7 @@ routes.put("/updateAdress/:idUser", AdressUserController.update);
 //Mostrar detalhadamente o endereço do usuario
 routes.get("/infoAdress/:idUser", AdressUserController.show);
 // Login do usuario
-routes.post("/loginUser", SessionController.store);
+routes.get("/loginUser", SessionController.store);
 // Recuperar senha
 routes.post("/forgotPassword", ForgotPasswordController.show);
 
