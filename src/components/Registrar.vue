@@ -34,7 +34,7 @@
       <router-link
         to="/Entrar"
         style="font-size:20px;padding: 4px!important; padding-left: 9px!important;"
-        class="buttons w3-orange" tooltip="Voltar para perfil">
+        class="buttons w3-orange" tooltip="Voltar para login">
         <i class="fas fa-arrow-left"></i>
       </router-link>
 
