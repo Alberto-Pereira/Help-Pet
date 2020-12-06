@@ -30,24 +30,20 @@ module.exports = {
 
     if (status == "n" || status == "a" || status == "d" || status == "l") {
       if (user.length != 0) {
-        if (!isNaN(collarNumber)) {
-          const response = await connection("pet").insert({
-            imagem_pet: img_pet,
-            id_usuario_pet_fk: idUser,
-            nome_pet: namePet,
-            sexo_pet: sexPet,
-            cor_pet: colorPet,
-            numero_coleira: collarNumber,
-            descricao_pet: description,
-            latitude: location[0],
-            longitude: location[1],
-            status_pet: status,
-            raca_pet: breed,
-          });
-          res.status(200).json({ idPet: response[0] });
-        } else {
-          res.status(400).json({ error: "requisição escrita errado" });
-        }
+        const response = await connection("pet").insert({
+          imagem_pet: img_pet,
+          id_usuario_pet_fk: idUser,
+          nome_pet: namePet,
+          sexo_pet: sexPet,
+          cor_pet: colorPet,
+          numero_coleira: collarNumber,
+          descricao_pet: description,
+          latitude: location[0],
+          longitude: location[1],
+          status_pet: status,
+          raca_pet: breed,
+        });
+        res.status(200).json({ idPet: response[0] });
       } else {
         res.status(404).json({ error: "Usuario não existe" });
       }
