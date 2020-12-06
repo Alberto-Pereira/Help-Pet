@@ -115,10 +115,14 @@
         async buscarPetsPerdidos(){
           let  dados = await api.get('/missingPet')
           this.pets = dados.data;
+          for(let i in this.pets){
+            this.pets[i].status_pet = 'd'
+          }
+          
           if(this.pets.length == 0){
           this.$refs.enviaMensagem.exclamar("info",  "Não existe pets perdidos!")
           }
-          this.pets[0].status_pet = 'd'
+          
           
         },
 

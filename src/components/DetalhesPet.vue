@@ -262,7 +262,9 @@
       this.id_pet = detalhe_pet.id_pet
       this.image = detalhe_pet.imagem_pet;
       this.nome_pet = detalhe_pet.nome_pet;
+      console.log('antes',detalhe_pet.status_pet)
       this.status = detalhe_pet.status_pet;
+      console.log('depois', this.status)
       this.sexo = detalhe_pet.sexo_pet;
       this.codigo_coleira = detalhe_pet.numero_coleira;
       this.descricao = detalhe_pet.descricao_pet;
@@ -278,9 +280,9 @@
 
     methods: {
       getStatus() {
-        if (status == 'd') {
+        if (this.status == 'd') {
           return 'color: red!important;';
-        } else if (status == 'a') {
+        } else if (this.status == 'a') {
           return 'color: yellow!important;';
         } else {
           return 'color: green!important;';

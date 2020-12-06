@@ -3,7 +3,7 @@
   <div class="geral w3-container extender-div-tela-toda w3-small" style="padding:0px;">
 
     <div class="w3-blue w3-col" >
-      <h2 class="w3-col w3-center bold-500">Dados endereco</h2>
+      <h2 class="w3-col w3-center bold-500">Dados endereço</h2>
     </div>
 
     <div class="margin-top-80 padding-10">
@@ -31,19 +31,19 @@
     <nav class="container w3-display-bottomright w3-padding"> 
       <router-link 
       to="/Perfil"
-      style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+      style="font-size:20px;padding: 4px!important; padding-left: 11px!important;" 
       class="buttons w3-orange" tooltip="Voltar para perfil">
         <i class="fas fa-arrow-left"></i>
       </router-link>
 
       <a 
-       style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+       style="font-size:20px;padding: 4px!important; padding-left: 11px!important;" 
         class="buttons w3-red" tooltip="Apagar dados" @click="apagarEndereco()">
         <i class="fas fa-trash"></i>
       </a>
 
       <a 
-      style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+      style="font-size:20px;padding: 4px!important; padding-left: 11px!important;" 
       class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados()">
         <i class="fas fa-database"></i>
       </a>
@@ -51,7 +51,7 @@
 
       <a 
       class="buttons w3-blue" 
-      style="font-size:30px; padding: 4px!important; padding-left: 10px!important;" 
+      style="font-size:30px; padding: 4px!important; padding-left: 12px!important;" 
       href="#">
         <i class="fas fa-paw"></i>
       </a>

@@ -12,7 +12,7 @@
     <div class="w3-blue w3-mobile w3-center" style="height: 200px; margin-top:0px!important;">
         <span class="w3-text-white w3-center fonte-titulo w3-col">Perfil</span>
         <div class="w3-center w3-col s4 m8 l2">
-            <span class="circulo w3-white w3-center">
+            <span class="circulo w3-white w3-center w3-animate-zoom">
                 <img class="perfil w3-center" v-if="!usuario_imagem" src="../assets/imagens/avatar.jpg">
                 <img v-else class="perfil w3-center" :src="usuario_imagem" alt="">
             </span>
@@ -198,13 +198,11 @@ export default {
       this.$router.push({ name: 'GerarOcorrencia' });
     },
   
-    async prencherTela(dados_usuario){
+    async prencherTela(){
       this.usuario_imagem = localStorage.getItem("foto-user");
+    
+      let complementar = await api.get("/detailUser/"+ this.dados_usuario.id_usuario)
       if(!this.usuario_imagem){
-
-      
-        let complementar = await api.get("/detailUser/"+ this.dados_pessoais.id_usuario)
-
         if(complementar.data.imagem_usuario){
           this.usuario_imagem = complementar.data.imagem_usuario
         }else{
