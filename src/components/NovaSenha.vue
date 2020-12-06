@@ -3,6 +3,20 @@
     class="geral w3-container extender-div-tela-toda w3-small cor-fundo-app"
     style="padding: 0"
   >
+  <div class="w3-modal" v-if="processando" style="display: block; padding-top: 60%">
+      <div class="w3-modal-content">
+        <div class="w3-container w3-margin-top" style="padding: 0px">
+          <div class="wrapper">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Corpo -->
     <div class="margin-top-80">
       <h1 class="w3-center">Resetar Senha</h1>
@@ -105,7 +119,8 @@ export default {
     return {
       senha1: "",
       senha2: "",
-      id_user: ''
+      id_user: '',
+      processando: false
     };
   },
   mounted() {
@@ -116,8 +131,23 @@ export default {
     }
   },
   methods: {
-    resetar() {
-      //TODO implementar: analisar se é um metodo async
+    async resetar() {
+      if(this.senha1 !== this.senha2){
+        this.$refs.enviarMensagem.exclamar("erro", "Senhas diferentes")
+        return
+      }
+      this.processando = true
+      const resposta = await api.post("/forgotPassword"+this.id_user, {
+          password: this.senha1,
+        });
+        if(resposta.data.status == 200){
+          this.$refs.enviarMensagem.exclamar("erro", "Aterado com sucesso")
+          
+          this.$router.push({ name: "Entrar" });
+        }else{
+          this.$refs.enviarMensagem.exclamar("erro", "Não foi possivel processar")
+        }
+        this.processando = false
     },
   },
 };

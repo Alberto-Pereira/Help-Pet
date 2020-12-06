@@ -129,8 +129,6 @@
       </div>
     </div>
 
-    <mensagem ref="enviaMensagem" />
-
     <nav
       class="container w3-display-bottomright w3-padding"
       style="position: fixed"

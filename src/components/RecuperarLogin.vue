@@ -3,6 +3,20 @@
     class="geral w3-container extender-div-tela-toda w3-small cor-fundo-app"
     style="padding: 0"
   >
+  <div class="w3-modal" v-if="processando" style="display: block; padding-top: 60%">
+      <div class="w3-modal-content">
+        <div class="w3-container w3-margin-top" style="padding: 0px">
+          <div class="wrapper">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Corpo -->
     <div class="margin-top-80">
       <h1 class="w3-center">Recuperar Senha</h1>
@@ -110,6 +124,7 @@ export default {
     return {
       cpf: "",
       telefone: "",
+      processando: false
     };
   },
   mounted() {
@@ -120,7 +135,8 @@ export default {
   },
   methods: {
     async recuperar() {
-       const resposta = await api.post("/orgotPassword", {
+      this.processando = true
+       const resposta = await api.post("/forgotPassword", {
           cpf: this.cpf,
           fone: this.telefone,
         });
@@ -130,6 +146,7 @@ export default {
         }else{
           this.$refs.enviarMensagem.exclamar("erro", "Não foi possivel processar")
         }
+        this.processando = false
     },
   },
 };
