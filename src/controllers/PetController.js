@@ -28,10 +28,6 @@ module.exports = {
 
     const user = await connection("usuario").where("id_usuario", idUser);
 
-    if (location.length == 0 || location.length != 2) {
-      location = [0.0, 0.0];
-    }
-
     if (status == "n" || status == "a" || status == "d" || status == "l") {
       if (user.length != 0) {
         if (!isNaN(collarNumber)) {
