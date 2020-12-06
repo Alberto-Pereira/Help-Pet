@@ -40,7 +40,7 @@ routes.get("/infoAdress/:idUser", AdressUserController.show);
 // Recuperar senha
 routes.post("/forgotPassword", ForgotPasswordController.show);
 // Mudar senha
-routes.put("/forgotPassoword", ForgotPasswordController.update);
+routes.put("/forgotPassoword/:idUser", ForgotPasswordController.update);
 
 // PETS
 // Cadastrar pets
