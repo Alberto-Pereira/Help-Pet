@@ -11,14 +11,8 @@
         <div class="shadow"></div>
     </div>
 
-    <div class="w3-blue w3-col" >
+    <div class="w3-blue w3-col w3-margin-bottom" >
       <h2 class="w3-col w3-center bold-500">Inscrever-se</h2>
-    </div>
-
-    <div class="w3-row w3-margin-bottom">
-      <router-link to="/Entrar">
-        <h6 class="w3-col padding-10 w3-text-purple">Entrar</h6>
-      </router-link>
     </div>
 
     <form class="w3-container w3-margin-top font-cinza-claro">
@@ -34,6 +28,25 @@
     <div class="w3-row margin-top-50">
       <button @click="gravar()" class="w3-col w3-btn w3-round-xxlarge w3-center fundo-roxo w3-text-white">Cadastrar</button>
     </div>
+
+    <!-- Float Button -->
+    <nav class="container w3-display-bottomright w3-padding" style="position: fixed;">
+      <router-link
+        to="/Entrar"
+        style="font-size:20px;padding: 4px!important; padding-left: 9px!important;"
+        class="buttons w3-orange" tooltip="Voltar para perfil">
+        <i class="fas fa-arrow-left"></i>
+      </router-link>
+
+      <a
+        class="buttons w3-blue"
+        style="font-size:30px; padding: 4px!important; padding-left: 10px!important;"
+        href="#">
+        <i class="fas fa-paw"></i>
+      </a>
+    </nav>
+    <!-- Fim Float Button -->
+
     <mensagem ref="enviaMensagem" />
   </div>
 

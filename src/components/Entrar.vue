@@ -1,7 +1,7 @@
 <template>
   <div
     class="geral w3-container cor-fundo-app extender-div-tela-toda"
-    style="padding:0px;"
+    style="padding:0;"
   >
     <div v-show="processando" class="wrapper">
       <div class="circle"></div>
@@ -12,47 +12,63 @@
       <div class="shadow"></div>
     </div>
 
-    <div class="w3-col w3-center">
-       <img class="detalhe-foto-pet w3-center" :src="logo" width="100" height="100">
+    <div class="w3-col w3-center margin-bottom-30">
+       <img class="detalhe-foto-pet w3-center" :src="logo" width="100" height="100" alt="">
     </div>
 
-    <form class="w3-container w3-margin-top font-cinza-claro w3-col w3-center">
-      <center>
-      <input
-        class="w3-input w3-margin-top w3-round"
-        style="max-width: 350px;"
-        autocomplete="off"
-        v-model="email"
-        type="email"
-        placeholder="Email"
-      />
-      <input
-        class="w3-input w3-margin-top w3-round"
-        style="max-width: 350px;"
-        autocomplete="off"
-        v-model="senha"
-        type="password"
-        placeholder="Senha"
-      />
-      </center>
-    </form>
+    <!-- Corpo -->
+    <div>
+      <div class="w3-row">
+        <div class="w3-third w3-container"></div>
+        <div class="w3-third w3-container">
+          <!-- Bloco 1 -->
+          <label for="email"></label>
+          <input autocomplete="off" class="w3-input w3-round w3-margin-top" placeholder="Email" type="email" v-model="email" id="email"/>
+          <!-- Bloco 1 -->
+        </div>
+        <div class="w3-third w3-container"></div>
+      </div>
 
-    <div class="w3-col margin-top-50 padding-10">
-      <button
-        @click="login()"
-        class="w3-col w3-btn  w3-center fundo-roxo w3-text-white"
-      >
-        Login
-      </button>
+      <div class="w3-row">
+        <div class="w3-third w3-container"></div>
+        <div class="w3-third w3-container">
+          <!-- Bloco 2 -->
+          <label for="senha"></label>
+          <input autocomplete="off" class="w3-input w3-round w3-margin-top" placeholder="Senha" type="password" v-model="senha" id="senha"/>
+          <!-- Bloco 2 -->
+        </div>
+        <div class="w3-third w3-container"></div>
+      </div>
+
+      <div class="w3-row">
+        <div class="w3-third w3-container"></div>
+        <div class="w3-third w3-container">
+          <!-- Bloco 3 -->
+          <button @click="login()" class="w3-col w3-btn w3-center fundo-roxo w3-text-white margin-top-30 w3-round">Login</button>
+          <!-- Bloco 3 -->
+        </div>
+        <div class="w3-third w3-container"></div>
+      </div>
+
+      <div class="w3-row">
+        <div class="w3-third w3-container"></div>
+        <div class="w3-third w3-container">
+          <!-- Bloco 4 -->
+          <div class="w3-col w3-margin-top w3-center">
+            <router-link to="/Registrar">
+              <h6 class="w3-col s6 l6 m6 padding-10 w3-text-green">Criar conta</h6>
+            </router-link>
+            <router-link to="/RecuperarLogin">
+              <h6 class="w3-col s6 l6 m6 padding-10 w3-text-green">Esqueçeu a senha?</h6>
+            </router-link>
+          </div>
+          <!-- Fim do Bloco 4-->
+        </div>
+        <div class="w3-third w3-container"></div>
+      </div>
     </div>
-    <div class="w3-col w3-margin-bottom w3-center">
-      <router-link to="/Registrar">
-        <h7 class="w3-col s6 l6 m6 padding-10 w3-text-green">Criar conta</h7>
-      </router-link>
-       <router-link to="/">
-        <h7 class="w3-col s6 l6 m6 padding-10 w3-text-green">Esqueçeu a senha?</h7>
-      </router-link>
-    </div>
+    <!-- Fim Corpo -->
+
     <mensagem ref="enviaMensagem" />
   </div>
 </template>
@@ -81,10 +97,8 @@ export default {
   },
   mounted() {
     let logado = localStorage.getItem("autorizacao");
-    if(logado != "logado"){
-      this.$router.push({ name: "Entrar" });
-    }else if(logado == "logado"){
-       this.$router.push({ name: "Perfil" });
+    if(logado === "logado"){
+      this.$router.push({ name: "Perfil" });
     }
   },
   methods: {
@@ -121,4 +135,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+  .margin-bottom-30{
+    margin-bottom: 30px;
+  }
+
+</style>

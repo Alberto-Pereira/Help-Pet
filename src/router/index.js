@@ -9,8 +9,9 @@ import DetalhesPet from '@/components/DetalhesPet'
 import DadosPet from '@/components/DadosPet'
 import GerarOcorrencia from '@/components/GerarOcorrencia'
 import ApresentacaoEntrada from '@/components/ApresentacaoEntrada'
-import Endereco from '@/components/Endereco'  
+import Endereco from '@/components/Endereco'
 import MuralPets from '@/components/MuralPets'
+import RecuperarLogin from '@/components/RecuperarLogin'
 
 Vue.use(Router)
 
@@ -72,6 +73,11 @@ export default new Router({
       name: 'Endereco',
       component: Endereco
     },
-    
+    {
+      path: '/RecuperarLogin',
+      name: 'RecuperarLogin',
+      component: RecuperarLogin
+    },
+
   ]
 })
