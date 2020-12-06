@@ -30,11 +30,7 @@ module.exports = {
 
     if (status == "n" || status == "a" || status == "d" || status == "l") {
       if (user.length != 0) {
-        if (
-          !isNaN(collarNumber) &&
-          !isNaN(location[0]) &&
-          !isNaN(location[1])
-        ) {
+        if (!isNaN(collarNumber)) {
           const response = await connection("pet").insert({
             imagem_pet: img_pet,
             id_usuario_pet_fk: idUser,
