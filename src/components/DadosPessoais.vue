@@ -10,14 +10,14 @@
       <div class="w3-center">
         <img style="border-radius: 50%; box-shadow: 5px 1px 20px 0px;" class="w3-border" :src="image" alt="" width="150" height="150">
       </div>
-      <input id="cpf" class="w3-input w3-text-black bold-500 margin-top-30" type="text" v-model="cpf" placeholder="Cpf:">
-      <input id="telefone" class="w3-input w3-margin-top w3-text-black bold-500" v-model="telefone" type="text" placeholder="Telefone:">
-      <input id="whatsapp" class="w3-input w3-margin-top w3-text-black bold-500" v-model="whatsapp" type="text" placeholder="Whatsapp:">
-      <input id="telegram" class="w3-input w3-margin-top w3-text-black bold-500" v-model="telegram" type="text" placeholder="Telegram:">
+      <the-mask :mask="['###.###.###-##']"  id="cpf" class="w3-input w3-text-black bold-500 margin-top-30" type="text" v-model="cpf" placeholder="Cpf:"/>
+      <the-mask :mask="['(##) ####-####', '(##) #####-####']" id="telefone" class="w3-input w3-margin-top w3-text-black bold-500" placeholder="Telefone:" v-model="telefone" />
+      <the-mask :mask="['(##) ####-####', '(##) #####-####']" id="whatsapp" class="w3-input w3-margin-top w3-text-black bold-500" v-model="whatsapp" type="text" placeholder="Whatsapp:"/>
+      <the-mask :mask="['(##) ####-####', '(##) #####-####']" id="telegram" class="w3-input w3-margin-top w3-text-black bold-500" v-model="telegram" type="text" placeholder="Telegram:"/>
 
       <router-link
-        to="/Cadastrar-endereco"
-        class="w3-button w3-blue w3-col margin-top-50 w3-round-xxlarge">
+        to="/Endereco"
+        class="w3-button w3-blue w3-col margin-top-50 w3-padding">
         Cadastrar endereço
       </router-link>
 
@@ -67,14 +67,17 @@
 </template>
 
 <script>
+  
     import ImageUploader from 'vue-image-upload-resize'
     import api from "../service/api"
     import Mensagem from "@/components/Mensagem"
+    import {TheMask} from 'vue-the-mask'
     export default {
       name: "DadosPessoais",
       components: {
         ImageUploader,
-        Mensagem
+        Mensagem,
+        TheMask
       },
   
       data () {
@@ -86,46 +89,46 @@
           telegram:'',
           dados_pessoais:undefined,
           hasImage : false,
-          image : ''//require('../assets/imagens/user.png')
+          cpf_valido: true,
+          image : '',//require('../assets/imagens/user.png'),
         }
       },
 
-      created(){
+      async created(){
         let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
-        let detalhes_usuario_detalhado = JSON.parse(localStorage.getItem('detalhes-usuario-detalhado'));
-        if(detalhes_usuario_detalhado){
-
-          this.image = detalhes_usuario_detalhado[0].imagem_usuario
-          this.cpf = detalhes_usuario_detalhado[0].cpf;
-          this.telefone = detalhes_usuario_detalhado[0].fone;
-        }
-       
         this.dados_pessoais = parametros_locais;
         let parametros_login = localStorage.getItem("autorizacao");
-        if(!parametros_login && parametros_locais == "deslogado"){
+        if(parametros_login != "logado"){
             this.$router.push({ name: 'Entrar' });
-          }
-        this.prencherTela()
+            return
+        }else{
+          await this.prencherTela()
+        }
+       
+      
       },
 
       methods: {
+        
         async prencherTela(){
-          console.log("detal use", this.dados_pessoais[0].id_usuario)
-          let complementar = await api.get("/infoUser/"+ this.dados_pessoais[0].id_usuario)
+  
+          let complementar = await api.get("/detailUser/"+ this.dados_pessoais.id_usuario)
 
-          console.log(complementar.data)
-          if(complementar.data[0].imagem_usuario.indexOf("base64") == 0){
-             this.image = complementar.data[0].imagem_usuario
+          if(complementar.data.imagem_usuario){
+             this.image = complementar.data.imagem_usuario
           }else{
-            this.image = localStorage.getItem('imagem-usuario')
+            this.$refs.enviarMensagem.exclamar(" erro", "usuario sem foto!")
           }
-          
-          this.cpf = complementar.data[0].cpf;
-          this.telefone = complementar.data[0].telefone;
-          this.whatsapp = complementar.data[0].whatsapp;
-          this.telegram = complementar.data[0].telegram;
-
-
+          console.log("complementar", complementar)
+          if(!complementar.data || complementar.data == ""){
+            this.$refs.enviarMensagem.exclamar("erro", "Por favor complete seus dados")
+          }else{
+            this.cpf = complementar.data.cpf;
+            this.telefone = complementar.data.telefone;
+            this.whatsapp = complementar.data.whatsapp;
+            this.telegram = complementar.data.telegram;
+          }
+         
         },
         setImage: function (file) {
           this.hasImage = true;
@@ -134,13 +137,17 @@
         },
 
         async gravarDados() {
+          this.validarCPF(this.cpf)
+          if(!this.cpf_valido){
+            return
+          }
+          if(!this.cpf){
+             this.$refs.enviarMensagem.exclamar(" erro", "Campo cpf está vazio!")
+             return;
+           }
         
-           //let cpf_valido = await this.ValidarCPF();
-           //if(!cpf_valido){
-            // return;
-           //}
-
-          api.post("/detailUser/"+ this.dados_pessoais[0].id_usuario, {
+          let sucesso = false
+          await api.post("/detailUser/"+ this.dados_pessoais.id_usuario, {
             img_user: this.image,
             cpf: this.cpf,
             fone: this.telefone,
@@ -148,24 +155,30 @@
             telegram: this.telegram
           })
           .then(function (response) {
-            if(response.data == "401"){
-              console.log("Dados ja gravados!");
+            if(response.status == 200){
+              sucesso = true;
+            }else{
+              sucesso = false;
             }
           
           }).catch(function (error) {
-            
-            this.$refs.enviarMensagem.exclamar("", "Não foi gravar dados!")
+            sucesso = false;
           })
+          if(sucesso){
+            this.$refs.enviarMensagem.exclamar("info", "Dados gravados com sucesso!");
+          }else{
+            this.$refs.enviarMensagem.exclamar("erro", "Não foi gravar dados!");
+          }
         }, 
-        ValidarCPF(){
-          let cpf = this.cpf;
-          exp = /\.|\-/g
+        validarCPF(cpf_enter){
+          let cpf = cpf_enter;
+          let exp = /\.|\-/g
           cpf = cpf.toString().replace( exp, "" ); 
           let digitoDigitado = eval(cpf.charAt(9)+cpf.charAt(10));
           let soma1=0, soma2=0;
           let vlr =11;
 
-          for(i=0;i<9;i++){
+          for(let i=0;i<9;i++){
                   soma1+=eval(cpf.charAt(i)*(vlr-1));
                   soma2+=eval(cpf.charAt(i)*vlr);
                   vlr--;
@@ -174,10 +187,11 @@
           soma2=(((soma2+(2*soma1))*10)%11);
 
           let digitoGerado=(soma1*10)+soma2;
-          if(digitoGerado!=digitoDigitado)        
-            this.$refs.enviaMensagem.exclamar("", 'CPF Invalido!');   
-            //document.getElementById("cpf").focus();  
-            return false;    
+          if(digitoGerado!=digitoDigitado){
+             this.cpf_valido = false;
+             this.$refs.enviarMensagem.exclamar("erro", "cpf invalido")
+          } 
+            
         }
       }
     }

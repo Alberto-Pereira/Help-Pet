@@ -9,6 +9,7 @@ import DetalhesPet from '@/components/DetalhesPet'
 import DadosPet from '@/components/DadosPet'
 import GerarOcorrencia from '@/components/GerarOcorrencia'
 import ApresentacaoEntrada from '@/components/ApresentacaoEntrada'
+import Endereco from '@/components/Endereco'  
 import MuralPets from '@/components/MuralPets'
 
 Vue.use(Router)
@@ -65,6 +66,11 @@ export default new Router({
       path: '/MuralPets',
       name: 'MuralPets',
       component: MuralPets
+    },
+    {
+      path: '/Endereco',
+      name: 'Endereco',
+      component: Endereco
     },
     
   ]
