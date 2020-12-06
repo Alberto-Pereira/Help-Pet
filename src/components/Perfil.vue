@@ -33,8 +33,8 @@
         </span>
       </label>
     </div>
-    <div v-show="!pets_mostrar && meus_pets.length > 0" @change="buscarPets()"  class="w3-animate-zoom">
-      <div id="meus-pets"  v-for="(pet, index_pet) in meus_pets"  :key="index_pet" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
+    <div v-show="!pets_mostrar && meus_pets.length > 0" @change="buscarPets()"  class="w3-animate-zoom" >
+      <div id="meus-pets"  v-for="(pet, index_pet) in meus_pets"  :key="index_pet" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin"  style="box-shadow: 5px 10px 20px 3px; ">
         <div class="w3-col s2">
           <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet">
         </div>
@@ -56,7 +56,7 @@
     </div>
 
     <div v-show="pets_perdidos.length > 0" class="w3-animate-zoom">
-      <div id="pets-perdidos" v-for="(pet_perdido, indice) in pets_perdidos" :key="indice" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
+      <div id="pets-perdidos" v-for="(pet_perdido, indice) in pets_perdidos" :key="indice" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin"   style="box-shadow: 5px 10px 20px 3px; ">
         <div class="w3-col s2">
           <i class="fas fa-exclamation-triangle w3-text-red"></i>
           <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet_perdido.imagem_pet" width="15" height="15">
