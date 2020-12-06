@@ -98,6 +98,12 @@
           existe_dados: false
         }
       },
+      mounted() {
+        let logado = localStorage.getItem("autorizacao");
+        if(logado !== "logado"){
+          this.$router.push({ name: "Entrar" });
+        }
+      },
 
       async created(){
         let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
