@@ -22,7 +22,7 @@
 
     <div class="w3-center w3-small" style="margin-top: 70px;">
        <div>
-          <h3>{{dados_master.nome_usuario}}</h3>
+          <h3>{{dados_usuario.nome_usuario.toUpperCase()}}</h3>
         </div>
       <!-- Interruptor arredondado (toggle) -->
       <label class="switch">
@@ -36,17 +36,17 @@
     <div v-show="!pets_mostrar && meus_pets.length > 0" @change="buscarPets()"  class="w3-animate-zoom">
       <div id="meus-pets"  v-for="(pet, index_pet) in meus_pets"  :key="index_pet" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
         <div class="w3-col s2">
-          <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet" width="15" height="15">
+          <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet.imagem_pet">
         </div>
         &nbsp;
-        <div class="w3-col s4">
+        <div class="w3-col s4 w3-padding">
           <strong class="">{{pet.nome_pet}}</strong>
         </div>
         <div class="w3-col s4 w3-small">
           <button 
             @click="ativarDetalhes(pet)" 
-            style="width: 150px"
-            class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue ">
+            style="width: 100px"
+            class="w3-btn w3-white w3-small w3-border w3-round-xxlarge w3-border-blue w3-right-align">
             <i class="fas fa-edit"></i> Detalhes 
           </button>
         </div>
@@ -55,9 +55,10 @@
       </div>
     </div>
 
-    <div v-show="pets_mostrar && !nao_tem_mensagem && pets_perdidos.length > 0" class="w3-animate-zoom">
+    <div v-show="pets_perdidos.length > 0" class="w3-animate-zoom">
       <div id="pets-perdidos" v-for="(pet_perdido, indice) in pets_perdidos" :key="indice" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
         <div class="w3-col s2">
+          <i class="fas fa-exclamation-triangle w3-text-red"></i>
           <img class="detalhe-foto-pet w3-center w3-border w3-col s6 m6 l6" v-bind:src="pet_perdido.imagem_pet" width="15" height="15">
         </div>
         &nbsp;
@@ -66,7 +67,7 @@
         </div>
         <div class="w3-col s4 w3-small">
           <button 
-            @click="ativarDetalhes(pet_perdido)" 
+            @click="ativarDetalhes(pet_perdido, pet_perdido.status_pet = 'd')" 
             style="width: 150px"
             class="w3-btn w3-white w3-border w3-round-xxlarge w3-center w3-border-blue w3-right-align">
             <i class="fas fa-edit"></i> Detalhes 
@@ -96,21 +97,21 @@
       </router-link>
 
       <router-link
-      to="/MuralPets"
-       style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-green" tooltip="Mural de pets">
+        to="/MuralPets"
+        style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+        class="buttons w3-green" tooltip="Mural de pets">
         <i class="fas fa-dog"></i>
       </router-link>
       
       <router-link 
-      to="/DadosPet" style="font-size:20px;padding: 4px!important; padding-left: 10px!important;" 
+      to="/DadosPet" style="font-size:20px;padding: 4px!important; padding-left: 11px!important;" 
       class="buttons w3-green" tooltip="Adicionar Pets">
         <i class="fas fa-plus"></i>
       </router-link>
 
       <a 
       class="buttons w3-blue" 
-      style="font-size:30px; padding: 4px!important; padding-left: 10px!important;" 
+      style="font-size:30px; padding: 4px!important; padding-left: 12px!important;" 
       href="#">
       <i class="fas fa-paw"></i></a>
     </nav>
@@ -199,6 +200,17 @@ export default {
   
     async prencherTela(dados_usuario){
       this.usuario_imagem = localStorage.getItem("foto-user");
+      if(!this.usuario_imagem){
+
+      
+        let complementar = await api.get("/detailUser/"+ this.dados_pessoais.id_usuario)
+
+        if(complementar.data.imagem_usuario){
+          this.usuario_imagem = complementar.data.imagem_usuario
+        }else{
+          this.$refs.enviarMensagem.exclamar(" erro", "usuario sem foto!")
+        }
+      }
       this.buscarPets();
     },
     async buscarPetsPerdidos(){
@@ -224,13 +236,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 img{
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
 }
 .detalhe-foto-pet{
   border-radius: 50%;
-  width: 40px!important;
-  height: 40px!important;
+  width: 60px!important;
+  height: 60px!important;
 }
 
 </style>

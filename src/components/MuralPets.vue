@@ -15,15 +15,21 @@
     <input class="w3-radio margin-lr" @click="buscarPetsPerdidos()" type="radio" name="gender" value="perdidos">
     <label>Perdidos</label>
 
-    <div id="listView" class="">
+    <div id="listView" class="" style="height: 100%: overflow:scroll; margin-bottom: 50px">
       <div>
-        <div id="pets-perdidos" v-for="(pet, indice) in filtro()"  :key="indice" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
+        <div 
+          id="pets-perdidos"
+          v-for="(pet, indice) in filtro()"  
+          :key="indice" 
+          class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin w3-animate-zoom"
+          style="box-shadow: 5px 10px 20px 3px; scroll:auto"
+          >
           <div class="w3-col s2">
             <img class="detalhe-foto-pet w3-center w3-border w3-col s12 m12 l12" v-bind:src="pet.imagem_pet" width="70" height="50">
           </div>
           &nbsp;
-          <div class="w3-col s8">
-            <strong class="">{{pet.nome_pet}}</strong>
+          <div class="w3-col s8 w3-padding w3-text-purple">
+            <strong class="">{{pet.nome_pet.toUpperCase()}}</strong>
           </div>
           <div class="w3-col s12 w3-small w3-right-align">
             <button @click="ativarDetalhes(pet)" class="w3-btn w3-white w3-border w3-round-xxlarge w3-border-blue "><i class="fas fa-edit"></i> Detalhes </button>
@@ -38,19 +44,19 @@
     <nav class="container w3-display-bottomright w3-padding" style="position: fixed;">
       <router-link
         to="/Perfil"
-        style="font-size:20px;padding: 4px!important; padding-left: 9px!important;"
+        style="font-size:20px;padding: 4px!important; padding-left: 11px!important;"
         class="buttons w3-orange" tooltip="Voltar para perfil">
         <i class="fas fa-arrow-left"></i>
       </router-link>
 
       <a
         class="buttons w3-blue"
-        style="font-size:30px; padding: 4px!important; padding-left: 10px!important;"
+        style="font-size:30px; padding: 4px!important; padding-left: 12px!important;"
         href="#">
         <i class="fas fa-paw"></i>
       </a>
     </nav>
-
+    <mensagem ref="enviaMensagem" />
   </div>
 
 </template>
@@ -58,10 +64,12 @@
 <script>
     import ImageUploader from 'vue-image-upload-resize'
     import api from "@/service/api";
+    import Mensagem from "@/components/Mensagem";
     export default {
         name: "MuralPets",
         components: {
           ImageUploader,
+          Mensagem
         },
         data () {
           return {
@@ -89,7 +97,7 @@
       },
       methods: {
          filtro: function () {
-          return this.pets.filter((pet) => pet.nome_pet.includes(this.nome_pet));
+          return this.pets.filter((pet) => pet.nome_pet.toUpperCase().includes(this.nome_pet.toUpperCase()));
         },
         
         async buscarPetsAdocao(){
@@ -107,7 +115,10 @@
         async buscarPetsPerdidos(){
           let  dados = await api.get('/missingPet')
           this.pets = dados.data;
-          this.pets[0].status_pet = 'p'
+          if(this.pets.length == 0){
+          this.$refs.enviaMensagem.exclamar("info",  "Não existe pets perdidos!")
+          }
+          this.pets[0].status_pet = 'd'
           
         },
 
@@ -116,7 +127,11 @@
 </script>
 
 <style scoped>
-
+  .detalhe-foto-pet{
+    border-radius: 50%;
+    width: 60px!important;
+    height: 60px!important;
+  }
   .margin-bottom-15{
     margin-bottom: 15px;
   }

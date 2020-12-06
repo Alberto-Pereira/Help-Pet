@@ -14,11 +14,12 @@
     <div class="w3-blue w3-col" >
       <h2 class="w3-col w3-center bold-500">Dados do Pet</h2>
     </div>
+    <div class="w3-center margin-bottom-15">
+      <img style="border-radius: 50%" class="w3-border" :src="image" alt="" width="150" height="150">
+    </div>
 
-    <div class="margin-top-80 padding-10">
-      <div class="w3-center margin-bottom-15">
-        <img style="border-radius: 50%" class="w3-border" :src="image" alt="" width="150" height="150">
-      </div>
+    <div class="padding-10 w3-col w3-border w3-border-blue w3-round" style="box-shadow: 5px 10px 20px 3px;">
+      
       <span class="margin-left-8 bold-500 font-cinza-meio-claro">Para adoção? </span>
       <span class="w3-text-green bold-500">
         <label for="checksim">Sim</label>
@@ -28,15 +29,29 @@
         <label for="checknao">Não</label>
         <input class="w3-radio" type="radio" name="paraadocao" value="n" v-model="status" unchecked id="checknao">
       </span>
+      <label class="w3-col w3-margin-top w3-text-blue">Nome do pet</label>
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="nome" placeholder="Nome do pet:">
+      <label class="w3-col w3-margin-top w3-text-blue">Raça</label>
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="raca" placeholder="Raça:">
+      <label class="w3-col w3-margin-top w3-text-blue">Cor</label>
       <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="cor" placeholder="Cor:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="sexo" placeholder="sexo:">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="numero_coleira" placeholder="Número da coleira (gera automatico):">
-      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="descricao" placeholder="Descrição:">
+      <label class="w3-col w3-margin-top w3-text-blue">Sexo</label>
+      <select 
+        class="w3-select w3-margin-top w3-text-black bold-500" 
+        style="max-width: 75%!important" 
+        id="sexo" name="option"
+        v-model="sexo"
+      >
+        <option value="m" class="w3-col" selected>Macho</option>
+        <option value="f" class="w3-col">Femea</option>
+      </select>
+      <label class="w3-col w3-margin-top w3-text-blue">Número da coleira</label>
+      <input class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="numero_coleira" placeholder="Número da coleira:">
+      <label class="w3-col w3-margin-top w3-text-blue">Descrição</label>
+      <textarea class="w3-input w3-margin-top w3-text-black bold-500" type="text" v-model="descricao" ></textarea>
     </div>
 
-    <nav class="container w3-display-bottomright w3-padding" > 
+    <nav class="container w3-display-bottomright w3-padding" style="position:fixed;"> 
       <router-link 
       to="/Perfil"
       style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
@@ -61,14 +76,14 @@
       ></image-uploader>
 
       <a 
-      href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
+      href="#" style="font-size:20px;padding: 4px!important; padding-left: 11px!important;" 
       class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados()">
         <i class="fas fa-database"></i>
       </a>
 
       <a 
       class="buttons w3-blue" 
-      style="font-size:30px; padding: 4px!important; padding-left: 10px!important;" 
+      style="font-size:30px; padding: 4px!important; padding-left: 12px!important;" 
       href="#">
         <i class="fas fa-paw"></i>
       </a>
@@ -158,8 +173,6 @@
            
             if(sucesso){
                this.$refs.enviarMensagem.exclamar("inf", "Pet cadastrado com sucesso") 
-            }else{
-               this.$refs.enviarMensagem.exclamar("inf", "Não foi possivel cadastrar pet")
             }
            
           },
