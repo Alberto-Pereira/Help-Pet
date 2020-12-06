@@ -19,6 +19,8 @@ module.exports = {
     const { password } = req.body;
     const user = await connection("usuario").where("id_usuario", idUser);
     const crypt = crypto.createHash("sha1").update(password).digest("hex");
+
+    console.log(user, idUser);
     if (user.length == 0) {
       res.status(401).json("Usuario não exite!");
     } else {
