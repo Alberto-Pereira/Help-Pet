@@ -1,27 +1,29 @@
 <template>
-    <div id="snackbar">{{mensagem}}</div>
+  <div id="snackbar">{{ mensagem }}</div>
 </template>
 
 <script>
-    export default {
-        name: "Mensagem",
-        data() {
-            return {
-            tipo: '',
-            mensagem: '',
-            };
-        },
-        methods: {
-            exclamar: function(tipo, mensagem){
-                this.tipo = tipo;
-                this.mensagem = mensagem;
-                const x = document.getElementById("snackbar");
-                x.className = "show";
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 6000);
-                
-            },
-        }
-    }
+export default {
+  name: "Mensagem",
+  data() {
+    return {
+      tipo: "",
+      mensagem: "",
+    };
+  },
+  methods: {
+    exclamar: function (tipo, mensagem) {
+      console.log(mensagem? true: false)
+      this.tipo = tipo;
+      this.mensagem = mensagem;
+      const x = document.getElementById("snackbar");
+      x.className = "show";
+      setTimeout(function () {
+        x.className = x.className.replace("show", " ");
+      }, 6000);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -48,22 +50,46 @@
 }
 
 @-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;} 
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;} 
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 @keyframes fadeout {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 </style>
