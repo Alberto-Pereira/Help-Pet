@@ -39,8 +39,8 @@ module.exports = {
             cor_pet: colorPet,
             numero_coleira: collarNumber,
             descricao_pet: description,
-            latitude: location[0],
-            longitude: location[1],
+            latitude: location[0] != null ? location[0] : null,
+            longitude: location[1] != null ? location[1] : null,
             status_pet: status,
             raca_pet: breed,
           });
