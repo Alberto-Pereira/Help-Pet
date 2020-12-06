@@ -28,6 +28,10 @@ module.exports = {
 
     const user = await connection("usuario").where("id_usuario", idUser);
 
+    if (location.length == 0 || location.length != 2) {
+      location = [0.0, 0.0];
+    }
+
     if (status == "n" || status == "a" || status == "d" || status == "l") {
       if (user.length != 0) {
         if (!isNaN(collarNumber)) {
@@ -39,8 +43,8 @@ module.exports = {
             cor_pet: colorPet,
             numero_coleira: collarNumber,
             descricao_pet: description,
-            latitude: location[0] != null ? location[0] : null,
-            longitude: location[1] != null ? location[1] : null,
+            latitude: location[0],
+            longitude: location[1],
             status_pet: status,
             raca_pet: breed,
           });
