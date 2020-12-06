@@ -3,13 +3,13 @@
 
     <!-- Corpo -->
     <div class="margin-top-80">
-      <h1 class="w3-center">Recuperar Senha</h1>
+      <h1 class="w3-center">Resetar Senha</h1>
       <div class="w3-row">
         <div class="w3-third w3-container"></div>
         <div class="w3-third w3-container">
           <!-- Bloco 1 -->
-          <label for="cpf"></label>
-          <the-mask :mask="['###.###.###-##']"  id="cpf" class="w3-input w3-round w3-margin-top" type="text" v-model="cpf" placeholder="Cpf:"/>
+          <label for="senha1"></label>
+          <input  id="senha1" class="w3-input w3-round w3-margin-top" type="text" v-model="senha1" placeholder="Nova Senha"/>
           <!-- Bloco 1 -->
         </div>
         <div class="w3-third w3-container"></div>
@@ -19,8 +19,8 @@
         <div class="w3-third w3-container"></div>
         <div class="w3-third w3-container">
           <!-- Bloco 2 -->
-          <label for="telefone"></label>
-          <the-mask :mask="['(##) ####-####', '(##) #####-####']" id="telefone" class="w3-input w3-round w3-margin-top" placeholder="Telefone:" v-model="telefone" />
+          <label for="senha2"></label>
+          <input id="senha2" class="w3-input w3-round w3-margin-top margin-bottom-30" placeholder="Repetir nova senha" v-model="senha2" />
           <!-- Bloco 2 -->
         </div>
         <div class="w3-third w3-container"></div>
@@ -30,7 +30,7 @@
         <div class="w3-third w3-container"></div>
         <div class="w3-third w3-container">
           <!-- Bloco 3 -->
-          <button @click="recuperar()" class="w3-col w3-btn w3-center fundo-roxo w3-text-white margin-top-30 w3-round">Recuperar Senha</button>
+          <button @click="resetar()" class="w3-col w3-btn w3-center fundo-roxo w3-text-white w3-round">Resetar</button>
           <!-- Bloco 3 -->
         </div>
         <div class="w3-third w3-container"></div>
@@ -41,9 +41,9 @@
     <!-- Float Button -->
     <nav class="container w3-display-bottomright w3-padding" style="position: fixed;">
       <router-link
-        to="/Entrar"
+        to="/RecuperarLogin"
         style="font-size:20px;padding: 4px!important; padding-left: 9px!important;"
-        class="buttons w3-orange" tooltip="Voltar para login">
+        class="buttons w3-orange" tooltip="Voltar para recuperar senha">
         <i class="fas fa-arrow-left"></i>
       </router-link>
 
@@ -64,19 +64,16 @@
 </template>
 
 <script>
-  import Mensagem from "@/components/Mensagem"
-  import {TheMask} from 'vue-the-mask'
-
-  export default {
-        name: "RecuperarLogin",
+    import Mensagem from "@/components/Mensagem"
+    export default {
+        name: "NovaSenha",
         components: {
           Mensagem,
-          TheMask
         },
         data () {
           return {
-            cpf:'',
-            telefone:''
+            senha1:'',
+            senha2:''
           };
         },
         mounted() {
@@ -86,10 +83,8 @@
           }
         },
         methods: {
-          recuperar(){
-            if(true === true){ //TODO implementar: analisar se este é um metodo async
-              this.$router.push({ name: 'NovaSenha' });
-            }
+          resetar(){
+            //TODO implementar: analisar se é um metodo async
           }
         }
     }
@@ -97,8 +92,8 @@
 
 <style scoped>
 
-  .margin-top-30{
-    margin-top: 30px;
+  .margin-bottom-30{
+    margin-bottom: 30px;
   }
 
 </style>

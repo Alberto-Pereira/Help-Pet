@@ -12,6 +12,7 @@ import ApresentacaoEntrada from '@/components/ApresentacaoEntrada'
 import Endereco from '@/components/Endereco'
 import MuralPets from '@/components/MuralPets'
 import RecuperarLogin from '@/components/RecuperarLogin'
+import NovaSenha from '@/components/NovaSenha'
 
 Vue.use(Router)
 
@@ -78,6 +79,10 @@ export default new Router({
       name: 'RecuperarLogin',
       component: RecuperarLogin
     },
-
+    {
+      path: '/NovaSenha',
+      name: 'NovaSenha',
+      component: NovaSenha
+    }
   ]
 })
