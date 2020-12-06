@@ -20,10 +20,10 @@ module.exports = {
             telegram: telegram,
             telefone: fone,
           })
-        : res.json("401");
+        : res.status(401).json({ error: "Dados já cadastrados" });
       res.json({ img_user, cpf, fone, whatsapp, fone });
     } else {
-      res.json("CPF já cadastrado");
+      res.status().json("CPF já cadastrado");
     }
   },
   async show(req, res) {
