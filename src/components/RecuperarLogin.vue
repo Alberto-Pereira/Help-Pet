@@ -3,7 +3,7 @@
     class="geral w3-container extender-div-tela-toda w3-small cor-fundo-app"
     style="padding: 0"
   >
-  <div class="w3-modal" v-if="processando" style="display: block; padding-top: 60%">
+  <div class="w3-modal" v-if="processando" style="display: block; padding-top: 40%">
       <div class="w3-modal-content">
         <div class="w3-container w3-margin-top" style="padding: 0px">
           <div class="wrapper">
@@ -113,6 +113,7 @@
 <script>
 import Mensagem from "@/components/Mensagem";
 import { TheMask } from "vue-the-mask";
+import api from "@/service/api";
 
 export default {
   name: "RecuperarLogin",

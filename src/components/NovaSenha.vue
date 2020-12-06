@@ -3,7 +3,7 @@
     class="geral w3-container extender-div-tela-toda w3-small cor-fundo-app"
     style="padding: 0"
   >
-  <div class="w3-modal" v-if="processando" style="display: block; padding-top: 60%">
+  <div class="w3-modal" v-if="processando" style="display: block; padding-top: 40%">
       <div class="w3-modal-content">
         <div class="w3-container w3-margin-top" style="padding: 0px">
           <div class="wrapper">
@@ -28,7 +28,7 @@
           <input
             id="senha1"
             class="w3-input w3-round w3-margin-top"
-            type="text"
+            type="password"
             v-model="senha1"
             placeholder="Nova Senha"
           />
@@ -44,6 +44,7 @@
           <label for="senha2"></label>
           <input
             id="senha2"
+            type="password"
             class="w3-input w3-round w3-margin-top margin-bottom-30"
             placeholder="Repetir nova senha"
             v-model="senha2"
@@ -63,6 +64,14 @@
           >
             Resetar
           </button>
+
+           <router-link
+            v-if="mostrar_botao"
+            to="/Entrar"
+            class="w3-col w3-btn w3-center fundo-roxo w3-text-white w3-round w3-margin-top"
+          >
+            Ir para login
+           </router-link>
           <!-- Bloco 3 -->
         </div>
         <div class="w3-third w3-container"></div>
@@ -110,6 +119,7 @@
 
 <script>
 import Mensagem from "@/components/Mensagem";
+import api from "@/service/api";
 export default {
   name: "NovaSenha",
   components: {
@@ -120,7 +130,8 @@ export default {
       senha1: "",
       senha2: "",
       id_user: '',
-      processando: false
+      processando: false,
+      mostrar_botao: false
     };
   },
   mounted() {
@@ -132,22 +143,21 @@ export default {
   },
   methods: {
     async resetar() {
+      this.mostrar_botao = false
       if(this.senha1 !== this.senha2){
         this.$refs.enviarMensagem.exclamar("erro", "Senhas diferentes")
         return
       }
       this.processando = true
-      const resposta = await api.post("/forgotPassword"+this.id_user, {
+      const resposta = await api.put("/forgotPassword/"+this.id_user, {
           password: this.senha1,
         });
-        if(resposta.data.status == 200){
-          this.$refs.enviarMensagem.exclamar("erro", "Aterado com sucesso")
-          
-          this.$router.push({ name: "Entrar" });
-        }else{
-          this.$refs.enviarMensagem.exclamar("erro", "Não foi possivel processar")
-        }
-        this.processando = false
+         this.processando = false
+          if(resposta){
+            this.$refs.enviarMensagem.exclamar("erro", resposta.data)
+            this.processando = false;
+            this.mostrar_botao = true
+          } 
     },
   },
 };

@@ -33,7 +33,7 @@
 
     <div class="w3-center w3-small" style="margin-top: 70px">
       <div>
-        <h3>{{ dados_usuario.nome_usuario.toUpperCase() }}</h3>
+        <h3>{{ dados_usuario.nome_usuario? dados_usuario.nome_usuario.toUpperCase() : ''}}</h3>
       </div>
       <!-- Interruptor arredondado (toggle) -->
       <label class="switch">

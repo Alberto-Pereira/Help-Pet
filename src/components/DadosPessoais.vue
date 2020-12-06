@@ -3,7 +3,7 @@
     class="geral w3-container extender-div-tela-toda w3-small"
     style="padding: 0px"
   >
-     <div
+    <div
       class="w3-modal"
       v-if="processando"
       style="display: block; padding-top: 60%"
@@ -30,6 +30,15 @@
         <img
           style="border-radius: 50%; box-shadow: 5px 1px 20px 0px"
           class="w3-border"
+          v-if="!image"
+          src="../assets/imagens/avatar.jpg"
+          width="150"
+          height="150"
+        />
+        <img
+          v-else
+          style="border-radius: 50%; box-shadow: 5px 1px 20px 0px"
+          class="w3-border"
           :src="image"
           alt=""
           width="150"
@@ -45,7 +54,9 @@
         v-model="cpf"
         placeholder="Cpf:"
       />
-      <label class="w3-col w3-margin-top w3-text-blue"><i class="fas fa-phone"> </i> Telefone</label>
+      <label class="w3-col w3-margin-top w3-text-blue"
+        ><i class="fas fa-phone"> </i> Telefone</label
+      >
       <the-mask
         :mask="['(##) ####-####', '(##) #####-####']"
         id="telefone"
@@ -53,7 +64,9 @@
         placeholder="Telefone:"
         v-model="telefone"
       />
-      <label class="w3-col w3-margin-top w3-text-blue"><i class="fab fa-whatsapp"> </i> Whatsapp</label>
+      <label class="w3-col w3-margin-top w3-text-blue"
+        ><i class="fab fa-whatsapp"> </i> Whatsapp</label
+      >
       <the-mask
         :mask="['(##) ####-####', '(##) #####-####']"
         id="whatsapp"
@@ -62,7 +75,9 @@
         type="text"
         placeholder="Whatsapp:"
       />
-      <label class="w3-col w3-margin-top w3-text-blue"><i class="fab fa-telegram-plane"></i> Telegram</label>
+      <label class="w3-col w3-margin-top w3-text-blue"
+        ><i class="fab fa-telegram-plane"></i> Telegram</label
+      >
       <the-mask
         :mask="['(##) ####-####', '(##) #####-####']"
         id="telegram"
@@ -176,7 +191,7 @@ export default {
       cpf_valido: true,
       image: "", //require('../assets/imagens/user.png'),
       existe_dados: false,
-      processando: false
+      processando: false,
     };
   },
 
@@ -285,6 +300,14 @@ export default {
         this.$refs.enviarMensagem.exclamar(" erro", "Campo cpf está vazio!");
         return;
       }
+      if (!this.telefone) {
+        this.$refs.enviarMensagem.exclamar(" erro", "Telefone não pode ser vazio!");
+        return;
+      }
+       if (!this.whatsapp) {
+        this.$refs.enviarMensagem.exclamar(" erro", "Whats app não pode estar vazio!");
+        return;
+      }
 
       let sucesso = false;
       this.processando = true;
@@ -317,28 +340,32 @@ export default {
           "Não foi possivel atualizar  dados!"
         );
       }
-      this.processando = false
+      this.processando = false;
     },
 
-    validarCPF(cpf_enter) {
-      let cpf = cpf_enter;
-      let exp = /\.|\-/g;
-      cpf = cpf.toString().replace(exp, "");
-      let digitoDigitado = eval(cpf.charAt(9) + cpf.charAt(10));
-      let soma1 = 0,
-        soma2 = 0;
-      let vlr = 11;
+    validarCPF(strCPF) {
+      try {
+        var Soma;
+        var Resto;
+        Soma = 0;
+        if (strCPF == "00000000000") return this.$refs.enviarMensagem.exclamar("erro", "cpf não pode ser zero");
 
-      for (let i = 0; i < 9; i++) {
-        soma1 += eval(cpf.charAt(i) * (vlr - 1));
-        soma2 += eval(cpf.charAt(i) * vlr);
-        vlr--;
-      }
-      soma1 = (soma1 * 10) % 11 == 10 ? 0 : (soma1 * 10) % 11;
-      soma2 = ((soma2 + 2 * soma1) * 10) % 11;
+        for (i = 1; i <= 9; i++)
+          Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+        Resto = (Soma * 10) % 11;
 
-      let digitoGerado = soma1 * 10 + soma2;
-      if (digitoGerado != digitoDigitado) {
+        if (Resto == 10 || Resto == 11) Resto = 0;
+        if (Resto != parseInt(strCPF.substring(9, 10))) return this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
+
+        Soma = 0;
+        for (i = 1; i <= 10; i++)
+          Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+        Resto = (Soma * 10) % 11;
+
+        if (Resto == 10 || Resto == 11) Resto = 0;
+        if (Resto != parseInt(strCPF.substring(10, 11))) return this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
+        return true;
+      } catch (erro) {
         this.cpf_valido = false;
         this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
       }

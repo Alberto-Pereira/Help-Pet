@@ -227,6 +227,35 @@ export default {
       this.image = file;
     },
     async gravarDados() {
+      
+      if(!this.image){
+        this.$refs.enviarMensagem.exclamar("inf", "Por favor atualize a foto");
+        return
+      }
+      if(!this.nome){
+        this.$refs.enviarMensagem.exclamar("inf", "Insira o nome do pet");
+        return
+      }
+      if(!this.raca){
+        this.$refs.enviarMensagem.exclamar("inf", "Insira o raça do pet");
+        return
+      }
+      if(!this.cor){
+        this.$refs.enviarMensagem.exclamar("inf", "Insira o cor do pet");
+        return
+      }
+      if(!this.sexo){
+        this.$refs.enviarMensagem.exclamar("inf", "Insira o sexo do pet");
+        return
+      }
+      if(!this.numero_coleira){
+        this.$refs.enviarMensagem.exclamar("inf", "Numero coleira não pode estar vazio");
+        return
+      }
+      if(!this.status){
+        this.$refs.enviarMensagem.exclamar("inf", "Defina o status do seu pet!");
+        return
+      }
       this.processando = true;
       if (navigator.geolocation) {
         this.localizacao = [];
@@ -254,9 +283,8 @@ export default {
           breed: this.raca,
         });
         sucesso = true;
-        this.setTimeout(() => {
-          this.$router.push({ name: "Perfil" });
-        }, 5000);
+        this.$router.push({ name: "Perfil" });
+        
       } catch (error) {
         sucesso = false;
       }
