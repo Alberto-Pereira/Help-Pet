@@ -3,13 +3,19 @@
     class="geral w3-container cor-fundo-app extender-div-tela-toda"
     style="padding:0;"
   >
-    <div v-show="processando" class="wrapper">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="shadow"></div>
-      <div class="shadow"></div>
-      <div class="shadow"></div>
+   <div class="w3-modal" v-if="processando" style="display:block;padding-top: 90%;">
+      <div class="w3-modal-content">
+        <div class="w3-container w3-margin-top" style="padding:0px;">
+            <div class="wrapper">
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="shadow"></div>
+              <div class="shadow"></div>
+              <div class="shadow"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="w3-col w3-center margin-bottom-30">

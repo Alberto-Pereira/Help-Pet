@@ -1,13 +1,18 @@
 <template>
   <div class="entrar w3-col">
-    <div v-show="processando" class="wrapper">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="shadow"></div>
-        <div class="shadow"></div>
-        <div class="shadow"></div>
-        
+    <div class="w3-modal" v-if="processando" style="display:block;padding-top: 90%;">
+      <div class="w3-modal-content">
+        <div class="w3-container w3-margin-top" style="padding:0px;">
+            <div class="wrapper">
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="shadow"></div>
+              <div class="shadow"></div>
+              <div class="shadow"></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="w3-blue w3-mobile w3-center" style="height: 200px; margin-top:0px!important;">
         <span class="w3-text-white w3-center fonte-titulo w3-col">Perfil</span>
@@ -156,20 +161,20 @@ export default {
     
     let parametros_login = localStorage.getItem("autorizacao");
     this.dados_usuario = JSON.parse(localStorage.getItem('parametros-usuario'));
-    console.log(this.dados_usuario, "teste")
     if(parametros_login !== "logado" ){
          this.$router.push({ name: 'Entrar' });
     }else{
        this.prencherTela();
     }
     
+    
   },
   methods:{
     async buscarPets(){
       let pets = []
-      console
+      this.processando = true;
       pets = await api.get("/pets/"+ this.dados_usuario.id_usuario)
-      console.log(pets, "aqui")
+    
       if(pets.data === "Sem pets"){
         this.meus_pets = []
         return
@@ -177,9 +182,9 @@ export default {
         this.meus_pets = pets.data
       }
       if(!pets){
-       console.log("falha em buscar pets")
+       this.$refs.enviarMensagem.exclamar("error", "Não foi possivel carregar pets do perfil.")
       }
-      
+      this.processando = false
     },
 
     logout(){
@@ -200,7 +205,7 @@ export default {
   
     async prencherTela(){
       this.usuario_imagem = localStorage.getItem("foto-user");
-    
+      this.processando = true;
       let complementar = await api.get("/detailUser/"+ this.dados_usuario.id_usuario)
       if(!this.usuario_imagem){
         if(complementar.data.imagem_usuario){
@@ -209,22 +214,22 @@ export default {
           this.$refs.enviarMensagem.exclamar(" erro", "usuario sem foto!")
         }
       }
+       this.processando = false;
       this.buscarPets();
+     
     },
     async buscarPetsPerdidos(){
       this.pets_mostrar = !this.pets_mostrar;
-      
+      this.processando = true;
       let pets_perdidos_dados = []
       pets_perdidos_dados =  await api.get("/missingPet")
-      console.log("dados",pets_perdidos_dados)
       if(pets_perdidos_dados.data == "Nenhum pet perdido"){
         this.pets_perdidos = [];
         this.$refs.enviarMensagem.exclamar("erro", "Não existe pets perdidos!");
-  
-        return
       }else{
         this.pets_perdidos = pets_perdidos_dados.data
       }
+      this.processando = false;
     }
 
   }
