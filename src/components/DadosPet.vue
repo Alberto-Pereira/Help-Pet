@@ -137,7 +137,7 @@
                 this.localizacao = []
                 await navigator.geolocation.getCurrentPosition(position => {
                   const { latitude, longitude } = position.coords;
-                 this.localizacao = [latitude, longitude]
+                 this.localizacao = [latitude.toString(), longitude.toString()]
                  console.log(this.localizacao)
                   
                 });

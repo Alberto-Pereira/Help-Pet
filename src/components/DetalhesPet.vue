@@ -186,7 +186,7 @@
 
       <a
         class="buttons w3-blue"
-        href="#"
+        v-if="id_pet_dono == id_logado"
         style="font-size:30px; padding: 4px!important; padding-left: 5px!important;">
         <i class="fas fa-paw"></i>
       </a>
@@ -253,6 +253,7 @@
         });
       }
       let detalhe_pet = await JSON.parse(localStorage.getItem("pet-detalhe"));
+      console.log("solf",detalhe_pet)
       if(detalhe_pet.id_pet){
         this.existe_pet = true;
       }

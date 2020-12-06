@@ -16,7 +16,7 @@
     <label>Perdidos</label>
 
     <div id="listView" class="" style="height: 100%: overflow:scroll; margin-bottom: 50px">
-      <div>
+      <div v-if="pets.length > 0">
         <div 
           id="pets-perdidos"
           v-for="(pet, indice) in filtro()"  
@@ -96,15 +96,24 @@
        
       },
       methods: {
-         filtro: function () {
-          return this.pets.filter((pet) => pet.nome_pet.toUpperCase().includes(this.nome_pet.toUpperCase()));
+        filtro: function () {
+          if(this.pets.length){
+            return this.pets.filter((pet) => pet.nome_pet.toUpperCase().includes(this.nome_pet.toUpperCase()));
+          }else{
+            return []
+          }
+          
         },
         
         async buscarPetsAdocao(){
           let  dados = await api.get('/adoptPet')
-          this.pets = dados.data;
-          this.pets[0].status_pet = 'a'
-         
+          this.pets = [];
+          if(!dados.data.length){
+            this.$refs.enviaMensagem.exclamar("info",  "Não existe pets perdidos!")
+            return
+          }else{
+            this.pets = dados.data;
+          }
         },
 
         ativarDetalhes(pet){
@@ -114,18 +123,15 @@
 
         async buscarPetsPerdidos(){
           let  dados = await api.get('/missingPet')
-          this.pets = dados.data;
-          for(let i in this.pets){
-            this.pets[i].status_pet = 'd'
+          this.pets = [];
+          console.log(dados)
+          if(dados.data === "Nenhum pet perdido"){
+            this.$refs.enviaMensagem.exclamar("info",  "Não existe pets perdidos!")
+            return
+          }else{
+            this.pets = dados.data;
           }
-          
-          if(this.pets.length == 0){
-          this.$refs.enviaMensagem.exclamar("info",  "Não existe pets perdidos!")
-          }
-          
-          
         },
-
       }
     }
 </script>

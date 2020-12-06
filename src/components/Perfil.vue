@@ -158,7 +158,6 @@ export default {
     
   },
   created(){
-    
     let parametros_login = localStorage.getItem("autorizacao");
     this.dados_usuario = JSON.parse(localStorage.getItem('parametros-usuario'));
     if(parametros_login !== "logado" ){
@@ -177,9 +176,12 @@ export default {
     
       if(pets.data === "Sem pets"){
         this.meus_pets = []
-        return
       }else{
         this.meus_pets = pets.data
+        for(let i in this.meus_pets){
+          this.meus_pets[i].latitude = parseFloat(this.meus_pets[i].latitude)
+          this.meus_pets[i].longitude = parseFloat(this.meus_pets[i].longitude)
+        }
       }
       if(!pets){
        this.$refs.enviarMensagem.exclamar("error", "Não foi possivel carregar pets do perfil.")
