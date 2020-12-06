@@ -73,7 +73,7 @@
         <i class="fas fa-paw"></i>
       </a>
     </nav>
-
+    <Mensagem ref="enviarMensagem"/>
   </div>
     
 </template>
@@ -81,10 +81,12 @@
 <script>
     import ImageUploader from 'vue-image-upload-resize'
     import api from "../service/api";
+    import Mensagem from "@/components/Mensagem"
     export default {
         name: "DadosPet",
         components: {
           ImageUploader,
+          Mensagem
         },
         data : ()=> {
           return {
@@ -97,7 +99,8 @@
             raca: '',
             numero_coleira: undefined,
             status: undefined,
-            processando: false
+            processando: false,
+            localizacao:undefined
           }
         },
         mounted(){
@@ -114,40 +117,70 @@
             this.image = file;
           },
           async gravarDados(){
-            
-            let localizacao = [navigator.geolocation.logitude, navigator.geolocation.latitude];
-            if(!localizacao){
-              [	-16.727694,-49.277374]
+            if (navigator.geolocation)
+              {
+                this.localizacao = []
+                await navigator.geolocation.getCurrentPosition(position => {
+                  const { latitude, longitude } = position.coords;
+                 this.localizacao = [latitude, longitude]
+                 console.log(this.localizacao)
+                  
+                });
+                
             }
+            
+            
+          
             let resposta;
+            let sucesso = false;
             let parametros_locais = JSON.parse(localStorage.getItem('parametros-usuario'));
-            this.processando = true
             try {
-                resposta = await api.post("/newPet/"+parametros_locais[0].id_usuario, {
+                resposta = await api.post("/newPet/"+parametros_locais.id_usuario, {
                 img_pet: this.image,
                 namePet: this.nome,
                 sexPet: this.sexo,
                 colorPet: this.cor,
                 collarNumber: this.numero_coleira,
                 description: this.descricao,
-                location: localizacao,
+                location: this.localizacao,
                 status: this.status,
                 breed: this.raca,
               })
-              this.processando = false
+                sucesso = true;
+                this.setTimeout(() => {
+                  this.$router.push({ name: 'Perfil' });
+                }, 5000);
+              
             } catch (error) {
-              this.processando = false
-            }
-            
-             console.log("aqui")
-            console.log("resposta", resposta)
-            if(resposta){
-               await this.$router.push({ name: 'Perfil' });
+              sucesso = false;
+             
             }
            
-          }
-        }
+            if(sucesso){
+               this.$refs.enviarMensagem.exclamar("inf", "Pet cadastrado com sucesso") 
+            }else{
+               this.$refs.enviarMensagem.exclamar("inf", "Não foi possivel cadastrar pet")
+            }
+           
+          },
+          async getLocation()
+          {
+            if (navigator.geolocation)
+              {
+
+                await navigator.geolocation.getCurrentPosition(position => {
+                  const { latitude, longitude } = position.coords;
+                  return [latitude, longitude]
+                  
+                });
+                
+              }
+            else{this.$refs.enviarMensagem.exclamar("erro","Geolocalização não é suportada nesse browser.")}
+          },
+
+          
     }
+  }
 </script>
 
 <style scoped>

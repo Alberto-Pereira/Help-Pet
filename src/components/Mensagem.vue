@@ -13,7 +13,6 @@
         },
         methods: {
             exclamar: function(tipo, mensagem){
-                
                 this.tipo = tipo;
                 this.mensagem = mensagem;
                 const x = document.getElementById("snackbar");

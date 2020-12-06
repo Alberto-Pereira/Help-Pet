@@ -13,8 +13,8 @@
         <span class="w3-text-white w3-center fonte-titulo w3-col">Perfil</span>
         <div class="w3-center w3-col s4 m8 l2">
             <span class="circulo w3-white w3-center">
-                <img class="perfil w3-center" v-if="!tem_imagem_usuario" src="../assets/imagens/avatar.jpg">
-                <img v-else class="perfil w3-center" :src="dados_master.imagem_usuario" alt="">
+                <img class="perfil w3-center" v-if="!usuario_imagem" src="../assets/imagens/avatar.jpg">
+                <img v-else class="perfil w3-center" :src="usuario_imagem" alt="">
             </span>
            
         </div>
@@ -54,6 +54,7 @@
         <button v-if="meus_pets.length > 99" class="w3-btn w3-green w3-col"><i class="fas fa-add"></i></button>
       </div>
     </div>
+
     <div v-show="pets_mostrar && !nao_tem_mensagem && pets_perdidos.length > 0" class="w3-animate-zoom">
       <div id="pets-perdidos" v-for="(pet_perdido, indice) in pets_perdidos" :key="indice" class="w3-margin-top w3-card w3-padding w3-container w3-border w3-round w3-margin">
         <div class="w3-col s2">
@@ -113,7 +114,7 @@
       href="#">
       <i class="fas fa-paw"></i></a>
     </nav>
-    
+    <Mensagem ref="enviarMensagem"/>
   </div>
   
 </template>
@@ -153,24 +154,29 @@ export default {
   created(){
     
     let parametros_login = localStorage.getItem("autorizacao");
-    this.dados_usuario = localStorage.getItem('parametros-usuario');
-    
-    if(parametros_login && this.dados_usuario !== "deslogado" ){
-        
-        this.prencherTela(this.dados_usuario);
+    this.dados_usuario = JSON.parse(localStorage.getItem('parametros-usuario'));
+    console.log(this.dados_usuario, "teste")
+    if(parametros_login !== "logado" ){
+         this.$router.push({ name: 'Entrar' });
     }else{
-      this.$router.push({ name: 'Entrar' });
+       this.prencherTela();
     }
     
   },
   methods:{
     async buscarPets(){
       let pets = []
-      pets = await api.get("/pets/"+ this.dados_master.id_usuario)
-      if(!pets){
-       console.log("falha em buscar pets")
+      console
+      pets = await api.get("/pets/"+ this.dados_usuario.id_usuario)
+      console.log(pets, "aqui")
+      if(pets.data === "Sem pets"){
+        this.meus_pets = []
+        return
       }else{
         this.meus_pets = pets.data
+      }
+      if(!pets){
+       console.log("falha em buscar pets")
       }
       
     },
@@ -192,44 +198,23 @@ export default {
     },
   
     async prencherTela(dados_usuario){
-           
-          let dados_localstorage = []
-          dados_localstorage = JSON.parse(dados_usuario)
-          let dados
-          await api.get("/infoUser/"+ dados_localstorage[0].id_usuario)
-          .then(function (response) {
-            if(response){
-              
-                  let dados1 =[]
-                  dados1.push(response.data[0])
-                  dados = JSON.parse(JSON.stringify(dados1[0]))
-            }
-          
-          }).catch(function (error) {
-            console.log(error)
-            //this.$refs.envia-mensagem.exclamar("", "Houve falha na requisição!")
-          })
-          this.dados_master = dados;
-          if(dados.imagem_usuario.indexOf("base64") > 0){
-            this.tem_imagem_usuario = true;
-          }
-          this.buscarPets();
-        },
+      this.usuario_imagem = localStorage.getItem("foto-user");
+      this.buscarPets();
+    },
     async buscarPetsPerdidos(){
-      console.log("aqui pets")
-      this.pets_mostrar = !this.pets_mostrar
+      this.pets_mostrar = !this.pets_mostrar;
+      
       let pets_perdidos_dados = []
       pets_perdidos_dados =  await api.get("/missingPet")
-      this.pets_perdidos = pets_perdidos_dados.data
-      this.pets_perdidos[0].status_pet = 'p'
-      console.log("dados",this.pets_perdidos)
-      if(this.pets_perdidos !== "Nenhum pet perdido"){
-        this.nao_tem_mensagem = false
+      console.log("dados",pets_perdidos_dados)
+      if(pets_perdidos_dados.data == "Nenhum pet perdido"){
+        this.pets_perdidos = [];
+        this.$refs.enviarMensagem.exclamar("erro", "Não existe pets perdidos!");
+  
+        return
+      }else{
+        this.pets_perdidos = pets_perdidos_dados.data
       }
-      if(this.nao_tem_mensagem){
-        this.$refs.enviaMensagem.exclamar(" ", "Não encontramos pet perdido")
-      }
-     
     }
 
   }

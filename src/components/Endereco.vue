@@ -47,12 +47,7 @@
       class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados()">
         <i class="fas fa-database"></i>
       </a>
-      <a 
-      style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
-      class="buttons w3-purple" tooltip="Atualizar dados" @click="atualizar()">
-        <i class="fas fa-sync"></i>
-      </a>
-       
+     
 
       <a 
       class="buttons w3-blue" 
@@ -99,7 +94,8 @@
           city: "",
           state: "",
           estados: [],
-          cidades: []
+          cidades: [],
+          existe_dados: false
         }
       },
 
@@ -139,13 +135,15 @@
             if(!complementar.data || complementar.data == ""){
               this.$refs.enviarMensagem.exclamar("erro", "Por favor complete seus dados")
             }else{
-              this.cep = complementar.data.cep,
-              this.street = complementar.data.rua,
-              this.residenceNumber=  complementar.data.num_residencia,
-              this.complement = complementar.data.complemento,
-              this.district= complementar.data.bairro,
-              this.city = complementar.data.cidade,
-              this.state = complementar.data.estado
+              this.cep = complementar.data.cep;
+              this.street = complementar.data.rua;
+              this.residenceNumber=  complementar.data.num_residencia;
+              this.complement = complementar.data.complemento;
+              this.district= complementar.data.bairro;
+              this.city = complementar.data.cidade;
+              this.state = complementar.data.estado;
+              this.existe_dados = true;
+
 
             }
           }
@@ -187,13 +185,17 @@
             sucesso = false
           })
           if(sucesso){
-            this.$refs.enviarMensagem.exclamar("info", "Dados ja Atualizados!");
+            this.$refs.enviarMensagem.exclamar("info", "Dados Atualizados com sucesso!");
           }else{
             this.$refs.enviarMensagem.exclamar("erro", "Não foi possivel Atualizar dados!")
           }
 
         },
         async gravarDados() {
+          if(this.existe_dados){
+            this.atualizar();
+            return
+          }
           let sucesso = false
           await api.post("/newAdress/"+ this.dados_pessoais.id_usuario, {
             cep: this.cep,
@@ -214,7 +216,7 @@
             sucesso = false
           })
           if(sucesso){
-            this.$refs.enviarMensagem.exclamar("info", "Dados ja gravados!");
+            this.$refs.enviarMensagem.exclamar("info", "Dados gravados com sucesso!");
           }else{
             this.$refs.enviarMensagem.exclamar("erro", "Não foi gravar dados!")
           }

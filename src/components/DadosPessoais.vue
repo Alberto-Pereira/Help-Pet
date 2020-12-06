@@ -47,7 +47,7 @@
                       outputFormat="string"
                       @input="setImage"
       ></image-uploader>
-
+     
       <a 
       href="#" style="font-size:20px;padding: 4px!important; padding-left: 9px!important;" 
       class="buttons w3-green" tooltip="Gravar dados" @click="gravarDados()">
@@ -91,6 +91,7 @@
           hasImage : false,
           cpf_valido: true,
           image : '',//require('../assets/imagens/user.png'),
+          existe_dados: false
         }
       },
 
@@ -127,6 +128,8 @@
             this.telefone = complementar.data.telefone;
             this.whatsapp = complementar.data.whatsapp;
             this.telegram = complementar.data.telegram;
+            this.existe_dados = true;
+            localStorage.setItem("foto-user", this.image)
           }
          
         },
@@ -137,6 +140,10 @@
         },
 
         async gravarDados() {
+          if(this.existe_dados){
+            this.atualizarDados();
+            return;
+          }
           this.validarCPF(this.cpf)
           if(!this.cpf_valido){
             return
@@ -167,7 +174,41 @@
           if(sucesso){
             this.$refs.enviarMensagem.exclamar("info", "Dados gravados com sucesso!");
           }else{
-            this.$refs.enviarMensagem.exclamar("erro", "Não foi gravar dados!");
+            this.$refs.enviarMensagem.exclamar("erro", "Não foi possivel gravar dados!");
+          }
+        }, 
+        async atualizarDados() {
+          this.validarCPF(this.cpf)
+          if(!this.cpf_valido){
+            return
+          }
+          if(!this.cpf){
+             this.$refs.enviarMensagem.exclamar(" erro", "Campo cpf está vazio!")
+             return;
+           }
+        
+          let sucesso = false
+          await api.put("/detailUser/"+ this.dados_pessoais.id_usuario, {
+            img_user: this.image,
+            cpf: this.cpf,
+            fone: this.telefone,
+            whatsapp: this.whatsapp,
+            telegram: this.telegram
+          })
+          .then(function (response) {
+            if(response.status == 200){
+              sucesso = true;
+            }else{
+              sucesso = false;
+            }
+          
+          }).catch(function (error) {
+            sucesso = false;
+          })
+          if(sucesso){
+            this.$refs.enviarMensagem.exclamar("info", "Dados atualizados com sucesso!");
+          }else{
+            this.$refs.enviarMensagem.exclamar("erro", "Não foi possivel atualizar  dados!");
           }
         }, 
         validarCPF(cpf_enter){
