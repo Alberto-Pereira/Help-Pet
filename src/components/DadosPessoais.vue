@@ -281,6 +281,7 @@ export default {
           sucesso = false;
         });
       if (sucesso) {
+        this.existe_dados = true;
         this.$refs.enviarMensagem.exclamar(
           "info",
           "Dados gravados com sucesso!"
