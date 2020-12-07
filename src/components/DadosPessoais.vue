@@ -249,8 +249,11 @@ export default {
         this.atualizarDados();
         return;
       }
-      this.validarCPF(this.cpf);
-      if (!this.cpf_valido) {
+      if (this.validarCPF(this.cpf)) {
+        this.cpf_valido = true;
+      }else{
+        this.cpf_valido = false;
+        this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
         return;
       }
       if (!this.cpf) {
@@ -292,8 +295,11 @@ export default {
       this.processando = false;
     },
     async atualizarDados() {
-      this.validarCPF(this.cpf);
-      if (!this.cpf_valido) {
+      if (this.validarCPF(this.cpf)) {
+        this.cpf_valido = true;
+      }else{
+        this.cpf_valido = false;
+        this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
         return;
       }
       if (!this.cpf) {
@@ -343,32 +349,79 @@ export default {
       this.processando = false;
     },
 
-    validarCPF(strCPF) {
+    validarCPF(cpf) {
+
+      console.log(cpf);
+
       try {
-        var Soma;
-        var Resto;
-        Soma = 0;
-        if (strCPF == "00000000000") return this.$refs.enviarMensagem.exclamar("erro", "cpf não pode ser zero");
 
-        for (i = 1; i <= 9; i++)
-          Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
-        Resto = (Soma * 10) % 11;
+        // logica para verificar cpf retirada do site
+        // https://laennder.com/como-e-feito-o-calculo-de-validacao-cpf/
+        // 123.456.789-10 (CPF inválido)
+        // 123.456.789-09 (CPF válido)
 
-        if (Resto == 10 || Resto == 11) Resto = 0;
-        if (Resto != parseInt(strCPF.substring(9, 10))) return this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
+        if(cpf.length > 11 || cpf.length < 11) return false;
 
-        Soma = 0;
-        for (i = 1; i <= 10; i++)
-          Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
-        Resto = (Soma * 10) % 11;
+        if(
+          cpf.charAt(0) === cpf.charAt(1) &&
+          cpf.charAt(1) === cpf.charAt(2) &&
+          cpf.charAt(2) === cpf.charAt(3) &&
+          cpf.charAt(3) === cpf.charAt(4) &&
+          cpf.charAt(4) === cpf.charAt(5) &&
+          cpf.charAt(5) === cpf.charAt(6) &&
+          cpf.charAt(6) === cpf.charAt(7) &&
+          cpf.charAt(7) === cpf.charAt(8) &&
+          cpf.charAt(8) === cpf.charAt(9) &&
+          cpf.charAt(9) === cpf.charAt(10)) return false;
 
-        if (Resto == 10 || Resto == 11) Resto = 0;
-        if (Resto != parseInt(strCPF.substring(10, 11))) return this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
-        return true;
-      } catch (erro) {
-        this.cpf_valido = false;
-        this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
+        let cpfString = cpf;
+        let pesos1 = [ 10, 9, 8, 7, 6, 5, 4, 3, 2 ];
+        let pesos2 = [ 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 ];
+        let somatoria = 0;
+        let resto;
+        let primeiroDigitoVerificador;
+        let segundoDigitoVerificador;
+
+        for (let i = 0; i < 9; i++) {
+          somatoria += parseInt(cpfString.charAt(i)) * pesos1[i];
+        }
+
+        resto = somatoria % 11;
+        primeiroDigitoVerificador = 11 - resto;
+
+        if (primeiroDigitoVerificador > 9) {
+          primeiroDigitoVerificador = 0;
+        }
+
+        cpfString = cpfString + (primeiroDigitoVerificador).toString();
+
+        somatoria = 0;
+
+        for (let i = 0; i < 10; i++) {
+          somatoria += parseInt(cpfString.charAt(i)) * pesos2[i];
+        }
+
+        resto = somatoria % 11;
+
+        segundoDigitoVerificador = 11 - resto;
+
+        if (segundoDigitoVerificador > 9) {
+          segundoDigitoVerificador = 0;
+        }
+
+        cpfString = cpf;
+
+        return (parseInt(cpfString.charAt(9)) === primeiroDigitoVerificador
+          && parseInt(cpfString.charAt(10)) === segundoDigitoVerificador);
+
+      } catch (e) {
+        console.log(e);
+        return false;
       }
+
+      //this.cpf_valido = false;
+      //this.$refs.enviarMensagem.exclamar("erro", "cpf invalido");
+
     },
   },
 };
