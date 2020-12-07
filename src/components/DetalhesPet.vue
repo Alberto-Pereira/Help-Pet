@@ -71,7 +71,7 @@
         >
           <i class="fas fa-exclamation-circle"></i> :
           <label style="color: green" v-if="status == 'n'">Normal</label>
-          <label style="color: yellow" v-if="status == 'a'">Para adoção</label>
+          <label style="color: #e6b800" v-if="status == 'a'">Para adoção</label>
           <label style="color: red" v-if="status == 'd'">Desaparecido</label>
           <label style="color: blue" v-if="status == 'l'">Localizado</label>
         </span>
@@ -434,7 +434,7 @@ export default {
       if (this.status == "d") {
         return "color: red!important;";
       } else if (this.status == "a") {
-        return "color: yellow!important;";
+        return "color: #e6b800!important;";
       } else {
         return "color: green!important;";
       }
