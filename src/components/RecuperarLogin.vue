@@ -19,7 +19,7 @@
     </div>
     <!-- Corpo -->
     <div class="margin-top-80">
-      <h1 class="w3-center">Recuperar senha</h1>
+      <h1 class="w3-center">Recuperar Senha</h1>
       <div class="w3-row">
         <div class="w3-third w3-container"></div>
         <div class="w3-third w3-container">
@@ -63,7 +63,7 @@
             @click="recuperar()"
             class="w3-col w3-btn w3-center fundo-roxo w3-text-white margin-top-30 w3-round"
           >
-            Recuperar Senha
+            Recuperar senha
           </button>
           <!-- Bloco 3 -->
         </div>
