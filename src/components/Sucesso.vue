@@ -5,7 +5,7 @@
     >
       <h2 class="w3-center bold">Parabéns</h2>
       <div class="font-cinza-meio-claro w3-center">
-        Você cadastrou seu e-mail e senha com sucesso faça login e complete o
+        Você cadastrou seu e-mail e senha com sucesso, faça login e complete o
         seu cadastro.
       </div>
       <router-link to="/Entrar">

@@ -27,7 +27,7 @@
         class="w3-input w3-margin-top w3-round"
         v-model="sobre_nome"
         type="text"
-        placeholder="Sobre nome"
+        placeholder="Sobrenome"
       />
       <input
         class="w3-input w3-margin-top w3-round"
