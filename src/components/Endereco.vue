@@ -92,14 +92,14 @@
 
     <nav class="container w3-display-bottomright w3-padding">
       <router-link
-        to="/Perfil"
+        to="/Dadospessoais"
         style="
           font-size: 20px;
           padding: 4px !important;
           padding-left: 11px !important;
         "
         class="buttons w3-orange"
-        tooltip="Voltar para perfil"
+        tooltip="Voltar para dados pessoais"
       >
         <i class="fas fa-arrow-left"></i>
       </router-link>
@@ -214,7 +214,7 @@ export default {
       this.processando = true;
       try {
         dados_estados = await api.get(
-          "http://servicodados.ibge.gov.br/api/v1/localidades/estados"
+          "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
         );
         this.estados = dados_estados.data;
       } catch (error) {
