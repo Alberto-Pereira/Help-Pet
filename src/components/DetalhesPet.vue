@@ -410,21 +410,20 @@ export default {
     this.id_logado = nome_proprietario.id_usuario;
     this.id_pet = detalhe_pet.id_pet;
     this.image = detalhe_pet.imagem_pet;
-    this.nome_pet = detalhe_pet.nome_pet;
-    console.log("antes", detalhe_pet.status_pet);
+    this.nome_pet = detalhe_pet.nome_pet.toUpperCase();
+  
     this.status = detalhe_pet.status_pet;
-    console.log("depois", this.status);
+
     this.sexo = detalhe_pet.sexo_pet;
     this.codigo_coleira = detalhe_pet.numero_coleira;
     this.descricao = detalhe_pet.descricao_pet;
-    this.cor = detalhe_pet.cor_pet;
-    this.raca = detalhe_pet.raca_pet;
+    this.cor = detalhe_pet.cor_pet.toUpperCase();
+    this.raca = detalhe_pet.raca_pet.toUpperCase();
     this.longitude = detalhe_pet.longitude;
     this.latitude = detalhe_pet.latitude;
     this.whatsapp = detalhe_pet.whatsapp;
-    this.nome_proprietario = detalhe_pet.nome_usuario + " " + detalhe_pet.sobrenome_usuario;
-    console.log("status", this.status);
-    //console.log("dadadadsd", detalhe_pet[0].nome_usuario)
+    this.nome_proprietario = nome_proprietario.nome_usuario.toUpperCase() + " " + nome_proprietario.sobrenome_usuario.toUpperCase();
+   
   },
 
   methods: {
