@@ -97,7 +97,7 @@
             </router-link>
             <router-link to="/RecuperarLogin">
               <h6 class="w3-col s6 l6 m6 padding-10 w3-text-green">
-                Esqueçeu a senha?
+                Esqueceu a senha?
               </h6>
             </router-link>
           </div>
