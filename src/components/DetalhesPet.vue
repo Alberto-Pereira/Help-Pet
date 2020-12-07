@@ -262,6 +262,7 @@
       </a>
 
       <label
+        v-if="id_pet_dono == id_logado"
         class="buttons w3-purple"
         for="fileInput"
         slot="upload-label"
@@ -421,10 +422,7 @@ export default {
     this.longitude = detalhe_pet.longitude;
     this.latitude = detalhe_pet.latitude;
     this.whatsapp = detalhe_pet.whatsapp;
-    this.nome_proprietario =
-      nome_proprietario.nome_usuario +
-      " " +
-      nome_proprietario.sobrenome_usuario;
+    this.nome_proprietario = detalhe_pet.nome_usuario + " " + detalhe_pet.sobrenome_usuario;
     console.log("status", this.status);
     //console.log("dadadadsd", detalhe_pet[0].nome_usuario)
   },
