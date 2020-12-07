@@ -19,7 +19,7 @@
     </div>
     <!-- Corpo -->
     <div class="margin-top-80">
-      <h1 class="w3-center">Recuperar Senha</h1>
+      <h1 class="w3-center">Recuperar senha</h1>
       <div class="w3-row">
         <div class="w3-third w3-container"></div>
         <div class="w3-third w3-container">
