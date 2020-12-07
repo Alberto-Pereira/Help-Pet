@@ -235,7 +235,6 @@ export default {
         this.whatsapp = complementar.data.whatsapp;
         this.telegram = complementar.data.telegram;
         this.existe_dados = true;
-        localStorage.setItem("foto-user", this.image);
       }
       this.processando = false;
     },

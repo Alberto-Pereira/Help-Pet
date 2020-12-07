@@ -264,6 +264,7 @@ export default {
     },
 
     logout() {
+      localStorage.clear();
       localStorage.setItem("autorizacao", false);
       localStorage.setItem("parametros-usuario", "deslogado");
       this.$router.push({ name: "Entrar" });
@@ -280,7 +281,6 @@ export default {
     },
 
     async prencherTela() {
-      this.usuario_imagem = localStorage.getItem("foto-user");
       this.processando = true;
       let complementar = await api.get(
         "/detailUser/" + this.dados_usuario.id_usuario
