@@ -40,7 +40,7 @@
         <input type="checkbox" />
         <span
           class="slider round w3-text-gray bold"
-          @click="buscarPetsPerdidos()"
+          @click="verificaLadoBotao()"
           @change="buscarPets()"
         >
           <span
@@ -55,7 +55,7 @@
       </label>
     </div>
     <div
-      v-show="!pets_mostrar && meus_pets.length > 0"
+      v-show="meus_pets.length > 0"
       @change="buscarPets()"
       class="w3-animate-zoom"
     >
@@ -219,7 +219,6 @@ export default {
       meus_pets: [],
       mais: 0,
       pets_perdidos: [],
-      pets_mostrar: false,
       tem_imagem_usuario: false,
       usuario_imagem: undefined,
       processando: false,
@@ -227,7 +226,7 @@ export default {
       local_storage: [],
       id_usuario: 0,
       dados_master: {},
-      
+      ladoBotao : 'esquerdo'
     };
   },
   async mounted() {},
@@ -296,8 +295,20 @@ export default {
       this.processando = false;
       this.buscarPets();
     },
+    verificaLadoBotao(){
+      if(this.ladoBotao === 'esquerdo'){
+        console.log('esquerdo');
+        this.ladoBotao = 'direito';
+        this.meus_pets = [];
+        this.buscarPetsPerdidos();
+      }else{
+        console.log('direito');
+        this.ladoBotao = 'esquerdo';
+        this.pets_perdidos = [];
+        this.buscarPets();
+      }
+    },
     async buscarPetsPerdidos() {
-      this.pets_mostrar = !this.pets_mostrar;
       this.processando = true;
       let pets_perdidos_dados = [];
       pets_perdidos_dados = await api.get("/missingPet");
