@@ -476,7 +476,7 @@ export default {
       api
         .put("/updatePet/" + this.id_logado, {
           idPet: this.id_pet,
-          img_pet: this.imagem,
+          img_pet: this.image,
           namePet: this.nome_pet,
           sexPet: this.sexo,
           colorPet: this.cor,
@@ -508,8 +508,12 @@ export default {
         this.tem_certeza = false;
         let sucesso = false;
         console.log("wqw", this.id_logado);
-        await api
-          .delete("/deletePet/" + this.id_logado, { idPet: this.id_pet })
+
+        await api({
+          method:'delete',
+          url:"/deletePet/" + this.id_logado,
+          data:{ idPet: this.id_pet }
+      })
           .then(function (response) {
             sucesso = true;
           })
@@ -517,7 +521,7 @@ export default {
             sucesso = false;
           });
         if (sucesso) {
-          this.$refs.enviaMensagem.exclamar("sucesso", "Apagado com sucesso.");
+          this.$router.push({ name: "Perfil" });
         } else {
           this.$refs.enviaMensagem.exclamar(
             "error",
