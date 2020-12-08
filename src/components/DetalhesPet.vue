@@ -84,8 +84,9 @@
       >
         <i class="fab fa-whatsapp"></i> Falar com proprietario agora
       </div>
-      <div class="w3-col w3-purple w3-btn" @click="mapa()">
-        <i class="fas fa-map-marked-alt"></i> Ultima localização do pet
+     
+      <div class="w3-col w3-purple w3-btn" @click="mapa(true)">
+        <i class="fas fa-map-marked-alt"></i> Casa do pet
       </div>
 
       <div
@@ -381,6 +382,7 @@ export default {
       mostrar_modal: false,
       tem_certeza: false,
       existe_pet: false,
+      endereco: undefined
     };
   },
   async created() {
@@ -423,6 +425,7 @@ export default {
     this.whatsapp = detalhe_pet.whatsapp;
     
     this.buscarDonoPet()
+    this.buscarCasaDoPet()
   },
 
   methods: {
@@ -509,12 +512,33 @@ export default {
           sucesso = false;
         });
       if (sucesso) {
-        this.$refs.enviaMensagem.exclamar("sucesso", "Pet atualizado.");
         this.nome_proprietario = dados.nome_usuario.toUpperCase() + ' ' + dados.sobrenome_usuario.toUpperCase()
       } else {
         this.$refs.enviaMensagem.exclamar(
           "error",
-          "Não foi possivel atualizar Pet."
+          "Não foi possivel carregar nome do Proprietario."
+        );
+      }
+    },
+    async buscarCasaDoPet() {
+      let sucesso = true;
+      let dados
+      await api
+        .get("/infoAdress/" + this.id_pet_dono)
+        .then(function (response) {
+          sucesso = true;
+          dados = response.data;
+        })
+        .catch(function (error) {
+          sucesso = false;
+        });
+      if (sucesso) {
+        this.$refs.enviaMensagem.exclamar("sucesso", "Casa do pet carregada.");
+        this.endereco = dados
+      } else {
+        this.$refs.enviaMensagem.exclamar(
+          "error",
+          "Não foi possivel achar casa do  Pet."
         );
       }
     },
@@ -549,26 +573,29 @@ export default {
       }
     },
     chamar() {
-      window.location.href =
-        "https://api.whatsapp.com/send?phone=" +
+      window.open("https://api.whatsapp.com/send?phone=55" +
         this.whatsapp +
         "&text=Olá você é responsável por esse pet " +
         this.nome_pet +
-        "? &source&data=";
+        "? &source&data=")
+    
     },
-    mapa() {
-      if (this.id_pet_dono !== this.id_logado) {
-        this.mostrar_modal = true;
-      } else {
-        this.localizacao[1] = this.localizacao[1] + 0.0000001;
-        (window.location.href =
+    mapa(localizando_casa) {
+     
+        if(localizando_casa){
+          window.open(
+          "https://www.google.com.br/maps/search/?api=1&query="+this.endereco.cep);
+        }else{
+          this.localizacao[1] = this.localizacao[1] + 0.0000001;
+          window.pen(
           "https://www.google.com.br/maps/dir//" +
           this.localizacao +
           "/@" +
-          this.latitude),
-          this.longitude + ",66m/data=!3m1!1e3";
+          this.latitude+','
+          +this.longitude + ",66m/data=!3m1!1e3");
         //window.location.href = 'https://www.google.com.br/maps/@'+this.latitude,this.longitude+',20z'
-      }
+        }
+      
     },
     opcoes: function (value) {
       if (value == "atualizar") {
@@ -589,12 +616,17 @@ export default {
       }
       if (value == "ver") {
         this.localizacao[1] = this.localizacao[1] + 0.0000001;
-        (window.location.href =
-          "https://www.google.com.br/maps/dir//" +
-          this.localizacao +
-          "/@" +
-          this.latitude),
-          this.longitude + ",66m";
+        console.log(this.endereco)
+       let endereco_total
+        if(this.endereco){
+          endereco_total =  (this.endereco.bairro?'+':'')+this.endereco.bairro
+          endereco_total += (this.endereco.rua?'+':'')+this.endereco.rua
+          endereco_total += (this.endereco.cidade?'+':'')+this.endereco.cidade
+          endereco_total += (this.endereco.estado ?'+':'')+this.endereco.estado
+
+        }
+         window.open(
+          "https://www.google.com.br/maps/search/?api=1&query="+ this.endereco.cep);
         //window.location.href = 'https://www.google.com.br/maps/@'+this.latitude,this.longitude+',16z'
       }
     },
