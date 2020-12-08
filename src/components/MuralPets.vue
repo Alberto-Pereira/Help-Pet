@@ -185,8 +185,7 @@ export default {
     },
 
     ativarDetalhes(pet) {
-      localStorage.setItem("pet-detalhe", JSON.stringify(pet));
-      this.$router.push({ name: "DetalhesPet" });
+      this.$router.push({ name: 'DetalhesPet', params: { pet: pet }})
     },
 
     async buscarPetsPerdidos() {

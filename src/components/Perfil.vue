@@ -204,7 +204,8 @@
 <script>
 import Mensagem from "@/components/Mensagem";
 import api from "../service/api";
-import DetalhesPet from "@/components/DetalhesPet";
+import {DetalhesPet} from "@/components/DetalhesPet";
+
 export default {
   name: "Perfil",
   components: {
@@ -271,8 +272,9 @@ export default {
     },
 
     ativarDetalhes(pet) {
-      localStorage.setItem("pet-detalhe", JSON.stringify(pet));
-      this.$router.push({ name: "DetalhesPet" });
+      this.$router.push({ name: 'DetalhesPet', params: { pet: pet }})
+      //localStorage.setItem("pet-detalhe", JSON.stringify(pet))
+      
     },
 
     gerarOcorrencia(pet) {

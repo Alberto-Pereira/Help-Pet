@@ -395,11 +395,10 @@ export default {
       await navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         this.localizacao = [latitude, longitude];
-        console.log(position, "posição");
       });
     }
-    let detalhe_pet = await JSON.parse(localStorage.getItem("pet-detalhe"));
-    console.log("solf", detalhe_pet);
+    let detalhe_pet = this.$route.params.pet
+  
     if (detalhe_pet.id_pet) {
       this.existe_pet = true;
     }
@@ -443,19 +442,19 @@ export default {
           idPet: this.id_pet,
         })
         .then(function (response) {
-          console.log(response);
+         
           if (response.data.success == "pet está desaparecido!") {
             sucesso = true;
-            console.log("entrei", sucesso);
+            
           } else {
             sucesso = false;
           }
         })
         .catch(function (error) {
           sucesso = false;
-          console.log("entrei");
+         
         });
-      console.log(sucesso, "sussa");
+     
       if (sucesso) {
         this.$refs.enviaMensagem.exclamar(
           "sucesso",
@@ -497,6 +496,7 @@ export default {
         );
       }
     },
+    
     async deletarPet(questionar) {
       if (!questionar) {
         this.tem_certeza = true;
@@ -504,7 +504,7 @@ export default {
       if (questionar) {
         this.tem_certeza = false;
         let sucesso = false;
-        console.log("wqw", this.id_logado);
+        
 
         await api({
           method:'delete',
@@ -551,7 +551,7 @@ export default {
     },
     opcoes: function (value) {
       if (value == "atualizar") {
-        console.log("atualizei");
+        
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position) => {
             const { latitude, longitude } = position.coords;
