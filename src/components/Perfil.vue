@@ -204,13 +204,11 @@
 <script>
 import Mensagem from "@/components/Mensagem";
 import api from "../service/api";
-import {DetalhesPet} from "@/components/DetalhesPet";
 
 export default {
   name: "Perfil",
   components: {
     Mensagem,
-    DetalhesPet,
   },
 
   data() {

@@ -421,8 +421,8 @@ export default {
     this.longitude = detalhe_pet.longitude;
     this.latitude = detalhe_pet.latitude;
     this.whatsapp = detalhe_pet.whatsapp;
-    this.nome_proprietario = nome_proprietario.nome_usuario.toUpperCase() + " " + nome_proprietario.sobrenome_usuario.toUpperCase();
-   
+    
+    this.buscarDonoPet()
   },
 
   methods: {
@@ -496,7 +496,28 @@ export default {
         );
       }
     },
-    
+    async buscarDonoPet() {
+      let sucesso = true;
+      let dados
+      await api
+        .get("/infoUser/" + this.id_pet_dono)
+        .then(function (response) {
+          sucesso = true;
+          dados = response.data;
+        })
+        .catch(function (error) {
+          sucesso = false;
+        });
+      if (sucesso) {
+        this.$refs.enviaMensagem.exclamar("sucesso", "Pet atualizado.");
+        this.nome_proprietario = dados.nome_usuario.toUpperCase() + ' ' + dados.sobrenome_usuario.toUpperCase()
+      } else {
+        this.$refs.enviaMensagem.exclamar(
+          "error",
+          "Não foi possivel atualizar Pet."
+        );
+      }
+    },
     async deletarPet(questionar) {
       if (!questionar) {
         this.tem_certeza = true;
