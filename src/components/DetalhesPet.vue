@@ -144,20 +144,20 @@
           >Status?
         </span>
         <div>
-          <span @click="status = 'n'" class="w3-text-green bold-500 w3-half">
+          <span @click="atualizaStatus('n')" class="w3-text-green bold-500 w3-half">
             <i class="far fa-check-circle" v-if="status == 'n'"></i>
             <i class="far fa-circle" v-else></i>
             <label>Normal</label>
           </span>
 
-          <span @click="status = 'a'" class="w3-text-yellow bold-500 w3-half">
+          <span @click="atualizaStatus('a')" class="w3-text-yellow bold-500 w3-half">
             <i class="far fa-check-circle" v-if="status == 'a'"></i>
             <i class="far fa-circle" v-else></i>
             <label>Para adoção</label>
           </span>
 
           <span
-            @click="(status = 'd'), atualizarStatusPerdido()"
+            @click="atualizaStatus('d'), atualizarStatusPerdido()"
             class="w3-text-red bold-500 w3-half"
           >
             <i class="far fa-check-circle" v-if="status == 'd'"></i>
@@ -165,7 +165,7 @@
             <label>Perdido</label>
           </span>
 
-          <span @click="status = 'l'" class="w3-text-blue bold-500 w3-half">
+          <span @click="atualizaStatus('l')" class="w3-text-blue bold-500 w3-half">
             <i class="far fa-check-circle" v-if="status == 'l'"></i>
             <i class="far fa-circle" v-else></i>
             <label>Encontrado</label>
@@ -470,9 +470,9 @@ export default {
         );
       }
     },
-    atualizarPet() {
+    async atualizarPet() {
       let sucesso = true;
-      api
+      await api
         .put("/updatePet/" + this.id_logado, {
           idPet: this.id_pet,
           img_pet: this.image,
@@ -480,14 +480,13 @@ export default {
           sexPet: this.sexo,
           colorPet: this.cor,
           description: this.descricao,
-          location: this.localizacao,
           status: this.status,
           breed: this.raca,
-        })
-        .then(function (response) {
+          location: this.localizacao ? this.localizacao : [0,0],
+          collarNumber:this.codigo_coleira
+        }).then(function (response) {
           sucesso = true;
-        })
-        .catch(function (error) {
+        }).catch(function (error) {
           sucesso = false;
         });
       if (sucesso) {
@@ -629,6 +628,9 @@ export default {
           "https://www.google.com.br/maps/search/?api=1&query="+ this.endereco.cep);
         //window.location.href = 'https://www.google.com.br/maps/@'+this.latitude,this.longitude+',16z'
       }
+    },
+    atualizaStatus(status){
+      this.status = status;
     },
     setImage: function (file) {
       this.hasImage = true;
