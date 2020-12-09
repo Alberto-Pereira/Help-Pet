@@ -10,6 +10,7 @@
 <div align="center">
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/516f3e56-4f34-4e14-b2fd-ad45b6f894b3/deploy-status)](https://app.netlify.com/sites/help-pet/deploys)
 
 </div>
 
@@ -34,6 +35,11 @@ Está aplicação tem o intuito de ajudar os pais de Pet a encontrarem seus anim
 
 - Documents:
   - Todos os documentos produzidos estaram nesta pasta, como por exemplo o documento de plano de qualidade, configuração entre outros.
+- Desenvolvimento:
+  - Backend:
+    - Servidor da aplicação onde se localiza todas as requisições direcionadas ao banco de dados. Feita em [Node](https://nodejs.org/en/)
+  - Frontend:
+    - A parte visual da aplicação. Feita em [Vue.Js](https://vuejs.org)
 
 ## ✍️ Autores <a name = "authors"></a>
 
