@@ -35,8 +35,13 @@ Está aplicação tem o intuito de ajudar os pais de Pet a encontrarem seus anim
 
 - Documents:
   - Todos os documentos produzidos estaram nesta pasta, como por exemplo o documento de plano de qualidade, configuração entre outros.
+- Desenvolvimento:
+  - Backend:
+    - Servidor da aplicação onde se localiza todas as requisições direcionadas ao banco de dados. Feita em [Node](https://nodejs.org/en/)
+  - Frontend:
+    - A parte visual da aplicação. Feita em [Vue.Js](https://vuejs.org)
 
-## ✍️ Authors <a name = "authors"></a>
+## ✍️ Autores <a name = "authors"></a>
 
 - [@Pedronex](https://github.com/Pedronex)
 - [@WjCK](https://github.com/WjCK)
