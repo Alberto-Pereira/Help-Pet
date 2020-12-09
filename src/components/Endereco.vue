@@ -308,6 +308,10 @@ export default {
       this.processando = false;
     },
     async gravarDados() {
+      if (!this.cep) {
+        this.$refs.enviarMensagem.exclamar("erro", "O CEP deve ser preenchido!");
+        return;
+      }
       if (this.existe_dados) {
         this.atualizar();
         return;

@@ -78,14 +78,14 @@
       </div>
 
       <div
-        v-if="id_pet_dono != id_logado"
+        v-if='id_pet_dono != id_logado && this.whatsapp !== ""'
         class="w3-col w3-blue w3-btn"
         @click="chamar()"
       >
         <i class="fab fa-whatsapp"></i> Falar com proprietario agora
       </div>
      
-      <div class="w3-col w3-purple w3-btn" @click="mapa(true)">
+      <div v-if='endereco !== undefined && endereco.cep !== undefined' class="w3-col w3-purple w3-btn" @click="mapa(true)">
         <i class="fas fa-map-marked-alt"></i> Casa do pet
       </div>
 
@@ -94,8 +94,8 @@
         class="w3-margin-top w3-border-blue w3-padding w3-round w3-col w3-border w3-container w3-mobile w3-round labels w3-animate-zoom w3-small"
         v-if="!editando"
       >
-        <span class="w3-span w3-text-black bold-500 w3-col w3-left-align"
-          ><i class="fas fa-user"></i> :
+        <span class="w3-span w3-text-black bold-500 w3-col w3-left-align" v-show='nome_proprietario !== ""'>
+          <i class="fas fa-user"></i> :
           <strong class="w3-text-purple">{{ nome_proprietario }}</strong></span
         >
         <span
@@ -510,6 +510,11 @@ export default {
         .catch(function (error) {
           sucesso = false;
         });
+
+      if(dados.nome_usuario === undefined || dados.sobrenome_usuario === undefined){
+        sucesso = false;
+      }
+
       if (sucesso) {
         this.nome_proprietario = dados.nome_usuario.toUpperCase() + ' ' + dados.sobrenome_usuario.toUpperCase()
       } else {
@@ -532,13 +537,8 @@ export default {
           sucesso = false;
         });
       if (sucesso) {
-        this.$refs.enviaMensagem.exclamar("sucesso", "Casa do pet carregada.");
         this.endereco = dados
-      } else {
-        this.$refs.enviaMensagem.exclamar(
-          "error",
-          "Não foi possivel achar casa do  Pet."
-        );
+        //this.$refs.enviaMensagem.exclamar("sucesso", "Casa do pet carregada.");
       }
     },
     async deletarPet(questionar) {
