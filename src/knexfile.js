@@ -42,7 +42,7 @@ module.exports = {
     connection: {
       host: "klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
       user: "tk1bvtwkz3da78gi",
-      password: "b72jezaie24csz4d",
+      password: "jc706dzhl8ahkxgl",
       database: "ynp1hbj3mxi05pu7",
     },
     pool: {
