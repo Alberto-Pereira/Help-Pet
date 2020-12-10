@@ -33,10 +33,11 @@ CREATE TABLE `animais_doacoes` (
 	`raca_pet` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
 	`sexo_pet` VARCHAR(10) NOT NULL COLLATE 'latin1_swedish_ci',
 	`cor_pet` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
-	`numero_coleira` INT(11) NOT NULL,
+	`numero_coleira` INT(11) NULL,
 	`descricao_pet` LONGTEXT NULL COLLATE 'latin1_swedish_ci',
-	`longitude` DECIMAL(10,8) NOT NULL,
-	`latitude` DECIMAL(10,8) NOT NULL
+	`longitude` TEXT NULL COLLATE 'latin1_swedish_ci',
+	`latitude` TEXT NULL COLLATE 'latin1_swedish_ci',
+	`status_pet` CHAR(1) NOT NULL COLLATE 'latin1_swedish_ci'
 ) ENGINE=MyISAM;
 
 -- Copiando estrutura para view helppet.animais_perdidos
@@ -55,10 +56,11 @@ CREATE TABLE `animais_perdidos` (
 	`raca_pet` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
 	`sexo_pet` VARCHAR(10) NOT NULL COLLATE 'latin1_swedish_ci',
 	`cor_pet` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
-	`numero_coleira` INT(11) NOT NULL,
+	`numero_coleira` INT(11) NULL,
 	`descricao_pet` LONGTEXT NULL COLLATE 'latin1_swedish_ci',
-	`longitude` DECIMAL(10,8) NOT NULL,
-	`latitude` DECIMAL(10,8) NOT NULL
+	`longitude` TEXT NULL COLLATE 'latin1_swedish_ci',
+	`latitude` TEXT NULL COLLATE 'latin1_swedish_ci',
+	`status_pet` CHAR(1) NOT NULL COLLATE 'latin1_swedish_ci'
 ) ENGINE=MyISAM;
 
 -- Copiando estrutura para view helppet.cartaz_perdido
@@ -86,37 +88,6 @@ CREATE TABLE IF NOT EXISTS `dados_pessoais` (
   `telegram` varchar(20) DEFAULT NULL,
   KEY `fk_dados_pessoais_usuario` (`id_usuario_dados_fk`),
   CONSTRAINT `fk_dados_pessoais_usuario` FOREIGN KEY (`id_usuario_dados_fk`) REFERENCES `usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Exportação de dados foi desmarcado.
-
--- Copiando estrutura para tabela helppet.denuncia
-CREATE TABLE IF NOT EXISTS `denuncia` (
-  `id_denuncia` int(11) NOT NULL AUTO_INCREMENT,
-  `nome_intituicao` varchar(15) NOT NULL,
-  `contato_denuncia` varchar(15) NOT NULL,
-  `whatsapp_denuncia` varchar(15) NOT NULL,
-  `id_usuario_denuncia_fk` int(11) NOT NULL,
-  PRIMARY KEY (`id_denuncia`),
-  UNIQUE KEY `id_denuncia` (`id_denuncia`),
-  KEY `fk_usuario_denuncia` (`id_usuario_denuncia_fk`),
-  CONSTRAINT `fk_usuario_denuncia` FOREIGN KEY (`id_usuario_denuncia_fk`) REFERENCES `usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Exportação de dados foi desmarcado.
-
--- Copiando estrutura para tabela helppet.endereco_orgao
-CREATE TABLE IF NOT EXISTS `endereco_orgao` (
-  `cep` varchar(8) NOT NULL,
-  `id_denuncia_orgao_fk` int(11) NOT NULL,
-  `rua` varchar(50) NOT NULL,
-  `num_residencia` varchar(10) NOT NULL,
-  `complemento` varchar(50) DEFAULT NULL,
-  `bairro` varchar(50) NOT NULL,
-  `cidade` varchar(50) NOT NULL,
-  `estado` varchar(50) NOT NULL,
-  KEY `fk_endereco_orgao` (`id_denuncia_orgao_fk`),
-  CONSTRAINT `fk_endereco_orgao` FOREIGN KEY (`id_denuncia_orgao_fk`) REFERENCES `denuncia` (`id_denuncia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Exportação de dados foi desmarcado.
@@ -159,16 +130,16 @@ CREATE TABLE IF NOT EXISTS `pet` (
   `raca_pet` varchar(50) NOT NULL,
   `sexo_pet` varchar(10) NOT NULL,
   `cor_pet` varchar(50) NOT NULL,
-  `numero_coleira` int(11) NOT NULL,
+  `numero_coleira` int(11) DEFAULT NULL,
   `descricao_pet` longtext DEFAULT NULL,
-  `longitude` decimal(10,8) NOT NULL,
-  `latitude` decimal(10,8) NOT NULL,
+  `longitude` text DEFAULT NULL,
+  `latitude` text DEFAULT NULL,
   `status_pet` char(1) NOT NULL CHECK (`status_pet` in ('n','a','d','l')),
   PRIMARY KEY (`id_pet`),
   UNIQUE KEY `id_pet` (`id_pet`),
   KEY `fk_pet_usuario` (`id_usuario_pet_fk`),
   CONSTRAINT `fk_pet_usuario` FOREIGN KEY (`id_usuario_pet_fk`) REFERENCES `usuario` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Exportação de dados foi desmarcado.
 
@@ -182,19 +153,19 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `tipo_usuario` char(1) NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para view helppet.animais_doacoes
 -- Removendo tabela temporária e criando a estrutura VIEW final
 DROP TABLE IF EXISTS `animais_doacoes`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `animais_doacoes` AS select `u`.`id_usuario` AS `id_usuario`,`u`.`nome_usuario` AS `nome_usuario`,`u`.`sobrenome_usuario` AS `sobrenome_usuario`,`dp`.`telefone` AS `telefone`,`dp`.`whatsapp` AS `whatsapp`,`dp`.`telegram` AS `telegram`,`dp`.`imagem_usuario` AS `imagem_usuario`,`p`.`id_pet` AS `id_pet`,`p`.`imagem_pet` AS `imagem_pet`,`p`.`nome_pet` AS `nome_pet`,`p`.`raca_pet` AS `raca_pet`,`p`.`sexo_pet` AS `sexo_pet`,`p`.`cor_pet` AS `cor_pet`,`p`.`numero_coleira` AS `numero_coleira`,`p`.`descricao_pet` AS `descricao_pet`,`p`.`longitude` AS `longitude`,`p`.`latitude` AS `latitude` from ((`usuario` `u` join `dados_pessoais` `dp` on(`u`.`id_usuario` = `dp`.`id_usuario_dados_fk`)) join `pet` `p` on(`u`.`id_usuario` = `p`.`id_usuario_pet_fk`));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `animais_doacoes` AS select `u`.`id_usuario` AS `id_usuario`,`u`.`nome_usuario` AS `nome_usuario`,`u`.`sobrenome_usuario` AS `sobrenome_usuario`,`dp`.`telefone` AS `telefone`,`dp`.`whatsapp` AS `whatsapp`,`dp`.`telegram` AS `telegram`,`dp`.`imagem_usuario` AS `imagem_usuario`,`p`.`id_pet` AS `id_pet`,`p`.`imagem_pet` AS `imagem_pet`,`p`.`nome_pet` AS `nome_pet`,`p`.`raca_pet` AS `raca_pet`,`p`.`sexo_pet` AS `sexo_pet`,`p`.`cor_pet` AS `cor_pet`,`p`.`numero_coleira` AS `numero_coleira`,`p`.`descricao_pet` AS `descricao_pet`,`p`.`longitude` AS `longitude`,`p`.`latitude` AS `latitude`,`p`.`status_pet` AS `status_pet` from ((`usuario` `u` join `dados_pessoais` `dp` on(`u`.`id_usuario` = `dp`.`id_usuario_dados_fk`)) join `pet` `p` on(`u`.`id_usuario` = `p`.`id_usuario_pet_fk`)) where `p`.`status_pet` = 'a';
 
 -- Copiando estrutura para view helppet.animais_perdidos
 -- Removendo tabela temporária e criando a estrutura VIEW final
 DROP TABLE IF EXISTS `animais_perdidos`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `animais_perdidos` AS select `u`.`id_usuario` AS `id_usuario`,`u`.`nome_usuario` AS `nome_usuario`,`u`.`sobrenome_usuario` AS `sobrenome_usuario`,`dp`.`telefone` AS `telefone`,`dp`.`whatsapp` AS `whatsapp`,`dp`.`telegram` AS `telegram`,`dp`.`imagem_usuario` AS `imagem_usuario`,`p`.`id_pet` AS `id_pet`,`p`.`imagem_pet` AS `imagem_pet`,`p`.`nome_pet` AS `nome_pet`,`p`.`raca_pet` AS `raca_pet`,`p`.`sexo_pet` AS `sexo_pet`,`p`.`cor_pet` AS `cor_pet`,`p`.`numero_coleira` AS `numero_coleira`,`p`.`descricao_pet` AS `descricao_pet`,`p`.`longitude` AS `longitude`,`p`.`latitude` AS `latitude` from ((`usuario` `u` join `dados_pessoais` `dp` on(`u`.`id_usuario` = `dp`.`id_usuario_dados_fk`)) join `pet` `p` on(`u`.`id_usuario` = `p`.`id_usuario_pet_fk`)) where `u`.`id_usuario` = `p`.`id_usuario_pet_fk` and `p`.`status_pet` = 'd';
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `animais_perdidos` AS select `u`.`id_usuario` AS `id_usuario`,`u`.`nome_usuario` AS `nome_usuario`,`u`.`sobrenome_usuario` AS `sobrenome_usuario`,`dp`.`telefone` AS `telefone`,`dp`.`whatsapp` AS `whatsapp`,`dp`.`telegram` AS `telegram`,`dp`.`imagem_usuario` AS `imagem_usuario`,`p`.`id_pet` AS `id_pet`,`p`.`imagem_pet` AS `imagem_pet`,`p`.`nome_pet` AS `nome_pet`,`p`.`raca_pet` AS `raca_pet`,`p`.`sexo_pet` AS `sexo_pet`,`p`.`cor_pet` AS `cor_pet`,`p`.`numero_coleira` AS `numero_coleira`,`p`.`descricao_pet` AS `descricao_pet`,`p`.`longitude` AS `longitude`,`p`.`latitude` AS `latitude`,`p`.`status_pet` AS `status_pet` from ((`usuario` `u` join `dados_pessoais` `dp` on(`u`.`id_usuario` = `dp`.`id_usuario_dados_fk`)) join `pet` `p` on(`u`.`id_usuario` = `p`.`id_usuario_pet_fk`)) where `u`.`id_usuario` = `p`.`id_usuario_pet_fk` and `p`.`status_pet` = 'd';
 
 -- Copiando estrutura para view helppet.cartaz_perdido
 -- Removendo tabela temporária e criando a estrutura VIEW final
