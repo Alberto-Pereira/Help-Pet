@@ -41,9 +41,9 @@ module.exports = {
     client: "mysql",
     connection: {
       host: "klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-      user: "tk1bvtwkz3da78gi",
-      password: "jc706dzhl8ahkxgl",
-      database: "ynp1hbj3mxi05pu7",
+      user: "tefhyjada3udkyei",
+      password: "ijbkju9aif2cco4r",
+      database: "bke2wjsefw9mwsd8",
     },
     pool: {
       min: 2,
