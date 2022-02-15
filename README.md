@@ -16,7 +16,7 @@
 
 ---
 
-<p align="center">Este projeto foi desenvolvido para atender o projeto integrador da PUCGO - Pontifícia Universidade Católica de Goiás
+<p align="center">Essa aplicação foi desenvolvida para atender o projeto integrador da PUC Goiás - Pontifícia Universidade Católica de Goiás.
     <br> 
 </p>
 
@@ -31,7 +31,7 @@
 
 Essa aplicação tem o intuito de ajudar e auxiliar pessoas a encontrarem seus animais de estimação perdidos.
 
-## Arquitetura <a name = "pattern"></a>
+## 🏛 Arquitetura <a name = "pattern"></a>
 
 - Documentos:
   - Todos os documentos produzidos estão nesta pasta.
