@@ -29,12 +29,12 @@
 
 ## 🧐 Sobre <a name = "about"></a>
 
-Está aplicação tem o intuito de ajudar os pais de Pet a encontrarem seus animais perdidos ou adotarem pets para preencherem os corações deles ❤.
+Essa aplicação tem o intuito de ajudar e auxiliar pessoas a encontrarem seus animais de estimação perdidos.
 
 ## Arquitetura <a name = "pattern"></a>
 
-- Documents:
-  - Todos os documentos produzidos estaram nesta pasta, como por exemplo o documento de plano de qualidade, configuração entre outros.
+- Documentos:
+  - Todos os documentos produzidos estão nesta pasta.
 - Desenvolvimento:
   - Backend:
     - Servidor da aplicação onde se localiza todas as requisições direcionadas ao banco de dados. Feita em [Node](https://nodejs.org/en/)
